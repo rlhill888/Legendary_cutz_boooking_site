@@ -4,11 +4,14 @@ import ServiceCard from "../../src/components/ServiceCard";
 import { SecondaryButton, PrimaryButton } from "../../src/components/Button";
 import SchedulingStep1 from "../../src/components/SchedulingStep1";
 import SchedulingStep3 from "../../src/components/SchedulingStep3";
+import SchedulingStep4 from "../../src/components/SchedulingStep4";
 
 
 function Page(){
     const router= useRouter()
     const { name } = router.query
+    
+    const date = new Date();
 
     const [schedulingStep, setSchedulingStep]= useState(1)
 
@@ -118,8 +121,16 @@ function Page(){
         if(schedulingStep===3){
             return(
                 <>
-                <SchedulingStep3 completePurchaseObj={completePurchaseObj}/>
+                <SchedulingStep3 setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
                 </>
+            )
+        }
+
+        if(schedulingStep===4){
+            return(
+            <>
+            <SchedulingStep4 />
+            </>
             )
         }
     return(

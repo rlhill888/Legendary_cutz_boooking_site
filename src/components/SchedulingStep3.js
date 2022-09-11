@@ -1,6 +1,6 @@
 import react, {useEffect, useState} from "react";
 
-function SchedulingStep3({completePurchaseObj}){
+function SchedulingStep3({completePurchaseObj, setSchedulingStep}){
 console.log(completePurchaseObj)
 
 const [recieptsArray, setrecieptsArray]= useState([])
@@ -149,7 +149,11 @@ console.log(recieptsArray)
        <br />
        </>) : <> </>}
        
-       <button>Proceed To Checkout</button>
+       <button
+       onClick={()=>{
+        setSchedulingStep(4)
+       }}
+       >Select a date and time for your appointment</button>
         </>
     )
 }

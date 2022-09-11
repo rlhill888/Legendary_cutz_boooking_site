@@ -9,6 +9,32 @@ body {
   box-sizing: border-box;
 } 
 
+.IndivisualCalendarDiv{
+  width: 14vw;
+  height: 14vw;
+  background-color: white;
+  border: 2px;
+  margin: 1px;
+  padding-left: 2%;
+  padding-right: 2%;
+  cursor: pointer;
+
+}
+.IndivisualCalendarDiv.disabled{
+  background-color: rgb(56, 56, 56);
+  cursor: none;
+}
+
+.calendarDayHeader{
+  color: rgb(169, 168, 168);
+  font-size: small;
+}
+.calendarAppointmentNumberHeader{
+  font-size: medium;
+  color: black;
+  text-align: right;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

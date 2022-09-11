@@ -2,7 +2,6 @@ import {PrimaryButton, SecondaryButton, TertiaryButton} from "../src/components/
 import { useRouter } from "next/router";
 export default function Home() {
   const router = useRouter()
-
   const barberArray= [
     {
       name: 'larry',
