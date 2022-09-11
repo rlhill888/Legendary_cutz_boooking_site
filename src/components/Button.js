@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { defaultTheme } from "../utils/ApplicationTheme";
 
+
 const theme = defaultTheme
 
 const Button = styled.button`
@@ -29,7 +30,7 @@ export const PrimaryButton = styled(Button)`
     }
     &:focus{
         box-shadow: inset 0px 4px 4px rgba(255, 255, 255, 0.51);
-        filter: drop-shadow(0px 4px 30px #FF8888);
+        filter: drop-shadow(0px 4px 15px #FF0000);
         background: linear-gradient(180deg, #FF1B1C 0%, #741617 54.69%, #010000 100%);
     }
     &:active{
