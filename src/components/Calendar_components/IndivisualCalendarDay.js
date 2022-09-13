@@ -1,8 +1,20 @@
 import react, {useState} from "react";
 
 
-function IndivisualCalendarDay({disabled, blankCalendarDate, day}){
-
+function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus}){
+    function determineAvailabilityStatus(){
+        if(availabilityStatus===1){
+            return 'calendarAppointmentNumberHeader lowAvailability'
+        }
+        if(availabilityStatus===2){
+            return 'calendarAppointmentNumberHeader mediumAvailability'
+        }
+        if(availabilityStatus===3){
+            return 'calendarAppointmentNumberHeader highAvailability'
+        }else{
+            return 'calendarAppointmentNumberHeader'
+        }
+    }
 
     return(
         <>
@@ -15,11 +27,15 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day}){
         }
             
             
-           { disabled ?  <></> : <h2
-            className="calendarAppointmentNumberHeader"
+           { disabled ?  <></> :
+           
+           <center>
+            <h2
+            className={determineAvailabilityStatus()}
             >
                 5
-            </h2>}
+            </h2>
+            </center>}
         </div>
         </>
     )

@@ -58,7 +58,7 @@ function Calendar(){
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false){
                     dayCount++
                     foundFirstOfMonthStartDate = true
-                    return <IndivisualCalendarDay day={dayCount} />
+                    return <IndivisualCalendarDay day={dayCount} availabilityStatus={2} />
                 }
                 if(foundFirstOfMonthStartDate === false && index !== firstofMonthDay || dayCount > monthArray[month]){
                     
@@ -66,7 +66,7 @@ function Calendar(){
                 }
                 else{
                     dayCount++
-                    return <IndivisualCalendarDay  day={dayCount} />
+                    return <IndivisualCalendarDay  day={dayCount}  availabilityStatus={3} />
                 }
                 
             })
@@ -75,6 +75,23 @@ function Calendar(){
     }
     return(
         <>
+        <div
+        style={{
+            display: 'flex',
+            flexDirection: 'row'
+        }}
+        >
+          {weekArray.map(weekday=>{
+            return <div
+            className="caledarWeekdayHeader"
+            >
+                <h3>
+                    {weekday}
+                </h3>
+            </div>
+        })}  
+        </div>
+        
         {mapCalendarOut()}
        
         </>

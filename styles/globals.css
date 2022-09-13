@@ -11,12 +11,14 @@ body {
 
 .IndivisualCalendarDiv{
   width: 14vw;
+  max-width: 100px;
   height: 14vw;
+  max-height: 100px;
   background-color: white;
   border: 2px;
   margin: 1px;
-  padding-left: 2%;
-  padding-right: 2%;
+  padding-left: 9px;
+  padding-right: 9px;
   cursor: pointer;
 
 }
@@ -33,6 +35,25 @@ body {
   font-size: medium;
   color: black;
   text-align: right;
+  position: relative;
+  bottom: 0px;
+}
+.calendarAppointmentNumberHeader.highAvailability{
+  color: rgb(24, 243, 24);
+}
+
+.calendarAppointmentNumberHeader.mediumAvailability{
+  color: rgb(243, 236, 24);
+}
+
+.calendarAppointmentNumberHeader.lowAvailability{
+  color: rgb(243, 24, 24);
+}
+
+.caledarWeekdayHeader{
+  width: 14vw;
+  max-width: 100px;
+  margin: 1px;
 }
 
 @media (prefers-color-scheme: dark) {
