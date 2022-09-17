@@ -1,10 +1,12 @@
 import react, {useEffect, useState} from "react";
 
-function SchedulingStep3({completePurchaseObj, setSchedulingStep}){
+function SchedulingStep3({completePurchaseObj, setSchedulingStep, setTotalAppointmentTime, setTotalAppointmentTimeInt}){
 console.log(completePurchaseObj)
 
 const [recieptsArray, setrecieptsArray]= useState([])
 const [totalReceipt, setTotalReciept]= useState({})
+setTotalAppointmentTimeInt(totalReceipt.totalTime)
+
 console.log(totalReceipt)
 useEffect(()=>{
 traverseCompletePurchseObj()
@@ -16,13 +18,20 @@ function makeDurrationStringForTotalTime(){
         hours = Math.trunc(hours)
         let remaindingTime = totalReceipt.totalTime - (hours*60)
         if(remaindingTime===0){
+            let stringVariable = `${hours} hour${ hours > 1 ? 's' : ''}`
+            setTotalAppointmentTime(stringVariable)
             return `${hours} hour${ hours > 1 ? 's' : ''}`
         }
         if(remaindingTime>0){
+
+            let stringVariable =  `${hours} hour${ hours > 1 ? 's' : ''} and ${remaindingTime} minute${ remaindingTime > 1 ? 's' : ''}`
+            setTotalAppointmentTime( stringVariable)
             return `${hours} hour${ hours > 1 ? 's' : ''} and ${remaindingTime} minute${ remaindingTime > 1 ? 's' : ''}`
         }
         
     }else{
+        let stringVariable = `${totalReceipt.totalTime} minute${totalReceipt.totalTime > 1 ? 's' : ''}`
+        setTotalAppointmentTime(stringVariable)
         return `${totalReceipt.totalTime} minute${totalReceipt.totalTime > 1 ? 's' : ''}`
     }
  }
@@ -71,13 +80,16 @@ function getReciept(obj, key){
         hours = Math.trunc(hours)
         let remaindingTime = totalIndivisualObj.totalDurration - (hours*60)
         if(remaindingTime===0){
+            setTotalAppointmentTime(`${hours} hour${ hours > 1 ? 's' : ''}`)
             return `${hours} hour${ hours > 1 ? 's' : ''}`
         }
         if(remaindingTime>0){
+            setTotalAppointmentTime(`${hours} hour${ hours > 1 ? 's' : ''} and ${remaindingTime} minute${ remaindingTime > 1 ? 's' : ''}`)
             return `${hours} hour${ hours > 1 ? 's' : ''} and ${remaindingTime} minute${ remaindingTime > 1 ? 's' : ''}`
         }
         
     }else{
+        setTotalAppointmentTime(`${totalIndivisualObj.totalDurration} minute${totalIndivisualObj.totalDurration > 1 ? 's' : ''}`)
         return `${totalIndivisualObj.totalDurration} minute${totalIndivisualObj.totalDurration > 1 ? 's' : ''}`
     }
  }

@@ -20,6 +20,8 @@ function Page(){
     const [completePurchaseObj, setCompletePurchaseObj]= useState({})
     const [currentPersonSelectingServices, setCurrentPersonSelectingServices]= useState(0)
     const [servicesCheckedObj, setservicesCheckedObj]= useState({}) 
+    const [totalAppointmentTime, setTotalAppointmentTime]= useState('')
+    const [totalAppointmentTimeInt, setTotalAppointmentTimeInt]= useState(null)
     const [barberObj, setBarberObj]= useState({
         name: 'larry',
         services: [
@@ -121,7 +123,7 @@ function Page(){
         if(schedulingStep===3){
             return(
                 <>
-                <SchedulingStep3 setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
+                <SchedulingStep3 setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
                 </>
             )
         }
@@ -129,7 +131,7 @@ function Page(){
         if(schedulingStep===4){
             return(
             <>
-            <SchedulingStep4 />
+            <SchedulingStep4 totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime}/>
             </>
             )
         }
