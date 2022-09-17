@@ -28,7 +28,7 @@ body {
 }
 
 .calendarDayHeader{
-  color: rgb(169, 168, 168);
+  color: rgb(0, 0, 0);
   font-size: small;
 }
 .calendarAppointmentNumberHeader{

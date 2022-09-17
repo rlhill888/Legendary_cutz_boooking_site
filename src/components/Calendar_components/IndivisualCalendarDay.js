@@ -1,7 +1,7 @@
 import react, {useState} from "react";
 
 
-function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus}){
+function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus, setDateOfAppointment, disabledDay, year, month }){
     function determineAvailabilityStatus(){
         if(availabilityStatus===1){
             return 'calendarAppointmentNumberHeader lowAvailability'
@@ -16,9 +16,33 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
         }
     }
 
+    function findDate(){
+        let dateString = `${
+            
+            month < 10 ? 
+            `0${month}` :
+            month}/${day}/${year}`
+
+        const date = new Date(dateString)
+
+        const weekday = date.getDay()
+        const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
+
+        const finalizedDateString = `${weekArray[weekday]}, ${dateString}`
+        return finalizedDateString
+    }
+
     return(
         <>
-        <div className={`${disabled ? 'IndivisualCalendarDiv disabled' : 'IndivisualCalendarDiv'}`}>
+        <div onClick={()=>{
+            if(!disabled && !blankCalendarDate && !disabledDay){
+
+                let dateString = findDate()
+                setDateOfAppointment(dateString)
+            }
+            
+        }
+        } className={`${disabled || disabledDay ? 'IndivisualCalendarDiv disabled' : 'IndivisualCalendarDiv'}`}>
             {blankCalendarDate ? 
             <> </> :
             <h2 
@@ -30,11 +54,18 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
            { disabled ?  <></> :
            
            <center>
-            <h2
+
+            {disabledDay ? <></> : 
+<h2
             className={determineAvailabilityStatus()}
             >
                 5
             </h2>
+
+            }
+            
+
+
             </center>}
         </div>
         </>

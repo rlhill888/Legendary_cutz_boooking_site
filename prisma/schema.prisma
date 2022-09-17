@@ -10,3 +10,25 @@ datasource db {
   url      = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
+model Barber {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  gmail String @unique
+  name String
+  password String
+  phoneNumber Int
+  recieveNewAppointmentReminders Boolean
+  recieveCanceledAppointmentReminders Boolean
+  Admin Boolean @default(false)
+  services Service[]
+}
+
+model Service {
+ id        Int       @id @default(autoincrement())
+ barberId Int
+ time Int
+ price Float
+ name String 
+ barber Barber? @relation(fields: [barberId], references: [id])
+
+}
