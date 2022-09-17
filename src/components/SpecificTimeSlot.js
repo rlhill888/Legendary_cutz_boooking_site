@@ -2,6 +2,8 @@ import { useState } from "react";
 import React from "react";
 
 function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActivatedTimeSlot, totalAppointmentTime, totalAppointmentTimeInt}){
+
+    const latestAppointmentTime = calculateLatestAppointmentTime()
     function calculateLatestAppointmentTime(){
         const startTime = times[0]
         const endTime = times[1]
@@ -129,7 +131,13 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
             <h3>From {times[0]} To {times[1]}</h3>
 
             <h3>Your appointment is {totalAppointmentTime} long</h3>
-            <h3>The latest you can start this appointemnt is at {calculateLatestAppointmentTime()}</h3>
+            <h3>The latest you can start this appointemnt is at {latestAppointmentTime}.
+            <br />
+             You can start your appointment at any time from {times[0]} - {latestAppointmentTime}</h3>
+       
+             <h3>What time would you like to start your appointemnt?</h3>
+             <br />
+             <input></input>
             
 
         </div>
