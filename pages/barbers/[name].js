@@ -1,7 +1,6 @@
 import react, {useState, useEffect} from "react";
 import { useRouter } from "next/router";
 import ServiceCard from "../../src/components/ServiceCard";
-import { SecondaryButton, PrimaryButton } from "../../src/components/Button";
 import SchedulingStep1 from "../../src/components/SchedulingStep1";
 import SchedulingStep3 from "../../src/components/SchedulingStep3";
 import SchedulingStep4 from "../../src/components/SchedulingStep4";
@@ -11,8 +10,6 @@ import SchedulingStep5 from "../../src/components/SchedulingStep5";
 function Page(){
     const router= useRouter()
     const { name } = router.query
-    
-    const date = new Date();
 
     const [schedulingStep, setSchedulingStep]= useState(1)
 
@@ -141,7 +138,7 @@ function Page(){
         if(schedulingStep===5){
             return(
                 <>
-                <SchedulingStep5 />
+                <SchedulingStep5  timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} />
                 </>
             )
         }
