@@ -2,7 +2,7 @@ import react, {useState} from "react";
 import SpecificTimeSlot from "./SpecificTimeSlot";
 
 
-function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppointmentTime, totalAppointmentTimeInt}){
+function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppointmentTime, totalAppointmentTimeInt, setTimeObj, setSchedulingStep}){
 
     const [activatedTimeSlot, setActivatedTimeSlot]= useState(0)
 
@@ -13,7 +13,7 @@ function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppoi
             specificTimeSlotId++
             return(
                 <>
-                    <SpecificTimeSlot totalAppointmentTime={totalAppointmentTime} times={times} specificTimeSlotId={specificTimeSlotId} activatedTimeSlot={activatedTimeSlot} setActivatedTimeSlot={setActivatedTimeSlot} totalAppointmentTimeInt={totalAppointmentTimeInt}/>
+                    <SpecificTimeSlot setTimeObj={setTimeObj} totalAppointmentTime={totalAppointmentTime} times={times} specificTimeSlotId={specificTimeSlotId} activatedTimeSlot={activatedTimeSlot} setActivatedTimeSlot={setActivatedTimeSlot} totalAppointmentTimeInt={totalAppointmentTimeInt} setSchedulingStep={setSchedulingStep}/>
                     <br />
                 </>
             )

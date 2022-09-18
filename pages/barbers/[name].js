@@ -5,6 +5,7 @@ import { SecondaryButton, PrimaryButton } from "../../src/components/Button";
 import SchedulingStep1 from "../../src/components/SchedulingStep1";
 import SchedulingStep3 from "../../src/components/SchedulingStep3";
 import SchedulingStep4 from "../../src/components/SchedulingStep4";
+import SchedulingStep5 from "../../src/components/SchedulingStep5";
 
 
 function Page(){
@@ -22,6 +23,7 @@ function Page(){
     const [servicesCheckedObj, setservicesCheckedObj]= useState({}) 
     const [totalAppointmentTime, setTotalAppointmentTime]= useState('')
     const [totalAppointmentTimeInt, setTotalAppointmentTimeInt]= useState(null)
+    const [timeObj, setTimeObj]= useState({})
     const [barberObj, setBarberObj]= useState({
         name: 'larry',
         services: [
@@ -131,8 +133,16 @@ function Page(){
         if(schedulingStep===4){
             return(
             <>
-            <SchedulingStep4 totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime}/>
+            <SchedulingStep4 setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
             </>
+            )
+        }
+
+        if(schedulingStep===5){
+            return(
+                <>
+                <SchedulingStep5 />
+                </>
             )
         }
     return(

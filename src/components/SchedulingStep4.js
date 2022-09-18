@@ -2,7 +2,7 @@ import react, {useState} from "react";
 import Calendar from "./Calendar";
 import SpecificTimeOfDaySelector from "./SpecificTimeOfDaySelector";
 
-function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt}){
+function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj}){
 
     const [dateOfAppointment, setDateOfAppointment]= useState(null)
 
@@ -19,7 +19,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt}){
         <>Step 4
         <Calendar setDateOfAppointment={setDateOfAppointment}/>
 
-        {dateOfAppointment ? <SpecificTimeOfDaySelector totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} timeSlotArray={timeSlotArray} dateOfAppointment={dateOfAppointment} /> : <> </>}
+        {dateOfAppointment ? <SpecificTimeOfDaySelector setSchedulingStep={setSchedulingStep} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} timeSlotArray={timeSlotArray} dateOfAppointment={dateOfAppointment} /> : <> </>}
 
         </>
     )
