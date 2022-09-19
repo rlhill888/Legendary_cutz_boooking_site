@@ -5,6 +5,7 @@ import SchedulingStep1 from "../../src/components/SchedulingStep1";
 import SchedulingStep3 from "../../src/components/SchedulingStep3";
 import SchedulingStep4 from "../../src/components/SchedulingStep4";
 import SchedulingStep5 from "../../src/components/SchedulingStep5";
+import Checkout from "../../src/components/Checkout";
 
 
 function Page(){
@@ -139,6 +140,13 @@ function Page(){
             return(
                 <>
                 <SchedulingStep5  timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} />
+                </>
+            )
+        }
+        if(schedulingStep===6){
+            return(
+                <>
+                <Checkout />
                 </>
             )
         }

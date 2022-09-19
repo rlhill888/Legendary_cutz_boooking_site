@@ -23,7 +23,7 @@ export default async (req, res) =>{
                 }
             })
     } catch(e){
-        res.json({error: e})
+        res.status(401).json({statusCode: 500, message: e.message})
         return 
     }
 
