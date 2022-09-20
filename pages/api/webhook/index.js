@@ -1,6 +1,5 @@
 import Stripe from "stripe";
 import { buffer } from "micro";
-import handler from "../checkout_sessions";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
@@ -38,6 +37,7 @@ export default async function handler(req, res){
         }else{
             console.warn(`unhandled event type: ${event.type}`)
         }
+        res.json({received: true})
 
     }else{
         res.setHeader('Allow', 'POST')

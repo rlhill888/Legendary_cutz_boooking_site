@@ -5,16 +5,16 @@ import { useRouter } from 'next/router';
 import useSWR from "swr";
 import axios from "axios";
 
-function CheckoutSuccess(){
+function SucessId(){
 
     const [purchaseInfo, setPurchaseInfo]= useState(null)
   
 
     const fetcher = url => axios.get(url).then(res => setPurchaseInfo(res.data))
-
-    const {
-        query: {session_id},
-    } = useRouter()
+    
+    const router = useRouter()
+    const session_id = router.query["session_id"]
+    console.log(session_id)
 
     const {data, error} = useSWR(
         ()=> `/api/checkout_sessions/${session_id}`,
@@ -42,4 +42,4 @@ function CheckoutSuccess(){
         </>
     )
 }
-export default CheckoutSuccess
+export default SucessId

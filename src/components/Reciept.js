@@ -1,17 +1,21 @@
 import react, {useEffect, useState} from "react";
 
-function Reciept({completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, timeObj}){
-console.log(completePurchaseObj)
-console.log(timeObj)
+function Reciept({completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, timeObj, totalReceipt, setTotalReciept}){
+
 
 const [recieptsArray, setrecieptsArray]= useState([])
-const [totalReceipt, setTotalReciept]= useState({})
-setTotalAppointmentTimeInt(totalReceipt.totalTime)
+
+
+
 
 console.log(totalReceipt)
 useEffect(()=>{
 traverseCompletePurchseObj()
+
+
 }, [])
+
+setTotalAppointmentTimeInt(totalReceipt.totalTime)
 
 function makeDurrationStringForTotalTime(){
     if(totalReceipt.totalTime >59){
@@ -132,13 +136,15 @@ setTotalReciept((previous)=>{
 })
 console.log(`The total time your appointment will take is ${totalObj.totalDurration} minutes.`, `The total Price for your appointemnt will be $${totalObj.totalPrice}.`)
 }
+
 console.log(recieptsArray)
     return (
         <>
-       {recieptsArray.map((array)=>{
+        this is the reciept
+       {recieptsArray.map((array, index)=>{
         console.log(array)
         return (
-            <div key={`receipt div ${array.name}, ${array.services}`}>
+            <div key={`receipt div ${array.name}, ${array.services} ${index}`}>
                 <h2>Services for {array.Name}</h2>
                 <h3>
                     <ol>
@@ -149,19 +155,25 @@ console.log(recieptsArray)
                     </ol>
                     </h3>
                 <h3>Total time for {array.Name}'s Services: {array.totalDurration}</h3>
-                {Object.keys(completePurchaseObj).length===1 ? (
-                <>
-                <h1>Total Price: ${totalReceipt.totalPrice} </h1>
-                </>) : <></>}
+                
             </div>
         )
        })}
-       {Object.keys(completePurchaseObj).length>1 ? (<> 
+       
        <h2>Total Time: {makeDurrationStringForTotalTime()}</h2>
        <h2>Your appointemnt will be from {timeObj.appointmentStartTime} to {timeObj.appointmentEndTime}</h2>
        <h1>Total Price: ${totalReceipt.totalPrice} </h1>
+       <h2>To finish booking your appointment at {timeObj.appointmentStartTime}, you must pay a $15 down deposit.
        <br />
-       </>) : <> </>}
+       <br />
+        After paying the down deposit, you will pay the remaining balance after your appointment is finished. </h2>
+        <h1>Total amount to be  paid after appointment is finished:
+            <br />
+            <br />
+             ${totalReceipt.totalPrice - 15} </h1>
+        
+       <br />
+  
         </>
     )
 }

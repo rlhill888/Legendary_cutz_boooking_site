@@ -1,3 +1,4 @@
+import { parse } from "cookie";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -8,11 +9,14 @@ export default async function handler(req, res){
             const session = await stripe.checkout.sessions.create({
                 mode: 'payment',
                 payment_method_types: ['card'],
-                line_items: req?.body?.items ?? [],
-                success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel: `${req.headers.origin}/`
+                line_items: [{
+                    price: 'price_1LjepNK1OiA3f83feYSv8llN', quantity: 1
+                }],
+                success_url: `${req.headers.origin}/checkout_success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${req.headers.origin}/`,
+                metadata: {data: JSON.stringify(req.body)}
             })
-
+            res.status(200).json(session);
         } catch(error){
             res.status(500).json({statusCode: 500, message: error.message})
         }
