@@ -3,9 +3,9 @@ import Reciept from "./reciept";
 import axios from "axios";
 import getStripe from "../../lib/get-stripe";
 
-function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, setSchedulingStep}){
+function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment}){
 
-    console.log(timeObj, completePurchaseObj)
+  console.log('recieptsArray:', recieptsArray)
     const [totalReceipt, setTotalReciept]= useState({})
     const redirectToCheckout = async ()=> {
 
@@ -14,12 +14,18 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
         }=await axios.post('/api/checkout_sessions', {
             startTime: timeObj.appointmentStartTime,
             endTime: timeObj.appointmentEndTime,
-            totalPriceAfterDownPayment: totalReceipt.totalPrice - 15
+            totalPriceAfterDownPayment: totalReceipt.totalPrice - 15,
+            customerNamesArray: Object.keys(completePurchaseObj),
+            dateOfAppointment
+         
         })
 
         const stripe = await getStripe()
         console.log(getStripe())
         await stripe.redirectToCheckout({sessionId: id})
+    }
+    function turnRecieptsArrayIntoAString(){
+        
     }
 
     return(

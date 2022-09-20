@@ -22,6 +22,8 @@ function Page(){
     const [totalAppointmentTime, setTotalAppointmentTime]= useState('')
     const [totalAppointmentTimeInt, setTotalAppointmentTimeInt]= useState(null)
     const [timeObj, setTimeObj]= useState({})
+    const [recieptsArray, setrecieptsArray]= useState([])
+    const [dateOfAppointment, setDateOfAppointment]= useState(null)
     const [barberObj, setBarberObj]= useState({
         name: 'larry',
         services: [
@@ -123,7 +125,7 @@ function Page(){
         if(schedulingStep===3){
             return(
                 <>
-                <SchedulingStep3 setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
+                <SchedulingStep3 recieptsArray={recieptsArray}  setrecieptsArray={setrecieptsArray} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
                 </>
             )
         }
@@ -131,7 +133,7 @@ function Page(){
         if(schedulingStep===4){
             return(
             <>
-            <SchedulingStep4 setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
+            <SchedulingStep4 setDateOfAppointment={setDateOfAppointment} dateOfAppointment={dateOfAppointment} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
             </>
             )
         }
@@ -139,7 +141,7 @@ function Page(){
         if(schedulingStep===5){
             return(
                 <>
-                <SchedulingStep5  timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} />
+                <SchedulingStep5  dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray}/>
                 </>
             )
         }

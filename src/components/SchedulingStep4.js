@@ -2,9 +2,8 @@ import react, {useState} from "react";
 import Calendar from "./Calendar";
 import SpecificTimeOfDaySelector from "./SpecificTimeOfDaySelector";
 
-function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj}){
+function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj, setDateOfAppointment, dateOfAppointment}){
 
-    const [dateOfAppointment, setDateOfAppointment]= useState(null)
 
 
     // Going to be a variable set up in state. when day is clicked on calendar, a new open time slot array for that day will be pushed up into the variable up in state

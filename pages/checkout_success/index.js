@@ -5,36 +5,45 @@ import useSWR from "swr";
 import axios from "axios";
 
 
-export async function getServerSideProps(){
-    const { query } = useRouter()
-    const session_id = router.query["session_id"]
-
-    return{
-        props: {
-            session_id: query.session_id
-        }
-    }
-}
 
 
-function Sucess({session_id}){
+function Sucess(){
 
     const [purchaseInfo, setPurchaseInfo]= useState(null)
+    const [madeFetchRequest, setMadeFetchRequest]= useState(false)
+    const [data, setData]= useState(false)
+    const [error, setError]= useState(false)
+    const [purchaseContents, setPurchaseContents]= useState({})
+
+    function mapNames(){
+
+      
+        return purchaseContents.customerNamesArray.map((name, index)=>{
+                
+                if(index=== purchaseContents.customerNamesArray.length - 1){
+                    return ` and ${name}`
+                }else{
+                    return ` ${name}`
+                }
+            })
+    }
+
   
 
-    const fetcher = url => axios.get(url).then(res =>{ 
-        res.json().then(res=>{
-            setPurchaseInfo(res.data)
-            console.log(res)
-        })
-    })
-    
-    console.log(session_id)
+    const router = useRouter()
+    const session_id = router.query["session_id"]
 
-    const {data, error} = useSWR(
-        ()=> `/api/checkout_sessions/${session_id}`,
-        fetcher
-    )
+    if(session_id && madeFetchRequest===false){
+        fetch(`/api/checkout_sessions/${session_id}`).then(res=> res.json().then(res=>{
+            setMadeFetchRequest(true)
+            setData(res)
+            setPurchaseContents( JSON.parse(res.metadata.data))
+            console.log(JSON.parse(res.metadata.data)) 
+            console.log(res)
+        }))
+    }
+
+   
 
     return(
         <>
@@ -46,7 +55,39 @@ function Sucess({session_id}){
             ) : data ? (
                 <div>
                     <h1>Successful Payment</h1>
-                    <h1>more about opting in to recieve text message reminders about appointment </h1>
+                    {purchaseContents.customerNamesArray.length>1 ? <>
+                    <h1>
+                        
+                        {`Appointments for ${mapNames()} `} 
+                         were successfully scheduled for: 
+                        <br />
+                        <br />
+                        {purchaseContents.startTime} - {purchaseContents.endTime}
+                    
+                    </h1>
+                    
+                    
+                    </> : <>
+                    <h1>{purchaseContents.customerNamesArray[0]} your appointment was successfully scheduled for: 
+                        <br />
+                        <br />
+                        {purchaseContents.dateOfAppointment}
+                        <br />
+                        {purchaseContents.startTime} - {purchaseContents.endTime}
+                         </h1>
+                         
+                    </>}
+
+                    <br />
+                         <h1>Price to Pay After Appointment is finished:
+                            <br />
+                            <br />
+                            ${purchaseContents.totalPriceAfterDownPayment}
+                         </h1>
+                         <br />
+                         <h3>Would you like to sign up to recive sms reminders and updates about your appointment?</h3>
+                        
+                    
                     </div>
             ) : (
                 <div>

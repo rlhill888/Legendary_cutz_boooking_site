@@ -1,9 +1,8 @@
 import react, {useEffect, useState} from "react";
 
-function SchedulingStep3({completePurchaseObj, setSchedulingStep, setTotalAppointmentTime, setTotalAppointmentTimeInt}){
+function SchedulingStep3({completePurchaseObj, setSchedulingStep, setTotalAppointmentTime, setTotalAppointmentTimeInt, setrecieptsArray, recieptsArray}){
 console.log(completePurchaseObj)
 
-const [recieptsArray, setrecieptsArray]= useState([])
 const [totalReceipt, setTotalReciept]= useState({})
 setTotalAppointmentTimeInt(totalReceipt.totalTime)
 

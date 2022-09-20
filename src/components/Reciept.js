@@ -8,7 +8,7 @@ const [recieptsArray, setrecieptsArray]= useState([])
 
 
 
-console.log(totalReceipt)
+console.log('Everything', totalReceipt)
 useEffect(()=>{
 traverseCompletePurchseObj()
 
