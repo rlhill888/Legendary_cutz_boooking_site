@@ -29,8 +29,8 @@ function signUp(){
                     password: password,
                     name: name,
                     phoneNumber: phoneNumber,
-                    recieveAppintmentReminders: recieveAppintmentReminders,
-                    recieveCancelledAppintmentReminders: recieveCancelledAppintmentReminders
+                    recieveNewAppointmentReminders: recieveAppintmentReminders,
+                    recieveCanceledAppointmentReminders: recieveCancelledAppintmentReminders
 
                 }) 
             })
@@ -65,9 +65,14 @@ function signUp(){
             <input value={phoneNumber} onChange={(e)=>changeFunction(e, setPhoneNumber) }></input>
             <br />
             <h2>Recieve Appointment Reminders</h2>
-            <input type='checkbox' value={recieveAppintmentReminders} onChange={(e)=>setRecieveAppointmentReminders(!e) }></input>
+            <input type='checkbox' value={recieveAppintmentReminders} onChange={(e)=> setRecieveAppointmentReminders(previous => !previous) }></input>
             <h2>Recieve Canceled Appointment Reminders</h2>
-            <input type='checkbox' value={recieveCancelledAppintmentReminders} onChange={(e)=>setRecieveCancelledAppointmentReminders(!e) }></input>
+            <input type='checkbox' value={recieveCancelledAppintmentReminders} onChange={(e)=>{
+
+                console.log(recieveCancelledAppintmentReminders)
+                setRecieveCancelledAppointmentReminders(previous => !previous)
+            }
+                 }></input>
             <br />
             <br />
             <button type='submit'>Create Account</button>

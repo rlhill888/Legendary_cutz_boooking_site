@@ -5,8 +5,13 @@ import { PrismaClient } from '@prisma/client'
 import prisma from '../../lib/prisma.js'
 
 export default async (req, res) =>{
-    const salt = bcrypt.genSaltSync()
-    const { gmail, name,  password, phoneNumber, recieveNewAppointmentReminders, recieveCanceledAppointmentReminders } = req.body
+
+    if(req.method === 'POST'){
+        const salt = bcrypt.genSaltSync()
+    // const { gmail, name,  password, phoneNumber, recieveNewAppointmentReminders, recieveCanceledAppointmentReminders } = JSON.parse(req.body)
+
+
+    const body = JSON.parse(req.body)
  
     let barber 
     
@@ -14,12 +19,12 @@ export default async (req, res) =>{
     try{
         barber = await prisma.barber.create({
                 data: {
-                    gmail: gmail,
-                    password: bcrypt.hashSync(password, salt), 
-                    phoneNumber: phoneNumber,
-                    name: name,
-                    recieveNewAppointmentReminders: recieveNewAppointmentReminders,
-                    recieveCanceledAppointmentReminders: recieveCanceledAppointmentReminders
+                    gmail: body.gmail,
+                    password: bcrypt.hashSync(body.password, salt), 
+                    phoneNumber: parseInt(body.phoneNumber) ,
+                    name: body.name,
+                    recieveNewAppointmentReminders: body.recieveNewAppointmentReminders,
+                    recieveCanceledAppointmentReminders: body.recieveCanceledAppointmentReminders
                 }
             })
     } catch(e){
@@ -51,4 +56,9 @@ export default async (req, res) =>{
     )
 
     res.json(barber)
+    }else{
+        res.status(405).send({ message: 'Only POST requests allowed' })
+        return
+    }
+    
 }
