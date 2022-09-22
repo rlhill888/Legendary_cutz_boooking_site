@@ -15,12 +15,15 @@ model Barber {
   createdAt DateTime @default(now())
   gmail String @unique
   name String
+  offDays String 
   password String
   phoneNumber Int
-  recieveNewAppointmentReminders Boolean
-  recieveCanceledAppointmentReminders Boolean
+  recieveNewAppointmentReminders Boolean  @default(false)
+  recieveCanceledAppointmentReminders Boolean  @default(false)
+  keepTrackOfAppointmentsBeingPaid Boolean  @default(false)
   Admin Boolean @default(false)
   services Service[]
+  appointments Appointment[]
 }
 
 model Service {
@@ -30,5 +33,28 @@ model Service {
  price Float
  name String 
  barber Barber? @relation(fields: [barberId], references: [id])
+
+}
+
+model Appointment{
+   id        Int       @id @default(autoincrement())
+   stripeSessionsId String @unique
+   appointmentMadeAt  DateTime @default(now())
+   appointmentStartTime String
+   appointmentPaid Boolean  @default(false)
+   appointmentEndTime String
+   totalPriceAfterDownPayment Float
+   downPaymentPaid Boolean  @default(false)
+   dateOfAppointment String
+   cancelledAppointment Boolean  @default(false)
+   appintmnetCustomerNames String
+   appointmentDone Boolean  @default(false)
+   phomeNumber String
+   barberId Int
+   recieptDetails String
+   barber Barber? @relation(fields: [barberId], references: [id])
+
+
+
 
 }

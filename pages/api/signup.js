@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
-import { PrismaClient } from '@prisma/client'
 import prisma from '../../lib/prisma.js'
 
 export default async (req, res) =>{

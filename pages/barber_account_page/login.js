@@ -1,10 +1,13 @@
 import React, {useState} from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"; 
+import { useSWRConfig } from "swr";
+import { auth } from "../../lib/mutations";
 
 function login(){
 
     const [gmail, setGmail]= useState('')
     const [password, setPassword]= useState('')
+    const [loading, setLoading]= useState(false)
     const router = useRouter()
 
     function changeState(e, setFunction){
@@ -12,9 +15,26 @@ function login(){
     }
     return(
         <>
-        <form onSubmit={(e)=>{
+        <form onSubmit={ async (e)=>{
             e.preventDefault()
             console.log(gmail, password)
+            setLoading(true)
+            await auth('signin', {gmail, password}).then(res=>{
+                if(res.ok){
+                    res.json().then(res=>{
+                        console.log(res)
+                        setLoading(false)
+                        router.push('/barber_account_page')
+                    })
+                    
+
+                }else{
+                    setLoading(false)
+                    res.json().then(res => console.log(res))
+                }
+            } )
+          
+            
         }}>
 
            
