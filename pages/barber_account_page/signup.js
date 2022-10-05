@@ -30,7 +30,7 @@ function signUp(){
                     name: name,
                     phoneNumber: phoneNumber,
                     recieveNewAppointmentReminders: recieveAppintmentReminders,
-                    recieveCanceledAppointmentReminders: recieveCancelledAppintmentReminders
+                    recieveCanceledAppointmentReminders: recieveCancelledAppintmentReminders,
 
                 }) 
             })

@@ -11,18 +11,15 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
 
         const {
             data: {id},
-        }=await axios.post('/api/checkout_sessions', {
-            startTime: timeObj.appointmentStartTime,
-            endTime: timeObj.appointmentEndTime,
-            totalPriceAfterDownPayment: totalReceipt.totalPrice - 15,
-            customerNamesArray: Object.keys(completePurchaseObj),
-            dateOfAppointment
-         
+        }=await axios.post('/api/checkout_sessions', )
+        await axios.post('/api/appointments/createAppointment', {
+
         })
 
         const stripe = await getStripe()
         console.log(getStripe())
         await stripe.redirectToCheckout({sessionId: id})
+
     }
     function turnRecieptsArrayIntoAString(){
         

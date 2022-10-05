@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.6",
     "@prisma/client": "^4.3.1",
     "@square/web-sdk": "^2.0.1",
     "@stripe/stripe-js": "^1.36.0",

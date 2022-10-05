@@ -23,7 +23,8 @@ export default async (req, res) =>{
                     phoneNumber: parseInt(body.phoneNumber) ,
                     name: body.name,
                     recieveNewAppointmentReminders: body.recieveNewAppointmentReminders,
-                    recieveCanceledAppointmentReminders: body.recieveCanceledAppointmentReminders
+                    recieveCanceledAppointmentReminders: body.recieveCanceledAppointmentReminders,
+                    offDays: ''
                 }
             })
     } catch(e){

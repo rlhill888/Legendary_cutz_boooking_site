@@ -49,12 +49,9 @@ model Appointment{
    cancelledAppointment Boolean  @default(false)
    appintmnetCustomerNames String
    appointmentDone Boolean  @default(false)
+   appointmentScheduled Boolean @default(false)
    phomeNumber String
    barberId Int
    recieptDetails String
    barber Barber? @relation(fields: [barberId], references: [id])
-
-
-
-
 }

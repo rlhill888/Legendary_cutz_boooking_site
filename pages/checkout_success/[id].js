@@ -5,7 +5,38 @@ import { useRouter } from 'next/router';
 import useSWR from "swr";
 import axios from "axios";
 
-function SucessId(){
+export async function getServerSideProps(){
+
+    let purchaceInfo= null 
+    const sessionsfetcher = (url) => axios.get(url).then(res => {purchaceInfo = res.data})
+
+    const {
+        query: {session_id},
+    } = useRouter()
+
+    const {data, error} = useSWR(
+        ()=> `/api/checkout_sessions/${session_id}`,
+        sessionsfetcher
+    )
+
+        if(purchaceInfo){
+            fetch(`/api/appointment`)
+            .then(res => res.json()).then(res=>{
+                console.log(res)
+            })
+        }
+
+
+
+
+    return{
+        props:{
+            purchaceInfo, error
+        }
+    }
+}
+
+function SucessId({purchaceInfo, error}){
 
     const [purchaseInfo, setPurchaseInfo]= useState(null)
   

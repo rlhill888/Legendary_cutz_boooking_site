@@ -1,17 +1,20 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "../../lib/mutations";
 import { useRouter } from "next/router"; 
+import BarberNavigationMenu from "../../src/components/BarberNavigationMenu";
+
 
 function Home(){
     const router = useRouter()
+    const [barber, setBarber]= useState(null)
 
     useEffect( ()=>{
 
         async function fetchData(){
              await auth('me').then(res=>{
             if(res.ok){
-                res.json().then(res=> console.log(res))
+                res.json().then(res=> setBarber(res))
             }else{
                 res.json().then(res=> console.log(res))
                 router.push('/barber_account_page/login')
@@ -24,8 +27,18 @@ function Home(){
        
     }, [])
 
+    if(!barber){
+        return(
+            <>
+            <h1>Loading...</h1>
+            </>
+        )
+    }
+
     return(
-        <>This the homepage</>
+        <>
+        <BarberNavigationMenu></BarberNavigationMenu>
+        This the homepage {barber.name}</>
     )
 }
 

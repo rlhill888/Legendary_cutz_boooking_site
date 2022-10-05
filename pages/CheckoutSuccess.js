@@ -5,12 +5,11 @@ import { useRouter } from 'next/router';
 import useSWR from "swr";
 import axios from "axios";
 
-function CheckoutSuccess(){
+export async function getServerSideProps(){
 
-    const [purchaseInfo, setPurchaseInfo]= useState(null)
-  
-
-    const fetcher = url => axios.get(url).then(res => setPurchaseInfo(res.data))
+    let purchaceInfo= null 
+    let endRes= 'nun'
+    const sessionsfetcher = (url) => axios.get(url).then(res => {purchaceInfo = res.data})
 
     const {
         query: {session_id},
@@ -18,8 +17,29 @@ function CheckoutSuccess(){
 
     const {data, error} = useSWR(
         ()=> `/api/checkout_sessions/${session_id}`,
-        fetcher
+        sessionsfetcher
     )
+
+        if(purchaceInfo){
+            fetch(`/api/appointment`)
+            .then(res => res.json()).then(res=>{
+                endRes = res
+            })
+        }
+
+
+
+
+    return{
+        props:{
+            purchaceInfo, error, res:  endRes
+        }
+    }
+}
+
+function CheckoutSuccess({ purchaceInfo, error, res }){
+
+
 
     return(
         <>
@@ -28,7 +48,7 @@ function CheckoutSuccess(){
                 <div>
                     <h1>There was an error</h1>
                     </div>
-            ) : data ? (
+            ) : purchaceInfo ? (
                 <div>
                     <h1>Successful Payment</h1>
                     <h1>more about opting in to recieve text message reminders about appointment </h1>
