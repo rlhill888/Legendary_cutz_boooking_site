@@ -5,7 +5,7 @@ import getStripe from "../../lib/get-stripe";
 
 function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment}){
 
-  console.log('recieptsArray:', recieptsArray)
+  console.log(totalReceipt)
     const [totalReceipt, setTotalReciept]= useState({})
     const redirectToCheckout = async ()=> {
 
@@ -13,6 +13,15 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
             data: {id},
         }=await axios.post('/api/checkout_sessions', )
         await axios.post('/api/appointments/createAppointment', {
+            stripeSessionsId: id,
+            appointmentStartTime: timeObj.appointmentStartTime,
+            appointmentEndTime: timeObj.appointmentEndTime,
+            totalPriceAfterDownPayment: totalReceipt.totalPrice -15,
+            dateOfAppointment: dateOfAppointment,
+            recieptDetails: JSON.stringify(recieptsArray),
+            barberId: 8,
+            appintmnetCustomerNames: JSON.stringify(['name']),
+            phomeNumber: '215'
 
         })
 

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useRouter } from "next/router"; 
 import { useSWRConfig } from "swr";
 import { auth } from "../../lib/mutations";
@@ -13,6 +13,20 @@ function login(){
     function changeState(e, setFunction){
             setFunction(e.target.value)
     }
+
+    useEffect( ()=>{
+
+        async function fetchData(){
+             await auth('me').then(res=>{
+            if(res.ok){
+                res.json().then(router.push('/barber_account_page'))
+            }
+        })
+        }
+
+        fetchData()
+       
+    }, [])
     return(
         <>
         <form onSubmit={ async (e)=>{
