@@ -3,27 +3,41 @@ import { useEffect, useState } from "react";
 import { auth } from "../../lib/mutations";
 import { useRouter } from "next/router"; 
 import BarberNavigationMenu from "../../src/components/BarberNavigationMenu";
+import mapOutYear from "../../lib/mapOutYearObj";
 
 
 function Home(){
     const router = useRouter()
     const [barber, setBarber]= useState(null)
+    // const value = mapOutYear(2022)
+
+    // console.log(value)
 
     useEffect( ()=>{
 
         async function fetchData(){
              await auth('me').then(res=>{
             if(res.ok){
-                res.json().then(res=> setBarber(res))
-            }else{
+                res.json().then(res=> {
+                    if(res ==='Unauthorized'){
+                        return router.push('/barber_account_page/login')
+                    }
+                    console.log(res)
+                    setBarber(res)})
+            }
+            else{
                 res.json().then(res=> console.log(res))
                 router.push('/barber_account_page/login')
 
             }
         })
+
         }
 
         fetchData()
+            const value = mapOutYear(2022, [6, 0], [ null, '09:00am - 07:00pm', null, '08:00am - 10:00pm', '09:00am - 07:00pm', '10:00am - 09:00pm', null ])
+
+    console.log(value)
        
     }, [])
 

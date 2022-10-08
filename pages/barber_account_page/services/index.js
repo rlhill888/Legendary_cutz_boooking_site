@@ -27,7 +27,6 @@ function Services(){
         fetchData()
        
     }, [updateServices])
-    console.log(barber)
 
     if(!barber){
         return(
@@ -78,7 +77,10 @@ function Services(){
                 <br />
             </div>
             }
-            <button onClick={()=> setEditing(previous=> !previous)}>Edit Services</button>
+            <button onClick={()=> setEditing(previous=> !previous)}>
+                {
+                    !editing ? 'Edit Services' : 'Back'
+                }</button>
         
         </div>
         </>

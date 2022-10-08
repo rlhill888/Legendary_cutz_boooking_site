@@ -22,6 +22,8 @@ model Barber {
   recieveCanceledAppointmentReminders Boolean  @default(false)
   keepTrackOfAppointmentsBeingPaid Boolean  @default(false)
   Admin Boolean @default(false)
+  barberActive Boolean @default(false)
+  yearCalendars YearCalendar[]
   services Service[]
   appointments Appointment[]
 }
@@ -54,4 +56,11 @@ model Appointment{
    barberId Int
    recieptDetails String
    barber Barber? @relation(fields: [barberId], references: [id])
+}
+
+model YearCalendar{
+  id        Int       @id @default(autoincrement())
+  calendarObj String
+  barberId Int
+  barber Barber? @relation(fields: [barberId], references: [id])
 }
