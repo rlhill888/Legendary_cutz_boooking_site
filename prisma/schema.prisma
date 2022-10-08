@@ -21,11 +21,14 @@ model Barber {
   recieveNewAppointmentReminders Boolean  @default(false)
   recieveCanceledAppointmentReminders Boolean  @default(false)
   keepTrackOfAppointmentsBeingPaid Boolean  @default(false)
+  fiveYearScheduleCreated Boolean @default(false)
   Admin Boolean @default(false)
   barberActive Boolean @default(false)
   yearCalendars YearCalendar[]
   services Service[]
   appointments Appointment[]
+  monthCalendars MonthCalendar[]
+  dayCalendars DayCalendar[]
 }
 
 model Service {
@@ -55,12 +58,57 @@ model Appointment{
    phomeNumber String
    barberId Int
    recieptDetails String
+   dayId Int
+   monthId Int
+   yearId Int
+
    barber Barber? @relation(fields: [barberId], references: [id])
+   dayCalendar DayCalendar ?  @relation(fields: [dayId], references: [id])
+   monthCalendar MonthCalendar ?  @relation(fields: [monthId], references: [id])
+   yearCalendar YearCalendar ?  @relation(fields: [yearId], references: [id])
 }
+
 
 model YearCalendar{
   id        Int       @id @default(autoincrement())
   calendarObj String
   barberId Int
+  year Int
   barber Barber? @relation(fields: [barberId], references: [id])
+  appointments Appointment[]
+  months MonthCalendar[]
+  days DayCalendar[]
+}
+
+model MonthCalendar{
+  id        Int       @id @default(autoincrement())
+  month String
+  monthNumber Int
+  monthDate String
+  barberId Int
+  yearId Int
+  days DayCalendar[]
+  appointments Appointment[]
+  barber Barber? @relation(fields: [barberId], references: [id])
+  year YearCalendar? @relation(fields: [yearId], references: [id])
+}
+
+model DayCalendar{
+  id        Int       @id @default(autoincrement())
+  day Int
+  availibility String
+  weekDayInt Int
+  weekDayString String
+  timeSlotsTaken String
+  dayBlockedOff Boolean
+  timeUnavailable String
+  date String
+  barberId Int
+  monthId Int
+  yearId Int
+  appointments Appointment[]
+  year YearCalendar ?  @relation(fields: [yearId], references: [id])
+  month MonthCalendar ?  @relation(fields: [monthId], references: [id])
+  barber Barber? @relation(fields: [barberId], references: [id])
+
 }

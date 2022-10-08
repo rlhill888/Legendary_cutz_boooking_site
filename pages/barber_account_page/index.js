@@ -19,9 +19,6 @@ function Home(){
              await auth('me').then(res=>{
             if(res.ok){
                 res.json().then(res=> {
-                    if(res ==='Unauthorized'){
-                        return router.push('/barber_account_page/login')
-                    }
                     console.log(res)
                     setBarber(res)})
             }
