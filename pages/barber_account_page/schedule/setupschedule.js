@@ -164,6 +164,11 @@ function Setupschedule(){
                const fetchRequest = await axios({
                 method: 'PATCH',
                 url: '/api/barbers/UpdateBarberCalendarsMadeVar',
+                data: {
+                    daysOff: daysOffArray,
+                    weeklySchedule: time
+
+                }
             }) 
             console.log(fetchRequest.data)
             router.push('/barber_account_page/schedule')

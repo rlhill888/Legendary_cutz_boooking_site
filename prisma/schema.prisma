@@ -18,6 +18,7 @@ model Barber {
   offDays String 
   password String
   phoneNumber Int
+  weeklyAvailibility String @default("none")
   recieveNewAppointmentReminders Boolean  @default(false)
   recieveCanceledAppointmentReminders Boolean  @default(false)
   keepTrackOfAppointmentsBeingPaid Boolean  @default(false)
@@ -97,6 +98,7 @@ model DayCalendar{
   id        Int       @id @default(autoincrement())
   day Int
   availibility String
+  specialAvailibility Boolean @default(false)
   weekDayInt Int
   weekDayString String
   timeSlotsTaken String

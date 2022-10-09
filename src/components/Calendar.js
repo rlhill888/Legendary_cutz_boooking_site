@@ -41,7 +41,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         }
         
         setFirstOfMonthDay(firstofMonthDay)
-        console.log(`First Day of Month: ${weekArray[firstofMonthDay]}`)
+    
     }, [month, year])
     function mapCalendarOut(){
         const todayDate = new Date()
@@ -52,7 +52,6 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         const monthArray = [31,28,31,30,31,30,31,31,30,31,30,31]
 
         return calendarNumberOfWeeksInAMonthArray.map(week=>{
-            console.log(firstofMonthDay)
             if(!firstofMonthDay && firstofMonthDay!==0){
                 return(
                     <>
@@ -131,7 +130,6 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         }
 
     }
-    console.log(determineIfMonthAndYearAreBeforeTodaysDate())
     return(
         <>
 

@@ -8,6 +8,12 @@ import { useRouter } from "next/router";
 function Scheduling(){
     const [date, setDate]= useState('')
     const [barber, setBarber]= useState(null)
+    const [weeklySchedule, setWeeklySchedule]= useState(null)
+    const [showWeeklySchedule, setshowWeeklySchedule]= useState(false)
+    const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+
+    console.log(weeklySchedule)
     const router= useRouter()
     console.log(date)
 
@@ -23,6 +29,7 @@ function Scheduling(){
                     }
                     if(res.fiveYearScheduleCreated===true){
                         setBarber(res)
+                        setWeeklySchedule(JSON.parse(res.weeklyAvailibility))
                     }
                     })
             }
@@ -41,7 +48,7 @@ function Scheduling(){
 
   
 
-    if(!barber){
+    if(!barber || !weeklySchedule){
         return(
             <>
             <h1>Loading...</h1></>
@@ -54,7 +61,44 @@ function Scheduling(){
         schedule
         <br />
         <br />
-        <h3></h3>
+
+        {showWeeklySchedule ? 
+        
+        <div>
+        <h3>Your Weekly Schedule: </h3>
+    {weeklySchedule.map((day, index)=>{
+        if(day===null){
+            return <h4>{weekArray[index]}: You are off on {weekArray[index]}</h4>
+        }else{
+            return <h4>{weekArray[index]}: {day}</h4>
+        }
+    })}
+    <button
+    >Edit Schedule</button>
+    <br />
+    <br />
+    <button
+     onClick={()=>{
+        setshowWeeklySchedule(previous=> !previous)
+    }}
+    >Close Schedue</button>
+    </div> 
+
+    : 
+
+    <> 
+    <button 
+    
+    onClick={()=>{
+        setshowWeeklySchedule(previous=> !previous)
+    }}
+    >Show Schedule</button>
+    </>
+    
+    }
+       <br />
+        <br />
+        
         <Calendar  setDateOfAppointment={setDate}/>
         </>
     )

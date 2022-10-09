@@ -16,7 +16,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
     return(
         <>Step 4
-        <Calendar setDateOfAppointment={setDateOfAppointment}/>
+        <Calendar  disableSelectionsForPreviousDaysPastTodaysDate setDateOfAppointment={setDateOfAppointment}/>
 
         {dateOfAppointment ? <SpecificTimeOfDaySelector setSchedulingStep={setSchedulingStep} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} timeSlotArray={timeSlotArray} dateOfAppointment={dateOfAppointment} /> : <> </>}
 

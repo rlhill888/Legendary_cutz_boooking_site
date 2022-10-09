@@ -11,7 +11,9 @@ export default validateRoute(async (req, res, barber)=>{
                         id: barber.id
                     },
                     data: {
-                        fiveYearScheduleCreated: true
+                        fiveYearScheduleCreated: true,
+                        offDays: JSON.stringify(body.daysOff),
+                        weeklyAvailibility: JSON.stringify(body.weeklySchedule)
                     }
                 })
 
