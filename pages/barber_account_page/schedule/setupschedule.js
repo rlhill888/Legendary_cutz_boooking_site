@@ -3,6 +3,7 @@ import { auth } from "../../../lib/mutations";
 import { useRouter } from "next/router";
 import TimeInputComponent from "../../../src/components/TimeInputComponent";
 import mapOutYear from "../../../lib/mapOutYearObj";
+import axios from "axios";
 
 function Setupschedule(){
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -106,7 +107,7 @@ function Setupschedule(){
     })}
     <br />
     <button
-    onClick={()=>{ 
+    onClick={ async ()=>{ 
         
         setFinalizeTime(previous=> !previous)
         let timeSucess= true
@@ -133,15 +134,25 @@ function Setupschedule(){
         })
         const date = new Date()
         const currentYear = date.getFullYear()
-        const scheduleyear1= mapOutYear(currentYear, daysOffArray, time)
-        const scheduleyear2= mapOutYear(currentYear + 1, daysOffArray, time)
-        const scheduleyear3= mapOutYear(currentYear + 2, daysOffArray, time)
-        const scheduleyear4= mapOutYear(currentYear + 3, daysOffArray, time)
-        const scheduleyear5= mapOutYear(currentYear + 4, daysOffArray, time)
+        const yearArray = [currentYear, currentYear+1, currentYear+2, currentYear+3, currentYear+4]
+        yearArray.map(async (year)=>{
+            const scheduleyear= mapOutYear(year, daysOffArray, time)
+            try{
+            const fetchRequest = await axios({
+                method: 'POST',
+                url: '/api/calendar/createInitialCalendar',
+                data: {
+                    yearData: scheduleyear,
+                    year: year
+                }
 
-
-        console.log([scheduleyear1, scheduleyear2, scheduleyear3, scheduleyear4, scheduleyear5])
-    
+            })
+            console.log(fetchRequest.data)
+        }catch(error){
+            console.log(error)
+        }
+        })
+       
     }}
     
     >Create Schedule</button>
