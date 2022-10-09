@@ -24,7 +24,12 @@ function Setupschedule(){
             if(res.ok){
                 res.json().then(res=> {
                     console.log(res)
-                    setBarber(res)})
+                    setBarber(res)
+                    if(res.fiveYearScheduleCreated ===true){
+                        router.push('/barber_account_page/schedule')
+                    }
+                
+                })
             }
             else{
                 res.json().then(res=> console.log(res))
@@ -135,6 +140,7 @@ function Setupschedule(){
         const date = new Date()
         const currentYear = date.getFullYear()
         const yearArray = [currentYear, currentYear+1, currentYear+2, currentYear+3, currentYear+4]
+        let requestGood 
         yearArray.map(async (year)=>{
             const scheduleyear= mapOutYear(year, daysOffArray, time)
             try{
@@ -148,11 +154,26 @@ function Setupschedule(){
 
             })
             console.log(fetchRequest.data)
+            requestGood = true
         }catch(error){
             console.log(error)
+            requestGood = false
         }
+        if(requestGood){
+            try{
+               const fetchRequest = await axios({
+                method: 'PATCH',
+                url: '/api/barbers/UpdateBarberCalendarsMadeVar',
+            }) 
+            console.log(fetchRequest.data)
+            router.push('/barber_account_page/schedule')
+            }catch(error){
+                console.log(error)
+            }
+            
+        }
+
         })
-       
     }}
     
     >Create Schedule</button>

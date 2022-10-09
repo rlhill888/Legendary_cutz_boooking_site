@@ -107,7 +107,7 @@ export default validateRoute(async (req, res, barber)=>{
     const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const theYear = body.year
-    if(barber){
+    if(barber && barber.fiveYearScheduleCreated === false){
         const newYear= await createYear(theYear)
         for(let month in yearData){
             

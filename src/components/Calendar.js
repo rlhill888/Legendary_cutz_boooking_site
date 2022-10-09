@@ -2,8 +2,8 @@ import react, {useEffect, useState} from "react";
 import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
 
 
-function Calendar({setDateOfAppointment}){
-    
+function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate}){
+    const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
     const calendarNumberOfWeeksInAMonthArray = [1, 2, 3, 4, 5, 6]
     const [firstofMonthDay, setFirstOfMonthDay]= useState(null)
@@ -11,10 +11,6 @@ function Calendar({setDateOfAppointment}){
     const [year, setYear]= useState(null)
     const [date, setDate]= useState(null)
     const [todaysDay, setTodaysDay]= useState(null)
-    console.log(firstofMonthDay)
-
-    console.log('today is:', todaysDay)
-
 
     // going to fetch barbers availability inside of this function to find out what each day looks like
     useEffect(()=>{
@@ -24,22 +20,40 @@ function Calendar({setDateOfAppointment}){
         setTodaysDay(todayDay)
         const newmonth = newdate.getMonth()
         const newyear = newdate.getFullYear()
-        setYear(newyear)
-        const firstofMonth = new Date(`${newmonth + 1} 1, ${newyear}`)
-        console.log(firstofMonth)
+        if(!year){
+            setYear(newyear)
+        }
+        let firstofMonth
+        if(month ===null){
+            firstofMonth = new Date(`${newmonth + 1}/1/${newyear}`)
+        }
+        if(month){
+            firstofMonth = new Date(`${month + 1}/1/${year}`)
+            
+        }
+        if(month === 0){
+            firstofMonth = new Date(`${month + 1}/1/${year}`)
+        }
+        
         const firstofMonthDay= firstofMonth.getDay();
-        setMonth(newmonth)
+        if(!month && month!== 0){
+            setMonth(newmonth)
+        }
+        
         setFirstOfMonthDay(firstofMonthDay)
         console.log(`First Day of Month: ${weekArray[firstofMonthDay]}`)
-    }, [])
+    }, [month, year])
     function mapCalendarOut(){
-
+        const todayDate = new Date()
+        const todayMonth = todayDate.getMonth()
+        const todayYear = todayDate.getFullYear()
         let foundFirstOfMonthStartDate = false
-        let dayCount = 0;
+        let dayCount = 1;
         const monthArray = [31,28,31,30,31,30,31,31,30,31,30,31]
 
         return calendarNumberOfWeeksInAMonthArray.map(week=>{
-            if(!firstofMonthDay){
+            console.log(firstofMonthDay)
+            if(!firstofMonthDay && firstofMonthDay!==0){
                 return(
                     <>
                     </>
@@ -60,15 +74,25 @@ function Calendar({setDateOfAppointment}){
             </div>
     
             })
+            let startDayCount = false
+
+
             function mapOutWeeks(){
                 return weekArray.map((day, index)=>{
-                console.log(index)
-                dayCount++
-                if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1){
-                   
+                    if(startDayCount===true){
+                       dayCount++ 
+                    }
+                if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
+                    startDayCount = true
                     foundFirstOfMonthStartDate = true
                     return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month}/>
                 }
+                if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
+                    startDayCount = true
+                    foundFirstOfMonthStartDate = true
+                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month}/>
+                }
+
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false){
                    
                     foundFirstOfMonthStartDate = true
@@ -78,7 +102,7 @@ function Calendar({setDateOfAppointment}){
                     
                     return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month}/>
                 }
-                if( dayCount <= todaysDay -1){
+                if( dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                    
                     return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month}/>
                 }
@@ -91,14 +115,72 @@ function Calendar({setDateOfAppointment}){
             }
          
     }
+
+    function determineIfMonthAndYearAreBeforeTodaysDate(){
+
+        const todayDate = new Date()
+        const todayMonth = todayDate.getMonth()
+        const todayYear = todayDate.getFullYear()
+        if(todayYear < year){
+            return true
+        }
+        if(todayYear <= year && todayMonth < month){
+            return true
+        }else{
+            return false
+        }
+
+    }
+    console.log(determineIfMonthAndYearAreBeforeTodaysDate())
     return(
         <>
+
+        {disableSelectionsForPreviousDaysPastTodaysDate ? 
+            determineIfMonthAndYearAreBeforeTodaysDate() ?
+             <button
+             onClick={()=>{
+                 if(month - 1 < 0){
+                     setYear(year - 1)
+                     return setMonth(11)
+                 }else{
+                     setMonth(previous=> previous - 1)
+                 }
+             }}
+             >Previous Month</button> : 
+             <><button disabled>Previous Month</button> </>
+             
+             
+             
+             :
+             <button
+             onClick={()=>{
+                 if(month - 1 < 0){
+                     setYear(year - 1)
+                     return setMonth(11)
+                 }else{
+                     setMonth(previous=> previous - 1)
+                 }
+             }}
+             >Previous Month</button>
+    
+        }
+        
+        <button onClick={()=>{
+            if(month + 1 > 11){
+                setYear(year + 1)
+                return setMonth(0)
+            }else{
+                setMonth(previous=> previous + 1)
+            }
+        }}>Next Month</button>
+        <h1>{monthArray[month]} {year}</h1>
         <div
         style={{
             display: 'flex',
             flexDirection: 'row'
         }}
         >
+        
           {weekArray.map(weekday=>{
             return <div
             className="caledarWeekdayHeader"

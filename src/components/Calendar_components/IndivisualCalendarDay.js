@@ -2,6 +2,9 @@ import react, {useState} from "react";
 
 
 function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus, setDateOfAppointment, disabledDay, year, month }){
+    const monthArrayIndex= month
+    month = month + 1
+    
     function determineAvailabilityStatus(){
         if(availabilityStatus===1){
             return 'calendarAppointmentNumberHeader lowAvailability'
@@ -35,6 +38,7 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
     return(
         <>
         <div onClick={()=>{
+            
             if(!disabled && !blankCalendarDate && !disabledDay){
 
                 let dateString = findDate()

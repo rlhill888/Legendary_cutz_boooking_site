@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { auth } from "../../lib/mutations";
 import { useRouter } from "next/router"; 
 import BarberNavigationMenu from "../../src/components/BarberNavigationMenu";
-import mapOutYear from "../../lib/mapOutYearObj";
 
 
 function Home(){
@@ -32,9 +31,6 @@ function Home(){
         }
 
         fetchData()
-            const value = mapOutYear(2022, [6, 0], [ null, '09:00am - 07:00pm', null, '08:00am - 10:00pm', '09:00am - 07:00pm', '10:00am - 09:00pm', null ])
-
-    console.log(value)
        
     }, [])
 

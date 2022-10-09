@@ -18,10 +18,10 @@ function Scheduling(){
             if(res.ok){
                 res.json().then(res=> {
                     console.log(res)
-                    if(res.barberActive===false){
+                    if(res.fiveYearScheduleCreated===false){
                         router.push('/barber_account_page/schedule/setupschedule')
                     }
-                    if(res.barberActive===true){
+                    if(res.fiveYearScheduleCreated===true){
                         setBarber(res)
                     }
                     })
@@ -54,7 +54,8 @@ function Scheduling(){
         schedule
         <br />
         <br />
-        <Calendar setDateOfAppointment={setDate}/>
+        <h3></h3>
+        <Calendar  setDateOfAppointment={setDate}/>
         </>
     )
 }
