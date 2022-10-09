@@ -1,7 +1,7 @@
 import react, {useState} from "react";
 
 
-function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus, setDateOfAppointment, disabledDay, year, month }){
+function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus, setDateOfAppointment, disabledDay, year, month, dayData }){
     const monthArrayIndex= month
     month = month + 1
     
@@ -38,7 +38,7 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
     return(
         <>
         <div onClick={()=>{
-            
+            console.log(dayData)
             if(!disabled && !blankCalendarDate && !disabledDay){
 
                 let dateString = findDate()

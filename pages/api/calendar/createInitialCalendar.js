@@ -120,7 +120,7 @@ export default validateRoute(async (req, res, barber)=>{
                 const weekDayInt =  yearData[month][day].weekday
                 const weekDayString= weekday[weekDayInt]
                 let dayBlockedOff
-                const date = `${day}/${month}/${theYear}`
+                const date = `${month}/${day}/${theYear}`
                 if(yearData[month][day].availability === false && yearData[month][day].unavailability === true){
                     dayBlockedOff = true
                 }else{

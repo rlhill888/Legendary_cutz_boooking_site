@@ -13,7 +13,7 @@ function Scheduling(){
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 
-    console.log(weeklySchedule)
+ 
     const router= useRouter()
     console.log(date)
 
@@ -99,7 +99,22 @@ function Scheduling(){
        <br />
         <br />
         
-        <Calendar  setDateOfAppointment={setDate}/>
+        <Calendar  barberId={barber.id} setDateOfAppointment={setDate}/>
+
+
+    {date ? 
+    
+    <>
+    <div>
+        <h2>{date}</h2>
+    </div>
+     </> 
+    
+    : 
+    
+    <> 
+    </>}
+
         </>
     )
 }

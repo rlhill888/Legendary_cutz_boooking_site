@@ -79,6 +79,7 @@ model YearCalendar{
   appointments Appointment[]
   months MonthCalendar[]
   days DayCalendar[]
+   @@unique(fields: [year, barberId ], name: "yearBarberId")
 }
 
 model MonthCalendar{
@@ -92,6 +93,7 @@ model MonthCalendar{
   appointments Appointment[]
   barber Barber? @relation(fields: [barberId], references: [id])
   year YearCalendar? @relation(fields: [yearId], references: [id])
+  @@unique(fields: [monthDate, barberId ], name: "monthBarberId")
 }
 
 model DayCalendar{
@@ -112,5 +114,6 @@ model DayCalendar{
   year YearCalendar ?  @relation(fields: [yearId], references: [id])
   month MonthCalendar ?  @relation(fields: [monthId], references: [id])
   barber Barber? @relation(fields: [barberId], references: [id])
+   @@unique(fields: [date, barberId ], name: "dayBarberId")
 
 }

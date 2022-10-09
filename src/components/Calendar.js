@@ -1,8 +1,9 @@
 import react, {useEffect, useState} from "react";
 import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
+import axios from "axios";
 
 
-function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate}){
+function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData}){
     const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
     const calendarNumberOfWeeksInAMonthArray = [1, 2, 3, 4, 5, 6]
@@ -11,36 +12,69 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
     const [year, setYear]= useState(null)
     const [date, setDate]= useState(null)
     const [todaysDay, setTodaysDay]= useState(null)
+    const [monthData, setMonthData]= useState(null)
 
     // going to fetch barbers availability inside of this function to find out what each day looks like
-    useEffect(()=>{
-        const newdate = new Date()
-        setDate(newdate)
-        const todayDay = newdate.getUTCDate()
-        setTodaysDay(todayDay)
-        const newmonth = newdate.getMonth()
-        const newyear = newdate.getFullYear()
-        if(!year){
-            setYear(newyear)
-        }
-        let firstofMonth
-        if(month ===null){
-            firstofMonth = new Date(`${newmonth + 1}/1/${newyear}`)
-        }
-        if(month){
-            firstofMonth = new Date(`${month + 1}/1/${year}`)
+    useEffect( ()=>{
+        (async ()=> {
+    const newdate = new Date()
+            setDate(newdate)
+            const todayDay = newdate.getUTCDate()
+            setTodaysDay(todayDay)
+            const newmonth = newdate.getMonth()
+            const newyear = newdate.getFullYear()
+            if(!year){
+                setYear(newyear)
+            }
+            let firstofMonth
+            if(month ===null){
+                firstofMonth = new Date(`${newmonth + 1}/1/${newyear}`)
+            }
+            if(month){
+                firstofMonth = new Date(`${month + 1}/1/${year}`)
+                
+            }
+            if(month === 0){
+                firstofMonth = new Date(`${month + 1}/1/${year}`)
+            }
             
-        }
-        if(month === 0){
-            firstofMonth = new Date(`${month + 1}/1/${year}`)
-        }
+            const firstofMonthDay= firstofMonth.getDay();
+            if(!month && month!== 0){
+                setMonth(newmonth)
+            }
+            let monthVar
+            let yearVar
+            if(!month && month!== 0){
+                monthVar = newmonth + 1
+                yearVar = newyear
+            }
+            if(month || month === 0){
+                monthVar = month + 1
+                yearVar = year
+            }
+            setFirstOfMonthDay(firstofMonthDay)
+            try{
+                const response = await axios({
+                    method: 'POST',
+                    url: '/api/barbers/schedule/getScheduleMonth',
+                    data: {
+                        barberId: barberId,
+                        monthDate: `${monthVar}/${yearVar}`
+                    }
+                })
+                function compare(a, b){
+                    return a.day - b.day
+                }
+                let data = response.data
+                let dataDaysArray = data.days.sort(compare)
+                data.days = dataDaysArray
+                setMonthData(data)
+                console.log(data)
+            }catch(error){
+                console.log(error)
+            }
+        })()
         
-        const firstofMonthDay= firstofMonth.getDay();
-        if(!month && month!== 0){
-            setMonth(newmonth)
-        }
-        
-        setFirstOfMonthDay(firstofMonthDay)
     
     }, [month, year])
     function mapCalendarOut(){
@@ -77,37 +111,42 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
 
 
             function mapOutWeeks(){
+                
                 return weekArray.map((day, index)=>{
+                    let dayData = dayData = monthData.days[dayCount-1]
+                    
+                    
                     if(startDayCount===true){
                        dayCount++ 
+                       dayData = monthData.days[dayCount-1]
                     }
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month}/>
+                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month}/>
+                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false){
                    
                     foundFirstOfMonthStartDate = true
-                    return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month}/>
+                    return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
                 }
                 if(foundFirstOfMonthStartDate === false && index !== firstofMonthDay || dayCount > monthArray[month]){
                     
-                    return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month}/>
+                    return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
                 }
                 if( dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                    
-                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month}/>
+                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
                 else{
                   
-                    return <IndivisualCalendarDay  setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month}/>
+                    return <IndivisualCalendarDay  setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
                 }
                 
             })
@@ -129,6 +168,14 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
             return false
         }
 
+    }
+
+    if(monthData===null){
+        return(
+            <>
+            <h1>Loading...</h1>
+            </>
+        )
     }
     return(
         <>
