@@ -20,13 +20,13 @@ export default validateRoute(async (req, res, barber)=>{
 
         }catch(error){
             if(error.response){
-                return res.json({message: 'error'})
+                return res.json({error: error})
 
             }else if(error.request){
-                return res.json({message: 'error'})
+                return res.json({error: error})
 
             }else{
-                return res.json({message: 'sum bad'})
+                return res.json({message: 'sum bad happened'})
             }
         }
 
@@ -50,13 +50,13 @@ export default validateRoute(async (req, res, barber)=>{
         }catch(error){
 
             if(error.response){
-                return 'error'
+                return res.json({error: error})
 
             }else if(error.request){
-                return 'error'
+                return res.json({error: error})
 
             }else{
-                return error
+                return res.json({message: 'sum bad happened'})
             }
 
         }
@@ -86,13 +86,13 @@ export default validateRoute(async (req, res, barber)=>{
         }catch(error){
 
             if(error.response){
-                return console.log(error)
+                return res.json({error: error})
 
             }else if(error.request){
-                return console.log(error)
+                return res.json({error: error})
 
             }else{
-                return console.log(error)
+                return res.json({message: 'sum bad happened'})
             }
 
 
