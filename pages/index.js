@@ -1,45 +1,44 @@
-import {PrimaryButton, SecondaryButton, TertiaryButton} from "../src/components/Button"
+
 import { useRouter } from "next/router";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
 export default function Home() {
+  const [barbers, setBarbers]= useState(null)
   const router = useRouter()
-  const barberArray= [
-    {
-      name: 'larry',
-      services: [
-        
-        {
-          name: 'haircut',
-          price: '50$',
-          durration: 20
-
-
+  console.log(barbers)
+  useEffect(()=>{
+    (async ()=>{
+      try{
+        const response = await axios ({
+          method: 'GET',
+          url: '/api/barbers/getBarbers'
+        })
+        setBarbers(response.data)
+      }catch(error){
+        console.log(error)
       }
-    ]
-    }, 
-    
-    {
-
-      name: 'angel'
-    }]
+      }
+    )()
+  }, [])
   //^ this array will be fetched from backend
-
+    if(!barbers){
+      return(
+        <h1>Loading...</h1>
+      )
+    }
 
   return (
    <>
-   <duv>
+   <div>
     <h1>Select a barber you would like to book with</h1>
-    {barberArray.map((barber=>{
+    {barbers.map((barber)=>{
       return(
-        <>
-        <br />
-        <PrimaryButton onClick={()=> router.push(`/barbers/${barber.name}`)}>{barber.name}</PrimaryButton>
-        <br />
-        </>
-        
-        
+        <button onClick={()=>{
+          router.push(`/barbers/${barber.id}`)
+        }} >{barber.name}</button>
       )
-    }))}
-   </duv>
+    })}
+   </div>
     
     
    </>

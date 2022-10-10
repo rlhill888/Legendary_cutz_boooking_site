@@ -54,12 +54,16 @@ function getReciept(obj, key){
  traverse(obj)
 
  function traverse(obj){
+    
     for( let key in obj){
+        console.log(key)
         if(key.toString() === 'durration'){
             totalIndivisualObj.totalDurration = totalIndivisualObj.totalDurration + obj[key]
             totalObj.totalDurration= totalObj.totalDurration + obj[key]
         }
+        
         if(key.toString() === 'price'){
+            
             totalIndivisualObj.totalPrice = totalIndivisualObj.totalPrice + obj[key]
             totalObj.totalPrice = totalObj.totalPrice + obj[key]
         }
@@ -67,9 +71,10 @@ function getReciept(obj, key){
             totalIndivisualObj.serviceNames.push(key.toString())
         }
         if(Object.keys(obj[key]).length>0){
+            
         traverse(obj[key])
         }else{
-        
+             
         }
     }
  }

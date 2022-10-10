@@ -1,15 +1,16 @@
+import { formControlClasses } from "@mui/material";
 import react, {useState} from "react";
 import SpecificTimeSlot from "./SpecificTimeSlot";
 
 
-function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppointmentTime, totalAppointmentTimeInt, setTimeObj, setSchedulingStep}){
-
+function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppointmentTime, totalAppointmentTimeInt, setTimeObj, setSchedulingStep, dayData}){
+    console.log(timeSlotArray)
     const [activatedTimeSlot, setActivatedTimeSlot]= useState(0)
 
     function mapSpecificTimeSlots(){
         let specificTimeSlotId = 0
-
-        return timeSlotArray.map(times =>{
+        if(timeSlotArray!=='' && timeSlotArray){
+            return timeSlotArray.map(times =>{
             specificTimeSlotId++
             return(
                 <>
@@ -18,7 +19,24 @@ function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppoi
                 </>
             )
         })
+        }
+        
 
+    }
+    if(dayData.availibility==='none'){
+        return(
+            <>
+            <h2>{dateOfAppointment}</h2>
+            <h3>The barber is not taking appointments for this day</h3>
+            </>
+
+        )
+    }
+    if(timeSlotArray===''){
+        return(<>
+        <h2>{dateOfAppointment}</h2>
+        <h3>You can make an appointment any time from {dayData.availibility}</h3>
+        </>)
     }
 
     return (

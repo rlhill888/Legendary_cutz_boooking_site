@@ -7,11 +7,12 @@ import { useRouter } from "next/router";
 
 function Scheduling(){
     const [date, setDate]= useState('')
+    const [dayData, setDayData]= useState(null)
     const [barber, setBarber]= useState(null)
     const [weeklySchedule, setWeeklySchedule]= useState(null)
     const [showWeeklySchedule, setshowWeeklySchedule]= useState(false)
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
+    console.log(dayData)
 
  
     const router= useRouter()
@@ -99,7 +100,7 @@ function Scheduling(){
        <br />
         <br />
         
-        <Calendar  barberId={barber.id} setDateOfAppointment={setDate}/>
+        <Calendar  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData}/>
 
 
     {date ? 
@@ -107,6 +108,18 @@ function Scheduling(){
     <>
     <div>
         <h2>{date}</h2>
+        <br />
+        {dayData.availibility === 'none' ? <h3>You are not availible for this day</h3> : 
+         <h3>Your Availibility for this day is {dayData.availibility}</h3>
+        }
+        {
+            dayData.timeSlotsTaken === '' ? 
+            <h3>You do not have any appointments for this day yet</h3> :
+            <div>
+            <h3>Appointments for this day:</h3>
+            </div>
+        }
+       
     </div>
      </> 
     

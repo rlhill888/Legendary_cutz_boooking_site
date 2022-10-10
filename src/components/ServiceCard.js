@@ -12,7 +12,7 @@ function ServiceCard({ service, selectedServicesList,  setSelectedServicesList, 
     return(
         <div key={`${service.name}`}>
                 <h3>{service.name}</h3>
-                <h3>{service.durration} minutes</h3>
+                <h3>{service.time} minutes</h3>
                 <h3>{service.price}</h3>
                 <br />
                 <input id={`${service.name} checkbox`} type='checkbox' checked={servicesCheckedObj[`${service.name}`].checked} name={`checkbox ${service.name}`} 
@@ -27,7 +27,7 @@ function ServiceCard({ service, selectedServicesList,  setSelectedServicesList, 
                        
                         let copySelectedServicesObj = {...selectedServicesList}
                             copySelectedServicesObj = {...copySelectedServicesObj, [service.name]: {
-                                durration: service.durration,
+                                durration: service.time,
                                 price: service.price
                             }}
                             setSelectedServicesList(copySelectedServicesObj)

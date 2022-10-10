@@ -9,11 +9,10 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
     const [amOrPm, setAmorPm]= useState('pm')
     const [error, setError]= useState(<> </>)
 
-
     function calculateLatestAppointmentTime(){
         const startTime = times[0]
         const endTime = times[1]
-
+        
         const startTimeHour = findHours(startTime)
         const StartTimeMinutes = findMinutes(startTime)
 
@@ -378,6 +377,9 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         </div>
         </>
     )
+   }
+   if(!times){
+    return <h1>Loading</h1>
    }
 
     return(

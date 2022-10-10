@@ -6,11 +6,13 @@ import SchedulingStep3 from "../../src/components/SchedulingStep3";
 import SchedulingStep4 from "../../src/components/SchedulingStep4";
 import SchedulingStep5 from "../../src/components/SchedulingStep5";
 import Checkout from "../../src/components/Checkout";
+import axios from "axios";
+
 
 
 function Page(){
     const router= useRouter()
-    const { name } = router.query
+     const { id } = router.query
 
     const [schedulingStep, setSchedulingStep]= useState(1)
 
@@ -24,31 +26,47 @@ function Page(){
     const [timeObj, setTimeObj]= useState({})
     const [recieptsArray, setrecieptsArray]= useState([])
     const [dateOfAppointment, setDateOfAppointment]= useState(null)
-    const [barberObj, setBarberObj]= useState({
-        name: 'larry',
-        services: [
-          {
-            name: 'haircut',
-            price: 50,
-            durration: 20
-        },
-        {
-          name: 'beardTrim', price: 15,
-          durration: 20
-        }
-      ]
-    })
+    const [barberObj, setBarberObj]= useState(null)
+   
     // going to get this info from a  fetch request
 
     useEffect(()=>{
+        if(!id){
+            return
+        }
+     
+        (async ()=>{
+            let barber
+            try{
+                console.log( id)
+
+                const response = await axios({
+                    method: 'POST',
+                    url: '/api/barbers/getIndivisualBarber',
+                    data: {
+                        id: id
+                    }
+                })
+                barber = response.data
+                setBarberObj(response.data)
+            }catch(error){
+                console.log(error)
+            }
+
+        console.log(barber)
+
+            
         let tempServicesObject= {}
-        barberObj.services.map((service)=>{
+        barber.services.map((service)=>{
             tempServicesObject= {...tempServicesObject, 
             [`${service.name}`]: { checked: false}}
         })
         setservicesCheckedObj(tempServicesObject)
+        })()
+       
 
-    }, [])
+
+    }, [id])
     console.log(servicesCheckedObj)
 
     console.log(completePurchaseObj)
@@ -83,7 +101,7 @@ function Page(){
         if(schedulingStep===2){
             return(
                 <>
-                {name}'s page
+                {barberObj.name}'s page
                 <h1> { serviceNameArray.length > 1 ?   `Select the services ${serviceNameArray[currentPersonSelectingServices]} would like` :  `${serviceNameArray[currentPersonSelectingServices]}, Select Services you would like` }</h1>
                 <br />
                 {barberObj.services.map(((service)=>{
@@ -133,7 +151,7 @@ function Page(){
         if(schedulingStep===4){
             return(
             <>
-            <SchedulingStep4 setDateOfAppointment={setDateOfAppointment} dateOfAppointment={dateOfAppointment} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
+            <SchedulingStep4 barberId={barberObj.id} setDateOfAppointment={setDateOfAppointment} dateOfAppointment={dateOfAppointment} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
             </>
             )
         }

@@ -123,30 +123,30 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false){
                    
                     foundFirstOfMonthStartDate = true
-                    return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
                 }
                 if(foundFirstOfMonthStartDate === false && index !== firstofMonthDay || dayCount > monthArray[month]){
                     
-                    return <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
                 }
                 if( dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                    
-                    return   <IndivisualCalendarDay setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
                 else{
                   
-                    return <IndivisualCalendarDay  setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
                 }
                 
             })
