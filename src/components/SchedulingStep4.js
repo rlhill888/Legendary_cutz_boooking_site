@@ -135,6 +135,74 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
                     return (`${hour}:${minute} ${amOrPM}`)
                 }
+                function calculateSumOfTwoTimes(time1, time2){
+                    let hours
+                    let minutes
+                    // let militaryTime1 = parseInt(convertToMilitaryTime(time1))
+                    // let militaryTime2 = parseInt(convertToMilitaryTime(time2))
+                    // let laterTime =  militaryTime1 >= militaryTime2 ? militaryTime1 : militaryTime2
+                    // let earlierTime = militaryTime1 <=  militaryTime2 ? militaryTime1 : militaryTime2
+
+                    let laterTime =  time1 >= time2 ? time1 : time2
+                    let earlierTime = time1 <=  time2 ? time1 : time2
+
+                    let earlierTimeString = earlierTime.toString()
+                    let laterTimeString = laterTime.toString()
+
+
+
+                    function findTimeHoursAndMinutes(time){
+                        let hour
+                        let minute
+                        if(time.length===3){
+                            hour = parseInt(time[0])
+                            let minuteString = ''
+                            for(let i = 1; i < time.length; i++){
+                                minuteString = minuteString + time[i]
+                            }
+                            minute = parseInt(minuteString)
+
+                        }else{
+                            hour = parseInt(time[0]+time[1])
+                            minute = parseInt(time[2]+time[3])
+                        }
+
+                        return(
+                            {
+                                hour: hour,
+                                minute: minute
+                            }
+                        )
+                    }
+
+                   
+
+                   let earlyTimeCalcObj= findTimeHoursAndMinutes(earlierTimeString, earlyTimeHour, earlyTimeMinute)
+                   let laterTimeCalcObj= findTimeHoursAndMinutes(laterTimeString, laterTimehour, laterTimeMinute)
+
+                   let earlyTimeHour= earlyTimeCalcObj.hour
+                   let earlyTimeMinute= earlyTimeCalcObj.minute
+
+                   let laterTimehour= laterTimeCalcObj.hour
+                   let laterTimeMinute= laterTimeCalcObj.minute
+
+                   let hoursNumber = laterTimehour - earlyTimeHour
+                   let minutesNumber
+                   
+                   if(laterTimeMinute - earlyTimeMinute < 0){
+                    hoursNumber = hoursNumber - 1
+                    minutesNumber = (laterTimeMinute + 60) - earlyTimeMinute
+                   }
+                   if(laterTimeMinute - earlyTimeMinute >= 0){
+                    minutesNumber = laterTimeMinute - earlyTimeMinute
+                   }
+
+                   let finalTime = (hoursNumber * 60) + minutesNumber
+                   
+                   return finalTime
+
+
+                }
                 function convertToMilitaryTime(time){
                     let hitMinute = false
                     let amOrPm= ''
@@ -199,13 +267,20 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         if(availibiityStart!== times[0]){
                         let timeSlotOpening = availibiityStart
                         let timeSlotClose = times[0]
-                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
+                        newtimeSlotArray.push({
+                           timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                           timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
+                        })
                         firstTimeDetected = true
                         }else{
                         let timeSlotOpening = times[1]
                         let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
                        
-                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
+                        newtimeSlotArray.push({
+                            timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                            timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
+                        
+                        })
                         firstTimeDetected = true
                         }
                         
@@ -214,14 +289,22 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         let timeSlotOpening = times[1]
                         let timeSlotClose= availibilityEnd
                        
-                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
+                        newtimeSlotArray.push({
+                            timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                            timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
+                        
+                        })
                     }
                     else{
                         
                         let timeSlotOpening = times[1]
                         let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
                        
-                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
+                        newtimeSlotArray.push({
+                            timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                            timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
+                        
+                        })
                     }
                     indexOfMilitaryTimeArray++
                 }
