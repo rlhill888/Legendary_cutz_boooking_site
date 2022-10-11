@@ -308,39 +308,13 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                     }
                     indexOfMilitaryTimeArray++
                 }
-                debugger
+                const filterTimeSlotsArray = newtimeSlotArray.filter(obj=> obj.timeAmount >= totalAppointmentTimeInt)
+                let finalTimeSlotsArray= []
 
-                
-                // let parentTimeArray = []
-                // const timeDataToMap = JSON.parse(dayData.timeSlotsTaken)
-                // timeDataToMap.map((availibiltyTime)=>{
-                // availibiltyTime = availibiltyTime.toLowerCase()
-                // let temptime1= ''
-                // let temptime2= ''
-                // let hitSecondTime = false
-                // for(let character of availibiltyTime){
-                //     if(character==='-'){
-                //         hitSecondTime = true
-                //     }
-                //     if(hitSecondTime ===false){
-                //         temptime1 = temptime1 + character
-                //     }
-                //     if(hitSecondTime ===true && character!=='-'){
-                //         temptime2 = temptime2 + character
-                //     }
-                    
-                // }
-                // let timeArray = []
-                // let time1 = temptime1.slice(0, -1)
-                // let time2 = temptime2.substring(1).slice(0,-1)
-                // timeArray = [time1, time2 ]
-                
-                // return parentTimeArray.push(timeArray)
-
-                // })
-                
-                
-                // setTimeSlotArray(parentTimeArray)
+                for(let obj of filterTimeSlotsArray){
+                    finalTimeSlotsArray.push(obj.timeSlot)
+                }
+                setTimeSlotArray(finalTimeSlotsArray)
             }
             
         }
