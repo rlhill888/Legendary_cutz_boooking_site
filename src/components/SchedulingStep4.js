@@ -76,8 +76,64 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
                     return [parseInt(militaryTime1.trim()), parseInt(militaryTime2.trim())]
                 }
-                function convertToBasicTime(){
+                function convertToBasicTime(time){
+                    time = time.toString()
+                    let hour= ''
+                    let minute= ''
+                    let amOrPM
                     
+                    if(time.length=== 3){
+                        let detectedHour = false
+                        for(let character of time){
+
+                             if(detectedHour===true){
+                                minute = minute + character
+                            }
+                            if(detectedHour===false){
+                                hour = hour + character
+                                detectedHour=true
+                            }
+                           
+                        }
+                    }else{
+                        let detectedHour = false
+                        let index = 0
+                        for(let character of time){
+                            if(index === 2){
+                                detectedHour= true
+                            }
+                            if(detectedHour===false){
+                                hour = hour + character
+                            }
+                            if(detectedHour===true){
+                                minute = minute + character
+                            }
+                            index++
+                        }
+                    }
+                    
+                    if(parseInt(hour)<12){
+                        if(hour === 0){
+                            hour = '12'
+                            amOrPM = 'am'
+                        }else{
+                            amOrPM = 'am'
+                        }
+                    }
+
+                    if(parseInt(hour)>=12){
+                        if(parseInt(hour)===12){
+                        amOrPM = 'pm'
+                        }else{
+                        amOrPM = 'pm'
+                        const hourInt = parseInt(hour) - 12 
+                        hour = hourInt.toString()
+                        }
+                        
+                        
+                    }
+
+                    return (`${hour}:${minute} ${amOrPM}`)
                 }
                 function convertToMilitaryTime(time){
                     let hitMinute = false
@@ -143,13 +199,13 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         if(availibiityStart!== times[0]){
                         let timeSlotOpening = availibiityStart
                         let timeSlotClose = times[0]
-                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
                         firstTimeDetected = true
                         }else{
                         let timeSlotOpening = times[1]
                         let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
                        
-                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
                         firstTimeDetected = true
                         }
                         
@@ -158,14 +214,14 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         let timeSlotOpening = times[1]
                         let timeSlotClose= availibilityEnd
                        
-                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
                     }
                     else{
                         
                         let timeSlotOpening = times[1]
                         let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
                        
-                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                        newtimeSlotArray.push([convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)])
                     }
                     indexOfMilitaryTimeArray++
                 }
