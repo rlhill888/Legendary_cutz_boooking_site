@@ -49,36 +49,159 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
                 console.log(dayData.availibility)
             }else{
-                let parentTimeArray = []
-                const timeDataToMap = JSON.parse(dayData.timeSlotsTaken)
-                timeDataToMap.map((availibiltyTime)=>{
-                availibiltyTime = availibiltyTime.toLowerCase()
-                let temptime1= ''
-                let temptime2= ''
-                let hitSecondTime = false
-                for(let character of availibiltyTime){
-                    if(character==='-'){
-                        hitSecondTime = true
+                let openTimeSlotArray= []
+
+                function pickAppartIndivisualTimesAndMakeThemMilitary(theTwoTimes){
+                    let temptime1= ''
+                    let temptime2= ''
+                    let hitSecondTime = false
+                    for(let character of theTwoTimes){
+                        if(character==='-'){
+                            hitSecondTime = true
+                        }
+                        if(hitSecondTime ===false){
+                            temptime1 = temptime1 + character
+                        }
+                        if(hitSecondTime ===true && character!=='-'){
+                            temptime2 = temptime2 + character
+                        }
+                        
                     }
-                    if(hitSecondTime ===false){
-                        temptime1 = temptime1 + character
-                    }
-                    if(hitSecondTime ===true && character!=='-'){
-                        temptime2 = temptime2 + character
-                    }
+                    let timeArray = []
+                    let time1 = temptime1.slice(0, -1)
+                    let time2 = temptime2.substring(1).slice(0,-1)
+
+                    const militaryTime1 = convertToMilitaryTime(time1)
+                    const militaryTime2 = convertToMilitaryTime(time2)
+
+                    return [parseInt(militaryTime1.trim()), parseInt(militaryTime2.trim())]
+                }
+                function convertToBasicTime(){
                     
                 }
-                let timeArray = []
-                let time1 = temptime1.slice(0, -1)
-                let time2 = temptime2.substring(1).slice(0,-1)
-                timeArray = [time1, time2 ]
-                
-                return parentTimeArray.push(timeArray)
+                function convertToMilitaryTime(time){
+                    let hitMinute = false
+                    let amOrPm= ''
 
+                    let hour= ''
+                    let minute= ''
+
+                    for(let character of time){
+                        if(character.toLowerCase() === 'a'){
+                            amOrPm='am'
+                            break
+                        }
+                        if(character.toLowerCase() === 'p'){
+                            amOrPm='pm'
+                            break
+                        }
+                        if(hitMinute === false && character!==':'){
+                            hour = hour + character
+                        }
+                        if(hitMinute === true && character!==':'){
+                            minute = minute + character
+                        }
+                        if(character === ':'){
+                            hitMinute= true
+                        }
+                    }
+
+                    if(amOrPm==='pm'){
+                        if(parseInt(hour)===12){
+
+                        }else{
+                            const hourInt = parseInt(hour)
+                            hour = (hourInt + 12).toString()
+                            
+                        }
+                    }
+
+                    return `${hour}${minute}`
+
+                }
+
+
+
+                const timeData = JSON.parse(dayData.timeSlotsTaken)
+                let militsryTimeData = []
+                const availibility=pickAppartIndivisualTimesAndMakeThemMilitary(dayData.availibility)
+                const availibiityStart = parseInt(availibility[0])
+                const availibilityEnd = parseInt(availibility[1])
+                timeData.map(time=>{
+                    militsryTimeData.push(pickAppartIndivisualTimesAndMakeThemMilitary(time))
                 })
                 
+                let newtimeSlotArray= []
+                let firstTimeDetected= false
+                let lastTimeDetected= false
+                let indexOfMilitaryTimeArray = 0
+                for(let times of militsryTimeData){
+                    if(indexOfMilitaryTimeArray ===militsryTimeData.length-1){
+                        lastTimeDetected = true
+                    }
+                    if(firstTimeDetected===false){
+                        if(availibiityStart!== times[0]){
+                        let timeSlotOpening = availibiityStart
+                        let timeSlotClose = times[0]
+                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                        firstTimeDetected = true
+                        }else{
+                        let timeSlotOpening = times[1]
+                        let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
+                       
+                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                        firstTimeDetected = true
+                        }
+                        
+                    }
+                    if(lastTimeDetected===true){
+                        let timeSlotOpening = times[1]
+                        let timeSlotClose= availibilityEnd
+                       
+                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                    }
+                    else{
+                        
+                        let timeSlotOpening = times[1]
+                        let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
+                       
+                        newtimeSlotArray.push([timeSlotOpening, timeSlotClose])
+                    }
+                    indexOfMilitaryTimeArray++
+                }
+                debugger
+
                 
-                setTimeSlotArray(parentTimeArray)
+                // let parentTimeArray = []
+                // const timeDataToMap = JSON.parse(dayData.timeSlotsTaken)
+                // timeDataToMap.map((availibiltyTime)=>{
+                // availibiltyTime = availibiltyTime.toLowerCase()
+                // let temptime1= ''
+                // let temptime2= ''
+                // let hitSecondTime = false
+                // for(let character of availibiltyTime){
+                //     if(character==='-'){
+                //         hitSecondTime = true
+                //     }
+                //     if(hitSecondTime ===false){
+                //         temptime1 = temptime1 + character
+                //     }
+                //     if(hitSecondTime ===true && character!=='-'){
+                //         temptime2 = temptime2 + character
+                //     }
+                    
+                // }
+                // let timeArray = []
+                // let time1 = temptime1.slice(0, -1)
+                // let time2 = temptime2.substring(1).slice(0,-1)
+                // timeArray = [time1, time2 ]
+                
+                // return parentTimeArray.push(timeArray)
+
+                // })
+                
+                
+                // setTimeSlotArray(parentTimeArray)
             }
             
         }
