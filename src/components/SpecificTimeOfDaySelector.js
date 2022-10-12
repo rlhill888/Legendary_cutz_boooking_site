@@ -10,6 +10,13 @@ function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppoi
     function mapSpecificTimeSlots(){
         let specificTimeSlotId = 0
         if(timeSlotArray!=='' && timeSlotArray){
+            if(timeSlotArray.length === 0){
+                return(
+                    <>
+                    <h2>The Barber Does Not have any time slots that can fit your time for your appointemnt for this day</h2>
+                    </>
+                )
+            }
             return timeSlotArray.map(times =>{
             specificTimeSlotId++
             return(
@@ -20,6 +27,7 @@ function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppoi
             )
         })
         }
+       
         
 
     }

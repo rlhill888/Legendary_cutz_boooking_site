@@ -50,11 +50,14 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                 if(hitColon===false && (number !== 'a' || number !== 'p' || number !== 'm')){
                     totaNumber= totaNumber + number
                 }
-                if(number === 'p' && totaNumber !== '12'){
+                if(number === 'p'){
                     pm = true
                 }
                 
 
+            }
+            if(pm===false && totaNumber ==='12'){
+                totaNumber = '00'
             }
             if(pm===true){
                
@@ -126,7 +129,6 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         let time1Minutes= findMinutes(time1)
         let time2Hour= findHours(time2)
         let time2Minutes= findMinutes(time2)
-
         let dedicatedAppointmentStartTimeHours = findHours(dedicatedAppointmentStartTime)
         let dedicatedAppointmentStartTimeMinutes = findMinutes(dedicatedAppointmentStartTime)
 
@@ -224,11 +226,14 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                 if(hitColon===false && (number !== 'a' || number !== 'p' || number !== 'm')){
                     totaNumber= totaNumber + number
                 }
-                if(number === 'p' && totaNumber !== '12'){
+                if(number === 'p'){
                     pm = true
                 }
                 
 
+            }
+            if(pm===false && totaNumber ==='12'){
+                totaNumber = '00'
             }
             if(pm===true){
                

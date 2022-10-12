@@ -15,6 +15,7 @@ function Page(){
      const { id } = router.query
 
     const [schedulingStep, setSchedulingStep]= useState(1)
+    
 
     const [selectedServicesList, setSelectedServicesList]= useState({})
     const [serviceNameArray, setServiceNamerray]= useState([])
@@ -27,7 +28,7 @@ function Page(){
     const [recieptsArray, setrecieptsArray]= useState([])
     const [dateOfAppointment, setDateOfAppointment]= useState(null)
     const [barberObj, setBarberObj]= useState(null)
-   
+    const [dayData, setDayData]= useState(null)
     // going to get this info from a  fetch request
 
     useEffect(()=>{
@@ -151,7 +152,7 @@ function Page(){
         if(schedulingStep===4){
             return(
             <>
-            <SchedulingStep4 barberId={barberObj.id} setDateOfAppointment={setDateOfAppointment} dateOfAppointment={dateOfAppointment} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
+            <SchedulingStep4 dayData={dayData} setDayData={setDayData} barberId={barberObj.id} setDateOfAppointment={setDateOfAppointment} dateOfAppointment={dateOfAppointment} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} setSchedulingStep={setSchedulingStep}/>
             </>
             )
         }
@@ -159,7 +160,7 @@ function Page(){
         if(schedulingStep===5){
             return(
                 <>
-                <SchedulingStep5  dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray}/>
+                <SchedulingStep5 dayData={dayData} dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray} barberId={barberObj.id}/>
                 </>
             )
         }

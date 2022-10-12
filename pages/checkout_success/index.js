@@ -9,15 +9,12 @@ import axios from "axios";
 
 function Sucess(){
 
-    const [purchaseInfo, setPurchaseInfo]= useState(null)
-    const [madeFetchRequest, setMadeFetchRequest]= useState(false)
     const [data, setData]= useState(false)
     const [error, setError]= useState(false)
     const [purchaseContents, setPurchaseContents]= useState({})
     const [customerNamesArray, setCustomersNamesArray]= useState(null)
     const [reciept, setReciept]= useState(null)
 
-    console.log(reciept)
     function mapNames(){
 
       
@@ -36,47 +33,52 @@ function Sucess(){
     const router = useRouter()
     const session_id = router.query["session_id"]
 
-    if(session_id && madeFetchRequest===false){
-        fetch(`/api/checkout_sessions/${session_id}`).then(res=> res.json().then(res=>{
-            // if(res.ok){
-            setMadeFetchRequest(true)
-            setData(res)
-            console.log(res)
-             fetch(`api/appointments/find_Appointemnt`, {
-
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    stripeSessionsId: session_id
-                })
-             })
-            .then(res => res.json()).then(res=>{
-                setPurchaseContents(res)
-                setCustomersNamesArray(JSON.parse(res.appintmnetCustomerNames))
-                setReciept(JSON.parse(res.recieptDetails))
-                if(res.appointmentPaid === false){
-                    // make fetch request to google clendars here
-                    const changeAppointemntPaid = async ()=>{
-                    await axios.post('/api/appointments/update_appointemnt_paid', {
-                        session_id: session_id,
-                        Appointmentid: purchaseContents.id
-                    }).then(res=> res.json().then(res=> console.log(res)))
+    useEffect(()=>{
+        if(session_id){
+    (async ()=>{
+                try{
+                    const response = await axios({
+                        method: 'GET',
+                        url: `/api/checkout_sessions/${session_id}`
+                    })
+                    setData(response.data)
+                    try{
+                        const response = await axios({
+                            method: 'POST',
+                            url: `api/appointments/find_Appointemnt`,
+                            data: {
+                                stripeSessionsId: session_id
+                            }
+                        })
+                        console.log(response.data)
+                        setPurchaseContents(response.data)
+                        setCustomersNamesArray(JSON.parse(response.data.appintmnetCustomerNames))
+                        setReciept(JSON.parse(response.data.recieptDetails))
+                        if(response.data.downPaymentPaid=== false){
+                            console.log('Updating appointmnet')
+                        try{
+                            const response = await axios.post('/api/appointments/update_appointemnt_paid', {
+                                    session_id: session_id,
+                                     Appointmentid: purchaseContents.id
+                                 })
+                                 console.log( response.data)
+                        }catch(error){
+                            console.log(error)
+                        }         
                     }
-                    changeAppointemntPaid()
-                    
 
+                    }catch(error){
+                        console.log(error)
+                    }
+                    console.log(response.data)
+                }catch(error){
+                    setError(error)
+                    console.log(error)
                 }
-            })
-            // }else{
-            //     setMadeFetchRequest(true)
-            //     setError(res)
-            //     console.log(res)
-            // }
-           
-        }))
-    }
+            })()
+        }
+        
+    }, [session_id])
 
    
 
@@ -146,7 +148,7 @@ function Sucess(){
                         <br />
                         {purchaseContents.dateOfAppointment}
                         <br />
-                        {purchaseContents.startTime} - {purchaseContents.endTime}
+                        {purchaseContents.appointmentStartTime} - {purchaseContents.appointmentEndTime}
                          </h1>
                          
                     </>}

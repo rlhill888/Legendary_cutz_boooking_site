@@ -3,7 +3,7 @@ import react, {useState, useEffect} from "react";
 import Calendar from "./Calendar";
 import SpecificTimeOfDaySelector from "./SpecificTimeOfDaySelector";
 
-function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj, setDateOfAppointment, dateOfAppointment, barberId}){
+function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj, setDateOfAppointment, dateOfAppointment, barberId, dayData, setDayData}){
 
 
     console.log(JSON.stringify('10:00am - 1:00PM'))
@@ -14,7 +14,6 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
     //     ['2:00pm', '5:30pm'],
     //     ['6:45pm', '9:00pm']
     // ]
-    const [dayData, setDayData]= useState(null)
     const [timeSlotArray, setTimeSlotArray]= useState(null)
   
     useEffect(()=>{
