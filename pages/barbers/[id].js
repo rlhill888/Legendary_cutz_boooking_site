@@ -29,6 +29,7 @@ function Page(){
     const [dateOfAppointment, setDateOfAppointment]= useState(null)
     const [barberObj, setBarberObj]= useState(null)
     const [dayData, setDayData]= useState(null)
+    const [nameArray, setNameArray]= useState(null)
     // going to get this info from a  fetch request
 
     useEffect(()=>{
@@ -144,7 +145,7 @@ function Page(){
         if(schedulingStep===3){
             return(
                 <>
-                <SchedulingStep3 recieptsArray={recieptsArray}  setrecieptsArray={setrecieptsArray} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
+                <SchedulingStep3 setNameArray={setNameArray} recieptsArray={recieptsArray}  setrecieptsArray={setrecieptsArray} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj}/>
                 </>
             )
         }
@@ -160,7 +161,7 @@ function Page(){
         if(schedulingStep===5){
             return(
                 <>
-                <SchedulingStep5 dayData={dayData} dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray} barberId={barberObj.id}/>
+                <SchedulingStep5 nameArray={nameArray} dayData={dayData} dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray} barberId={barberObj.id}/>
                 </>
             )
         }

@@ -15,7 +15,7 @@ export default async  function handler(req, res){
                     }
                 },
                 include: {
-                    days: true
+                    days: true,
                 }
             })
             console.log('month:', month)

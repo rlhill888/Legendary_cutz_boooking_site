@@ -34,7 +34,7 @@ function BarberNavigationMenu(){
                 Messages
             </button>
             <button
-            onClick={()=> router.push('/barber_account_page/account_settings')}
+            onClick={()=> router.push('/barber_account_page/account')}
             >
                 Account
             </button>

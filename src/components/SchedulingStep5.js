@@ -3,7 +3,7 @@ import Reciept from "./reciept";
 import axios from "axios";
 import getStripe from "../../lib/get-stripe";
 
-function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData}){
+function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData, nameArray}){
     let testDate
 
     if(dateOfAppointment.toLowerCase().includes('thurs')){
@@ -64,7 +64,7 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
             dateOfAppointment: dateOfAppointment,
             recieptDetails: JSON.stringify(recieptsArray),
             barberId: barberId,
-            appintmnetCustomerNames: JSON.stringify(['name']),
+            appintmnetCustomerNames: JSON.stringify(nameArray),
             phomeNumber: '215', 
             dayCalendarId: dayData.id,
             monthDate: `${month}/${year}`,

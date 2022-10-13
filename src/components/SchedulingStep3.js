@@ -1,6 +1,6 @@
 import react, {useEffect, useState} from "react";
 
-function SchedulingStep3({completePurchaseObj, setSchedulingStep, setTotalAppointmentTime, setTotalAppointmentTimeInt, setrecieptsArray, recieptsArray}){
+function SchedulingStep3({completePurchaseObj, setSchedulingStep, setTotalAppointmentTime, setTotalAppointmentTimeInt, setrecieptsArray, recieptsArray, setNameArray}){
 console.log(completePurchaseObj)
 
 const [totalReceipt, setTotalReciept]= useState({})
@@ -42,6 +42,7 @@ function traverseCompletePurchseObj(){
     }
 
 let namesArray = Object.keys(completePurchaseObj)
+setNameArray(namesArray)
 
 namesArray.map((name)=> getReciept(completePurchaseObj[`${name}`], name))
 function getReciept(obj, key){
