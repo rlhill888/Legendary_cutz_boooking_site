@@ -56,6 +56,7 @@ model Appointment{
    appintmnetCustomerNames String
    appointmentDone Boolean  @default(false)
    appointmentScheduled Boolean @default(false)
+   canceledAppointment Boolean @default(false)
    phomeNumber String
    barberId Int
    recieptDetails String

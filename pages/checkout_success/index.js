@@ -163,6 +163,23 @@ function Sucess(){
                          <h3>Would you like to sign up to recive sms reminders and updates about your appointment?</h3>
                          Yes<input type='checkbox'></input>
                          No<input type='checkbox'></input>
+                         <br />
+                         <br />
+                         <button onClick={async ()=>{
+                            try{
+                              const response = await axios({
+                                url: '/api/appointments/cancel_appointment',
+                                method: 'PATCH',
+                                data: {
+                                    stripeSessionsId: session_id
+                                }
+                            }) 
+                            console.log(response.data) 
+                            }catch(error){
+                                console.log(error)
+                            }
+                            
+                         }}>Cancel Appointment</button>
                     
                     </div>
             ) : (
