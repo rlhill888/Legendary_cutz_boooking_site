@@ -3,6 +3,7 @@ import Calendar from "../../../src/components/Calendar";
 import BarberNavigationMenu from "../../../src/components/BarberNavigationMenu";
 import { auth } from "../../../lib/mutations";
 import { useRouter } from "next/router";
+import BarberScheduleAppointmentCard from "../../../src/components/BarberScheduleAppointmentCard";
 
 
 function Scheduling(){
@@ -19,7 +20,7 @@ function Scheduling(){
     console.log(date)
 
     useEffect( ()=>{
-
+        debugger
         async function fetchData(){
              await auth('me').then(res=>{
             if(res.ok){
@@ -59,7 +60,7 @@ function Scheduling(){
     return(
         <>
         <BarberNavigationMenu></BarberNavigationMenu>
-        schedule
+        
         <br />
         <br />
 
@@ -75,6 +76,9 @@ function Scheduling(){
         }
     })}
     <button
+    onClick={()=>{
+        router.push('schedule/editSchedule')
+    }}
     >Edit Schedule</button>
     <br />
     <br />
@@ -100,7 +104,7 @@ function Scheduling(){
        <br />
         <br />
         
-        <Calendar  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData}/>
+        <Calendar  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData} barberScheduleMenu={true}/>
 
 
     {date ? 
@@ -117,6 +121,10 @@ function Scheduling(){
             <h3>You do not have any appointments for this day yet</h3> :
             <div>
             <h3>Appointments for this day:</h3>
+            <br />
+            {dayData.appointments.map((appointment =>{
+                return ( <BarberScheduleAppointmentCard key={`${appointment.id}`} appointment={appointment}/>)
+            }))}
             </div>
         }
        

@@ -3,7 +3,7 @@ import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
 import axios from "axios";
 
 
-function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData}){
+function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu}){
     const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
     const calendarNumberOfWeeksInAMonthArray = [1, 2, 3, 4, 5, 6]
@@ -54,9 +54,10 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
             }
             setFirstOfMonthDay(firstofMonthDay)
             try{
+                const url = barberScheduleMenu ? '/api/barbers/schedule/getScheduleMonthBarberScheduleMenu' : '/api/barbers/schedule/getScheduleMonth'
                 const response = await axios({
                     method: 'POST',
-                    url: '/api/barbers/schedule/getScheduleMonth',
+                    url: `${url}`,
                     data: {
                         barberId: barberId,
                         monthDate: `${monthVar}/${yearVar}`
@@ -77,6 +78,8 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         
     
     }, [month, year])
+
+
     function mapCalendarOut(){
         const todayDate = new Date()
         const todayMonth = todayDate.getMonth()
