@@ -16,16 +16,22 @@ function TimeInputComponent({ setTime, index, weekdayArray, finalizeTime, setErr
         finalizeTime()
     }, [finalizeTime])
     function changeHour(e, set){
-        if(e.target.value ===''){
+        const numbers = /^[+]?[0-9]+$/;
+        if(e.target.value.match(numbers) ||e.target.value ===''){
+            if(e.target.value ===''){
             return set(e.target.value) 
         }
         if(e.target.value<1 || e.target.value > 12){
             return 
         }else{
-            return set(e.target.value)
+             
+        }
+       return set(e.target.value)
         }
     }
     function changeMinute(e, set){
+        const numbers = /^[+]?[0-9]+$/;
+        if(e.target.value.match(numbers)||e.target.value ==='' ){
         if(e.target.value ===''){
             return set(e.target.value) 
         }
@@ -38,6 +44,8 @@ function TimeInputComponent({ setTime, index, weekdayArray, finalizeTime, setErr
             return set(e.target.value) 
         }
     }
+    }
+
     function finalizeTime(){
 
         if(startTimeHour=== '' || startTimeMinute==='' || endTimeHour === '' || endTimeMinute === ''){
@@ -71,7 +79,7 @@ function TimeInputComponent({ setTime, index, weekdayArray, finalizeTime, setErr
         <>
         <div>
             <h3>{weekArray[index]} Schedule</h3>
-            <input type='number' value={startTimeHour} onChange={(e)=>{changeHour(e, setStartTimeHour)}}></input>:<input type='number' onChange={(e)=> changeMinute(e, setStartTimeMinute)} value={startTimeMinute}></input>
+            <input  value={startTimeHour} onChange={(e)=>{changeHour(e, setStartTimeHour)}}></input>:<input  onChange={(e)=> changeMinute(e, setStartTimeMinute)} value={startTimeMinute}></input>
             <select value={startTimeAmOrPM} onChange={(e)=> setStartTimeAmOrPM(e.target.value)}>
                 <option value='AM'>AM</option>
                 <option value='PM'>PM</option>
@@ -79,7 +87,7 @@ function TimeInputComponent({ setTime, index, weekdayArray, finalizeTime, setErr
             
              - 
              
-             <input type='number' value={endTimeHour} onChange={(e)=>{changeHour(e, setEndTimeHour)}}></input>:<input type='number' onChange={(e)=> changeMinute(e, setEndTimeMinute)} value={endTimeMinute}></input>
+             <input  value={endTimeHour} onChange={(e)=>{changeHour(e, setEndTimeHour)}}></input>:<input  onChange={(e)=> changeMinute(e, setEndTimeMinute)} value={endTimeMinute}></input>
             <select value={endTimeAmOrPM} onChange={(e)=> setEndTimeAmOrPm(e.target.value)}>
                 <option value='AM'>AM</option>
                 <option value='PM'>PM</option>

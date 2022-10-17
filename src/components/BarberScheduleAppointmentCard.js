@@ -7,6 +7,12 @@ function BarberScheduleAppointmentCard({appointment}){
     const recieptObj = JSON.parse(appointment.recieptDetails)
     console.log(recieptObj)
 
+    if(!appointment){
+        return <h1>
+            Loading...
+        </h1>
+    }
+
     if(openDetails === false){
         return(
             <>
@@ -46,7 +52,7 @@ function BarberScheduleAppointmentCard({appointment}){
                         )
                     })
                     
-                    : reciept.map(reciept=>{
+                    : recieptObj.map(reciept=>{
                         return(
                             <>
                             <div>

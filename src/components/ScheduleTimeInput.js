@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from "react";
+import axios from "axios";
 
-
-function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, setError, time}){
-    const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
+function ScheduleTimeInput({availibility, dayData, setUpdateData}){
     const [startTimeHour, setStartTimeHour]= useState('')
     const [startTimeMinute, setStartTimeMinute]= useState('')
     const [startTimeAmOrPM, setStartTimeAmOrPM]=useState('AM')
@@ -11,13 +9,8 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
     const [endTimeHour, setEndTimeHour]= useState('')
     const [endTimeMinute, setEndTimeMinute]= useState('')
     const [endTimeAmOrPM, setEndTimeAmOrPm]= useState('AM')
-
-    const [setUpTimes, setSEtUpTimes]= useState(false)
-
     useEffect(()=>{
-        if(setUpTimes===false){
-            setSEtUpTimes(true)
-            if(time[index] === null){
+        if(availibility === 'none'){
             return 
         }else{
             let tempStartTimeHour= ''
@@ -28,7 +21,7 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
             let tempEndTimeMinute= ''
             let tempEndAMOrPM= ''
 
-            const timeString = time[index]
+            const timeString = availibility
 
             let timeStart= '' 
             let timeEnd= ''
@@ -50,7 +43,7 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
             timeEnd = timeEnd.trim()
             let hitStartColon = false
             let hitEndColon = false
-
+            
             for(let character of timeStart){
                 if(character === ':'){
                     hitEndColon= true
@@ -88,7 +81,7 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
                 }
             }
 
-
+            
             setStartTimeHour(tempStartTimeHour.trim())
             setStartTimeMinute(tempStartTimeMinute.trim())
             setStartTimeAmOrPM(tempStartTimeAmOrPm.trim())
@@ -99,14 +92,9 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
 
 
         }
-        }
-       
-       
-    }, [])
+        
 
-    useEffect(()=>{
-        finalizeTime()
-    }, [finalizeTime])
+    }, [])
     function changeHour(e, set){
         const numbers = /^[+]?[0-9]+$/;
         if(e.target.value.match(numbers) ||e.target.value ===''){
@@ -137,48 +125,11 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
         }
     }
     }
-    function finalizeTime(){
 
-        if(startTimeHour=== '' || startTimeMinute==='' || endTimeHour === '' || endTimeMinute === ''){
-            // return setError(previous=>{
-            //     let copyArray = previous
-            //     copyArray.push(`Please Make sure a time is filled in for ${weekArray[index]}`)
-            //     return copyArray
-            // })
-            setTime(previous=>{
-                let copyArray = previous
-                copyArray[index] = null
-                return copyArray
-            })
-            return 
-        }
-        if(weekdayArray[index]===true){
-            setTime(previous=>{
-                let copyArray = previous
-                copyArray[index] = null
-                return copyArray
-            })
-            return 
-        }
-        const string = `${startTimeHour}:${startTimeMinute.length > 1 ? startTimeMinute : `0${startTimeMinute}`} ${startTimeAmOrPM} - ${endTimeHour}:${endTimeMinute.length > 1 ? endTimeMinute : `0${endTimeMinute}`} ${endTimeAmOrPM} `
-        setTime(previous=>{
-            let copyArray = previous
-            copyArray[index] = string
-            return copyArray
-        })
-    }
-
-
-    if(weekdayArray[index]===true){
-        return(<>
-        <h3>Youve Decided to have off on {weekArray[index]}</h3>
-        </>)
-    }
     return(
         <>
         <div>
-            <h3>{weekArray[index]} Schedule</h3>
-            <input type='string' value={startTimeHour} onChange={(e)=>{changeHour(e, setStartTimeHour)}}></input>:<input type='string' onChange={(e)=> changeMinute(e, setStartTimeMinute)} value={startTimeMinute}></input>
+            <input type='number' value={startTimeHour} onChange={(e)=>{changeHour(e, setStartTimeHour)}}></input>:<input  onChange={(e)=> changeMinute(e, setStartTimeMinute)} value={startTimeMinute}></input>
             <select value={startTimeAmOrPM} onChange={(e)=> setStartTimeAmOrPM(e.target.value)}>
                 <option value='AM'>AM</option>
                 <option value='PM'>PM</option>
@@ -186,14 +137,42 @@ function UpdateTimeInputComponent({ setTime, index, weekdayArray, finalizeTime, 
             
              - 
              
-             <input type='number' value={endTimeHour} onChange={(e)=>{changeHour(e, setEndTimeHour)}}></input>:<input type='string' onChange={(e)=> changeMinute(e, setEndTimeMinute)} value={endTimeMinute}></input>
+             <input type='number' value={endTimeHour} onChange={(e)=>{changeHour(e, setEndTimeHour)}}></input>:<input  onChange={(e)=> changeMinute(e, setEndTimeMinute)} value={endTimeMinute}></input>
             <select value={endTimeAmOrPM} onChange={(e)=> setEndTimeAmOrPm(e.target.value)}>
                 <option value='AM'>AM</option>
                 <option value='PM'>PM</option>
             </select>
+            <br />
+            <br />
+            <button onClick={ async ()=>{
+                if(startTimeHour!=='' && startTimeMinute!== '' && endTimeHour!=='' && endTimeMinute!==''){
+                    const newAvailibility = `${startTimeHour}:${startTimeMinute.length > 1 ? startTimeMinute : `0${startTimeMinute}`} ${startTimeAmOrPM} - ${endTimeHour}:${endTimeMinute.length > 1 ? endTimeMinute : `0${endTimeMinute}`} ${endTimeAmOrPM} `
+                    const dayId = dayData.dayId
+                    console.log(newAvailibility)
+                    try{
+                        const response = await axios({
+                            method: 'PATCH',
+                            url: '/api/barbers/schedule/updateSpecificDayAvailibility',
+                            data: {
+                                dayData,
+                                availibility: newAvailibility
+                            }
+                        })
+                        console.log(response.data)
+                        window.location.reload()
+
+                    }catch(error){
+                        console.log(error)
+
+                    }
+                }else{
+                    console.log('Please Make sure none of the time inputs are blank')
+                }
+            }}>Change Availibility</button>
         </div>
+
         </>
     )
 }
 
-export default UpdateTimeInputComponent
+export default ScheduleTimeInput

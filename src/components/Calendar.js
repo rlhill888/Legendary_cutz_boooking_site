@@ -3,7 +3,7 @@ import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
 import axios from "axios";
 
 
-function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays}){
+function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays, updateCalendar}){
     const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
     const calendarNumberOfWeeksInAMonthArray = [1, 2, 3, 4, 5, 6]
@@ -77,7 +77,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         })()
         
     
-    }, [month, year])
+    }, [month, year, updateCalendar])
 
 
     function mapCalendarOut(){
@@ -128,7 +128,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                     foundFirstOfMonthStartDate = true
                     return   <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
-                
+
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true

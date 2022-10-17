@@ -4,6 +4,9 @@ import BarberNavigationMenu from "../../../src/components/BarberNavigationMenu";
 import { auth } from "../../../lib/mutations";
 import { useRouter } from "next/router";
 import BarberScheduleAppointmentCard from "../../../src/components/BarberScheduleAppointmentCard";
+import TimeInputComponent from "../../../src/components/TimeInputComponent";
+import ScheduleTimeInput from "../../../src/components/ScheduleTimeInput";
+import axios from "axios";
 
 
 function Scheduling(){
@@ -12,12 +15,27 @@ function Scheduling(){
     const [barber, setBarber]= useState(null)
     const [weeklySchedule, setWeeklySchedule]= useState(null)
     const [showWeeklySchedule, setshowWeeklySchedule]= useState(false)
+    const [changeAvailibilityButton, setChangeAvailibilityButton]= useState(false)
+    const [dayBlocked, setDayBlocked]= useState(false)
+    const [updateData, setUpdateData]= useState(1)
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     console.log(dayData)
 
  
     const router= useRouter()
     console.log(date)
+    useEffect(()=>{
+        setChangeAvailibilityButton(false)
+        if(dayData){
+           if(dayData.availibility==='none'){
+            console.log(dayData.availibility)
+            setDayBlocked(true)
+        }else{
+            setDayBlocked(false)
+        } 
+        }
+        
+    }, [dayData, date])
 
     useEffect( ()=>{
         async function fetchData(){
@@ -103,7 +121,7 @@ function Scheduling(){
        <br />
         <br />
         
-        <Calendar  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData} barberScheduleMenu={true}/>
+        <Calendar updateCalendar={updateData}  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData} barberScheduleMenu={true}/>
 
 
     {date ? 
@@ -115,6 +133,68 @@ function Scheduling(){
         {dayData.availibility === 'none' ? <h3>You are not availible for this day</h3> : 
          <h3>Your Availibility for this day is {dayData.availibility}</h3>
         }
+
+
+        
+
+
+        {
+        changeAvailibilityButton ? <>
+            <div>
+            <button onClick={()=>{
+            setChangeAvailibilityButton(false)
+        }}>Close Change Availibility Menu </button>
+
+
+                <h1>Change availibility</h1>
+                <h3>
+                    Block Out Day
+                    <input checked={dayBlocked}
+                    onClick={async (e)=>{ 
+                        console.log(e.target.checked)
+                        if(e.target.checked===true){
+                            try{
+                                const response = await axios({
+                                    method: 'PATCH',
+                                    url: '/api/barbers/schedule/updateSpecificDayAvailibility',
+                                    data: {
+                                        dayData,
+                                        availibility: 'none'
+                                    }
+                                })
+                                console.log(response.data)
+                                setDayBlocked(true)
+                                window.location.reload(false)
+                            }catch(error){
+                                console.log(error)
+        
+                            }
+
+                        }else{
+                            setDayBlocked(e.target.checked)
+                        }
+                        }} type='checkbox'></input>
+                </h3>
+                {dayBlocked ? <></> : <>
+                
+                <ScheduleTimeInput setUpdateData={setUpdateData} availibility={dayData.availibility} dayData={dayData}/>
+                
+                
+                </>}
+                
+                
+            </div>
+        </> :
+        
+        <>
+        <button onClick={()=>{
+            setChangeAvailibilityButton(true)
+        }}>Change This Day's Availibility</button>
+        </>
+        }
+        <br />
+
+
         {
             dayData.timeSlotsTaken === '' ? 
             <h3>You do not have any appointments for this day yet</h3> :
