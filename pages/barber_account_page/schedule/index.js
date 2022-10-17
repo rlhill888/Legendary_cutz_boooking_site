@@ -20,7 +20,6 @@ function Scheduling(){
     console.log(date)
 
     useEffect( ()=>{
-        debugger
         async function fetchData(){
              await auth('me').then(res=>{
             if(res.ok){

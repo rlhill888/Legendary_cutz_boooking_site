@@ -3,7 +3,7 @@ import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
 import axios from "axios";
 
 
-function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu}){
+function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays}){
     const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
     const calendarNumberOfWeeksInAMonthArray = [1, 2, 3, 4, 5, 6]
@@ -128,6 +128,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                     foundFirstOfMonthStartDate = true
                     return   <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
+                
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
@@ -139,14 +140,20 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                     foundFirstOfMonthStartDate = true
                     return <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
                 }
+
+
                 if(foundFirstOfMonthStartDate === false && index !== firstofMonthDay || dayCount > monthArray[month]){
                     
                     return <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
                 }
+
+
                 if( dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                    
                     return   <IndivisualCalendarDay setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
+
+
                 else{
                   
                     return <IndivisualCalendarDay  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>

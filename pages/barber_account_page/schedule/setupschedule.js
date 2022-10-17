@@ -23,7 +23,6 @@ function Setupschedule(){
              await auth('me').then(res=>{
             if(res.ok){
                 res.json().then(res=> {
-                    console.log(res)
                     setBarber(res)
                     if(res.fiveYearScheduleCreated ===true){
                         router.push('/barber_account_page/schedule')
@@ -55,49 +54,43 @@ function Setupschedule(){
             copyArray[1] = !copyArray[1]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
+          
         }} value={weekdayArray[1]} type='checkbox'></input></h3>
          <h3>Tuesday <input  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[2] = !copyArray[2]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
         }} value={weekdayArray[2]} type='checkbox'></input></h3>
         <h3>Wednesday <input  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[3] = !copyArray[3]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
         }} value={weekdayArray[3]} type='checkbox'></input></h3>
         <h3>Thursday <input  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[4] = !copyArray[4]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
         }} value={weekdayArray[4]} type='checkbox'></input></h3>
          <h3>Friday <input  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[5] = !copyArray[5]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
         }} value={weekdayArray[5]} type='checkbox'></input></h3>
          <h3>Saturday <input  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[6] = !copyArray[6]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
         }} value={weekdayArray[6]} type='checkbox'></input></h3>
          <h3>Sunday <input  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[0] = !copyArray[0]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-            console.log(copyArray)
         }} value={weekdayArray[0]} type='checkbox'></input></h3>
         
     </div>
