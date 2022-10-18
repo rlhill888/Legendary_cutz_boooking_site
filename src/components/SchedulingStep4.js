@@ -323,7 +323,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
     return(
         <>Step 4
-        <Calendar setDateOfAppointmentData={setDayData} barberId={barberId} disableSelectionsForPreviousDaysPastTodaysDate setDateOfAppointment={setDateOfAppointment}/>
+        <Calendar blockOutUnavailibleDays={true} setDateOfAppointmentData={setDayData} barberId={barberId} disableSelectionsForPreviousDaysPastTodaysDate setDateOfAppointment={setDateOfAppointment}/>
 
         {dateOfAppointment  ? <SpecificTimeOfDaySelector dayData={dayData} setSchedulingStep={setSchedulingStep} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} timeSlotArray={timeSlotArray} dateOfAppointment={dateOfAppointment} /> : <> </>}
 

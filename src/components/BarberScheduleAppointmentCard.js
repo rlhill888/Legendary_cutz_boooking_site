@@ -7,6 +7,26 @@ function BarberScheduleAppointmentCard({appointment}){
     const recieptObj = JSON.parse(appointment.recieptDetails)
     console.log(recieptObj)
 
+    function findNameString(){
+        let string = ''
+        const nameArray = JSON.parse(appointment.appintmnetCustomerNames)
+        if(nameArray.length === 1){
+            return nameArray[0]
+        }else{
+            nameArray.map((name, index)=>{
+                if(index === 0){
+                    return string = string + `${name}`
+                }
+                if(index === nameArray.length - 1){
+                    return string = string + ` and ${name}`
+                }else{
+                    return string = string + `, ${name}`
+                }
+            })
+            return string
+        }
+    }
+
     if(!appointment){
         return <h1>
             Loading...
@@ -17,7 +37,7 @@ function BarberScheduleAppointmentCard({appointment}){
         return(
             <>
             <div>
-                <h3>Appointment for {JSON.parse(appointment.appintmnetCustomerNames)}, {appointment.appointmentStartTime} - {appointment.appointmentEndTime}</h3>
+                <h3>Appointment for {findNameString()}: {appointment.appointmentStartTime} - {appointment.appointmentEndTime}</h3>
                 <button onClick={()=>setOpenDetails(!openDetails) }>
                 {openDetails ? 'Close Appointment Deatails' : 'Open Appointment Details'}
                 </button>

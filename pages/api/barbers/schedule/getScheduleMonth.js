@@ -15,7 +15,15 @@ export default async  function handler(req, res){
                     }
                 },
                 include: {
-                    days: true,
+                    days: {
+                        include: {
+                            appointments: {
+                                select: {
+                                    dateOfAppointment: true
+                                }
+                            }
+                        }
+                    }
                 }
             })
             console.log('month:', month)

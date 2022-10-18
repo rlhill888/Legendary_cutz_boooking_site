@@ -1,18 +1,25 @@
 import react, {useState} from "react";
 
 
-function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus, setDateOfAppointment, disabledDay, year, month, dayData, setDateOfAppointmentData }){
+function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilityStatus, setDateOfAppointment, disabledDay, year, month, dayData, setDateOfAppointmentData, blockOutUnavailibleDays}){
     const monthArrayIndex= month
     month = month + 1
+    if(dayData){
+        if(blockOutUnavailibleDays && dayData.availibility==='none'){
+            disabled = true
+    }
+    }
     
+    const numberOfAppointments = dayData ? dayData.appointments.length : null
     function determineAvailabilityStatus(){
-        if(availabilityStatus===1){
+        
+        if(numberOfAppointments>=8){
             return 'calendarAppointmentNumberHeader lowAvailability'
         }
-        if(availabilityStatus===2){
+        if(numberOfAppointments>=5){
             return 'calendarAppointmentNumberHeader mediumAvailability'
         }
-        if(availabilityStatus===3){
+        if(numberOfAppointments<=3){
             return 'calendarAppointmentNumberHeader highAvailability'
         }else{
             return 'calendarAppointmentNumberHeader'
@@ -63,7 +70,7 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
 <h2
             className={determineAvailabilityStatus()}
             >
-                5
+                {numberOfAppointments}
             </h2>
 
             }
