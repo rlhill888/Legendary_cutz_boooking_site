@@ -91,6 +91,7 @@ function Home(){
     return(
         <>
         <BarberNavigationMenu></BarberNavigationMenu>
+        <h1>{dayData.date}</h1>
         {dayData.availibility === 'none' ? <h1>You are scheduled as unavailibile today</h1> : <h1>Your Schedule for today is from {dayData.availibility} </h1>}
         {dayData.appointments.length > 0 ? 
         <div>

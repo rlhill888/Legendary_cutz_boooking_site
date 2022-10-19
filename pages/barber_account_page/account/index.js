@@ -104,7 +104,7 @@ function Account(){
               
         }}></input>
         <br />
-        <h2>Recieve SMS notifications about newly scheduled appointments 
+        <h2>Upload Appointments to your Google Calendar
            <input type='checkbox' checked={currentlyRecievingAppointmentReminders} onChange={()=> setCurrentlyRecevingAppointmentReminders(!currentlyRecievingAppointmentReminders)}></input> 
         </h2>
         

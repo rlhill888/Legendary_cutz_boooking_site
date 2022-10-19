@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import useSWR from "swr";
 import axios from "axios";
-
+import GoogleAuthLoginComponent from "../../src/components/GoogleAuthLoginComponent";
 
 
 
@@ -181,6 +181,7 @@ function Sucess(){
                             }
                             
                          }}>Cancel Appointment</button>
+                         <br />
                     
                     </div>
             ) : (
