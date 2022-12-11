@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useRouter } from "next/router";
 
 function signUp(){
     const [gmail, setGmail]= useState('')
@@ -8,6 +9,8 @@ function signUp(){
     const [phoneNumber, setPhoneNumber]= useState('')
     const [recieveAppintmentReminders, setRecieveAppointmentReminders]= useState(false)
     const [recieveCancelledAppintmentReminders, setRecieveCancelledAppointmentReminders]= useState(false)
+
+    const router= useRouter() 
 
     function changeFunction(e, setFunction){
         setFunction(e.target.value)
@@ -39,6 +42,7 @@ function signUp(){
                     res.json()
                     .then(res=>{
                         console.log(res)
+                        router.push('/barber_account_page/schedule/setupschedule')
                     })
                 }
                 else{

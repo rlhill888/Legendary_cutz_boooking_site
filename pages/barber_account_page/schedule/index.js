@@ -7,6 +7,8 @@ import BarberScheduleAppointmentCard from "../../../src/components/BarberSchedul
 import TimeInputComponent from "../../../src/components/TimeInputComponent";
 import ScheduleTimeInput from "../../../src/components/ScheduleTimeInput";
 import axios from "axios";
+import TimeInput from "../../../src/components/TimeInput";
+import convertToMilitaryTime from "../../../lib/convertToMilitaryTime";
 
 
 function Scheduling(){
@@ -18,8 +20,8 @@ function Scheduling(){
     const [changeAvailibilityButton, setChangeAvailibilityButton]= useState(false)
     const [dayBlocked, setDayBlocked]= useState(false)
     const [updateData, setUpdateData]= useState(1)
+    const [showBlockOutPortionOfDayDiv, setShowBlockOutPortionOfDayDiv]= useState(false)
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    console.log(dayData)
 
  
     const router= useRouter()
@@ -147,8 +149,47 @@ function Scheduling(){
 
 
                 <h1>Change availibility</h1>
-                <h3>
-                    Block Out Day
+
+                <h3>{date} current availibility</h3>
+               
+                {dayBlocked ? <></> : <>
+                
+                <ScheduleTimeInput setUpdateData={setUpdateData} availibility={dayData.availibility} dayData={dayData}/>
+                
+                
+                </>}
+                <h3>Block Out Portion of day
+                    <input type='checkbox' checked={showBlockOutPortionOfDayDiv} onChange={(e)=> setShowBlockOutPortionOfDayDiv(e.target.checked) }></input>
+                </h3>
+                {!showBlockOutPortionOfDayDiv ? <></> 
+                : 
+                
+                <div>
+                    <h3>What Portion of the day would you like to block off?</h3>
+                    <TimeInput timeFunction={ async (startTime, endTime, fullTimeSlot)=>{
+
+                        try{
+                            const response = await axios({
+                                method: 'PATCH',
+                                url: '/api/barbers/schedule/blockOffTimeInDay',
+                                data: {
+                                    timeBlockedOff: fullTimeSlot,
+                                    dayCalendarId: dayData.id
+
+                                }
+                            })
+
+                            window.location.reload()
+                        }catch(e){
+                            console.log(e.response)
+                        }
+                    }} timeFunctionTitle={'Block off time portion'} />
+                    
+                </div>
+                }
+
+                 <h3>
+                    Block Out Entire Day
                     <input checked={dayBlocked}
                     onClick={async (e)=>{ 
                         console.log(e.target.checked)
@@ -175,12 +216,6 @@ function Scheduling(){
                         }
                         }} type='checkbox'></input>
                 </h3>
-                {dayBlocked ? <></> : <>
-                
-                <ScheduleTimeInput setUpdateData={setUpdateData} availibility={dayData.availibility} dayData={dayData}/>
-                
-                
-                </>}
                 
                 
             </div>

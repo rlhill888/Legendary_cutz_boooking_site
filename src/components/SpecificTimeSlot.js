@@ -56,14 +56,17 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                 
 
             }
-            if(pm===false && totaNumber ==='12'){
+            
+            
+            if(pm===false && totaNumber.trim() ==='12'){
                 totaNumber = '00'
             }
-            if(pm===true){
-               
+           
+            if(pm===true && totaNumber.trim()!=='12'){
+                
                 totaNumber =  parseInt(totaNumber) + 12
             }
-
+            
             return parseInt(totaNumber)
 
         }
@@ -87,7 +90,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
 
         let pm = false
 
-        if(finalLatestAppointmentHours > 12){
+        if(finalLatestAppointmentHours > 11){
             finalLatestAppointmentHours = finalLatestAppointmentHours - 12
             pm = true
         }
@@ -114,7 +117,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
 
         }
 
-        return(`${finalLatestAppointmentHours}:${ finalLatestAppointmentMinutes < 0 ? '0' : '' }${finalLatestAppointmentMinutes}${pm ? 'pm' : 'am'}`)
+        return(`${finalLatestAppointmentHours}:${ finalLatestAppointmentMinutes < 10 ? '0' : '' }${finalLatestAppointmentMinutes}${pm ? 'pm' : 'am'}`)
         
     }
 
@@ -131,6 +134,10 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         let time2Minutes= findMinutes(time2)
         let dedicatedAppointmentStartTimeHours = findHours(dedicatedAppointmentStartTime)
         let dedicatedAppointmentStartTimeMinutes = findMinutes(dedicatedAppointmentStartTime)
+
+        console.log(dedicatedAppointmentStartTime)
+
+        console.log( 'should say 12:',dedicatedAppointmentStartTimeHours)
 
         let totalAppointmentHours 
         let totalAppointmentMinutes
@@ -162,7 +169,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                         finalAppointmentHour = finalAppointmentHour - 12
                     }
                 }
-                return `${finalAppointmentHour}:${ finalAppointmentMinutes < 9 ? `0${finalAppointmentMinutes}` : finalAppointmentMinutes}${pm ? 'pm' : 'am'}`
+                return `${finalAppointmentHour}:${ finalAppointmentMinutes < 10 ? `0${finalAppointmentMinutes}` : finalAppointmentMinutes}${pm ? 'pm' : 'am'}`
             }
         }
 
@@ -192,7 +199,6 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
             let dedicatedAppointmentStartTimeTotalNum = parseInt((dedicatedAppointmentStartTimeHours).toString() + ((dedicatedAppointmentStartTimeMinutes).toString().length < 2 ? ('0' + (dedicatedAppointmentStartTimeMinutes).toString()) : (dedicatedAppointmentStartTimeMinutes).toString()))
             let endTimeTotalNum = parseInt((finalLatestAppointmentHours).toString() + ((finalLatestAppointmentMinutes).toString().length < 2 ? ('0' + (finalLatestAppointmentMinutes).toString()) : (finalLatestAppointmentMinutes).toString()))
             let appointmentStartTimeTotalNum = parseInt((time1Hour).toString() + ((time1Minutes).toString().length < 2 ? ('0' + (time1Minutes).toString() ): (time1Minutes).toString()))
-            
             if(dedicatedAppointmentStartTimeTotalNum >= appointmentStartTimeTotalNum && dedicatedAppointmentStartTimeTotalNum <= endTimeTotalNum){
                 return returnObject.appointmentTimeWithinTimeFrames = true
             }else{
@@ -232,11 +238,11 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                 
 
             }
-            if(pm===false && totaNumber ==='12'){
+            if(pm===false && totaNumber.trim() ==='12'){
                 totaNumber = '00'
             }
-            if(pm===true){
-               
+            
+            if(pm===true && totaNumber.trim()!=='12'){
                 totaNumber =  parseInt(totaNumber) + 12
             }
 

@@ -132,7 +132,7 @@ function Setupschedule(){
         })
         const date = new Date()
         const currentYear = date.getFullYear()
-        const yearArray = [currentYear, currentYear+1, currentYear+2, currentYear+3, currentYear+4]
+        const yearArray = [currentYear, currentYear+1, currentYear+2, currentYear+3, currentYear+4, currentYear+5, currentYear+6, currentYear+7]
         let requestGood 
         yearArray.map(async (year)=>{
             const scheduleyear= mapOutYear(year, daysOffArray, time)

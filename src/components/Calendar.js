@@ -116,7 +116,9 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
             function mapOutWeeks(){
                 
                 return weekArray.map((day, index)=>{
-                    let dayData = dayData = monthData.days[dayCount-1]
+                    let dayData = monthData.days[dayCount-1]
+
+                   
                     
                     
                     if(startDayCount===true){

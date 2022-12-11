@@ -2,6 +2,7 @@ import React from "react";
 import prisma from "../../../../lib/prisma";
 import axios from "axios";
 import { validateRoute } from "../../../../lib/auth";
+import convertToMilitaryTime from "../../../../lib/convertToMilitaryTime";
 
 
 export default validateRoute(async (req, res, barber)=>{
@@ -27,8 +28,21 @@ export default validateRoute(async (req, res, barber)=>{
     
                     }
                 })
-                console.log('month:', month)
-                return res.json(month)
+                
+            let newRenderedMonth = {...month}
+
+            for(let day in newRenderedMonth.days){
+                
+                const sortedAppointments = newRenderedMonth.days[day].appointments.sort((a, b)=>{
+                    console.log(convertToMilitaryTime(a.appointmentStartTime))
+                    const firstTimeMilitaryTimes = convertToMilitaryTime(a.appointmentStartTime)
+                    const secondTimeMilitaryTimes = convertToMilitaryTime(b.appointmentStartTime)
+                    return firstTimeMilitaryTimes - secondTimeMilitaryTimes
+                })
+                
+                newRenderedMonth.days[day].appointments= sortedAppointments
+            }
+            return res.json(newRenderedMonth)
             }catch(error){
                 console.log(error)
                 return res.json(error)

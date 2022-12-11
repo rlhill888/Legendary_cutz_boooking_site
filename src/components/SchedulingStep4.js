@@ -246,10 +246,12 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
 
                 const timeData = JSON.parse(dayData.timeSlotsTaken)
+                
                 let militsryTimeData = []
                 const availibility=pickAppartIndivisualTimesAndMakeThemMilitary(dayData.availibility)
                 const availibiityStart = parseInt(availibility[0])
                 const availibilityEnd = parseInt(availibility[1])
+                
                 timeData.map(time=>{
                     militsryTimeData.push(pickAppartIndivisualTimesAndMakeThemMilitary(time))
                 })
@@ -258,7 +260,9 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                 let firstTimeDetected= false
                 let lastTimeDetected= false
                 let indexOfMilitaryTimeArray = 0
+                
                 for(let times of militsryTimeData){
+                    
                     if(indexOfMilitaryTimeArray ===militsryTimeData.length-1){
                         lastTimeDetected = true
                     }
@@ -272,14 +276,23 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         })
                         firstTimeDetected = true
                         }else{
+                        
                         let timeSlotOpening = times[1]
-                        let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
-                       
-                        newtimeSlotArray.push({
+                        let timeSlotClose
+
+                        if(militsryTimeData.length=== 1){
+                            timeSlotClose= availibilityEnd
+                        }else{
+                            timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
+                            newtimeSlotArray.push({
                             timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
                             timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
                         
                         })
+                        }
+                         
+                       
+                        
                         firstTimeDetected = true
                         }
                         
