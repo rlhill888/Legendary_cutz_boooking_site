@@ -1,5 +1,8 @@
 import react, {useState} from "react";
 import MultipleUsersSchedulingComponentInput from "./MultipleUsersSchedulingComponentInput";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import {buttonPrimaryStyle} from '../lib/styles'
 
 function SchedulingStep1({setSchedulingStep, setServiceNamerray}){
     const [singleUserScheduling, setSingleUserScheduling]= useState(null)
@@ -29,56 +32,123 @@ function SchedulingStep1({setSchedulingStep, setServiceNamerray}){
 
     if(singleUserScheduling=== true){
         return(
-            <>
+            <div className="mainDiv">
                 <h2>What is Your Name?</h2>
-                <br />
-                <input name="User's Name" value={singleUserName} onChange={(e)=> setSingleUserName(e.target.value)}></input>
-                <br />
-                <br />
-                <button disabled={checkSingleUserNameInput()} onClick={()=>{
+                <div className="TextAndButtonDiv">
+                <TextField placeholder="Name" variant="standard" sx={{input: {color: 'white'}}} color="secondary" name="User's Name" value={singleUserName} onChange={(e)=> setSingleUserName(e.target.value)}></TextField>
+                <Button 
+                color="secondary"
+                variant="contained"
+                disabled={checkSingleUserNameInput()} onClick={()=>{
                     
                     setServiceNamerray([singleUserName])
                     setSchedulingStep(2)
-                    }}>next</button>
-            </>
+                    }}>next</Button>
+                </div>
+
+                <style jsx>{`
+                    .TextAndButtonDiv{
+                        display: flex;
+                        height: 100%;
+                        flex-direction: column;
+                        justify-content: space-around;
+                    }
+                    
+                    `}
+
+
+                </style>
+            </div>
         )
     }
     if(singleUserScheduling===false){
         return(
-            <>
+            <div className="mainDiv" style={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                flexDirection: 'column'
+            }}>
             <h2>What are thier names?</h2>
             <br />
-            <button onClick={()=>{
+            <Button
+            color='tertiary'
+            variant="outlined"
+            onClick={()=>{
                 let copyArray = [...customersArray]
                 copyArray.push('')
                 setCustomersArray(copyArray)
                 console.log(customersArray)
-            }}>Add a Person</button>
+            }}>Add a Person</Button>
             <br />
+            <div className="inputsDiv">
             {customersArray.map((input, index)=>{
                 
                 return <MultipleUsersSchedulingComponentInput setCustomersArray={setCustomersArray} customersArray={customersArray} index={index}/>
 
-            })}
+            })}    
+            </div>
             
-            <button onClick={()=>{
+            
+            <Button onClick={()=>{
                 setServiceNamerray(customersArray)
                 setSchedulingStep((previous)=> previous+1)
             }}
+            variant='contained'
+            color='secondary'
             disabled={checkIfAllInputsAreFilledIn()}
-            >next</button>
-            </>
+            >next</Button>
+
+                <style jsx>{`
+                    .something{
+                        
+                    }
+
+                    .inputsDiv{
+                        height: 50%;
+                        overflow-y: auto;
+                    }
+                    
+                    `}
+
+
+                </style>
+            </div>
         )
     }
 
     return(
-        <>
+        <div className="mainDiv"
+        style={{
+            marginTop: '5vh'
+        }}
+        >
+            
         <h2>Who are you scheduling these appointments for?</h2>
-                <button onClick={()=> setSingleUserScheduling(true)}>Just For Myself</button>
+        <div className="schedulingAppointmentsForDiv">
+                <Button variant="contained" color='secondary' onClick={()=> setSingleUserScheduling(true)}>Just For Myself</Button>
                 <br />
                 <br />
-                <button onClick={()=> setSingleUserScheduling(false)}>For Multiple People</button>
-        </>
+                <Button variant="contained" color='secondary'  onClick={()=> setSingleUserScheduling(false)}>For Multiple People</Button>
+
+            </div>
+
+
+                <style jsx>{`
+                    .schedulingAppointmentsForDiv{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        height: 40%;
+                        width: 100%;
+                        margin: auto;
+                    }
+                    
+                    
+                    `}
+
+
+                </style>
+        </div>
     )
 }
 

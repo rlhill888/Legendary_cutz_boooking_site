@@ -9,6 +9,21 @@ body {
   box-sizing: border-box;
 } 
 
+
+@keyframes highlight {
+  0% {
+    background-color: red;
+  }
+  100% {
+    background-color: none;
+  }
+}
+
+
+
+
+
+
 .IndivisualCalendarDiv{
   width: 14vw;
   max-width: 100px;
@@ -22,10 +37,26 @@ body {
   cursor: pointer;
 
 }
+
+.mainDiv{
+  height: 90vh;
+  width: 80vw;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: blue;
+  background: rgb(54,54,54);
+  background: linear-gradient(180deg, rgba(54,54,54,1) 0%, rgba(0,0,0,.5) 100%);
+  margin-top: 5vh;
+}
+
 .IndivisualCalendarDiv.disabled{
   background-color: rgb(56, 56, 56);
   cursor: none;
 }
+
 
 .calendarDayHeader{
   color: rgb(0, 0, 0);
@@ -62,7 +93,18 @@ body {
   }
   body {
     color: white;
-    background: 
-    rgba(69, 69, 69, 1);
+    background: #171717
+  }
+  h1{
+    font-family: sans-serif;
+  }
+  h2{
+    font-family: sans-serif;
+  }
+  h3{
+    font-family: sans-serif;
+  }
+  h4{
+    font-family: sans-serif;
   }
 }

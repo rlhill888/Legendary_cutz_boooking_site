@@ -1,4 +1,7 @@
 import react, {useState} from "react";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import {inputColorStyling} from '../lib/styles'
 
 function MultipleUsersSchedulingComponentInput({index, setCustomersArray, customersArray}){
     console.log(index)
@@ -10,12 +13,12 @@ function MultipleUsersSchedulingComponentInput({index, setCustomersArray, custom
     return(
         <>
         <p>{index + 1}</p>
-        <input value={customersArray[index]} onChange={(e)=> changeArray(e)}></input>
-        {customersArray.length >2 ? <button onClick={()=>{
+        <TextField color='secondary' variant="standard" sx={inputColorStyling} value={customersArray[index]} onChange={(e)=> changeArray(e)}></TextField>
+        {customersArray.length >2 ? <Button color='secondary' onClick={()=>{
             let copyArray = [...customersArray]
             copyArray.splice(index, 1)
             setCustomersArray(copyArray)
-        }}>Delete</button> : <> </>}
+        }}>X</Button> : <> </>}
         <br />
         <br />
         
