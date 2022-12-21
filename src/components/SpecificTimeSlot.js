@@ -1,5 +1,9 @@
 import { useState } from "react";
 import React from "react";
+import { Button } from "@mui/material";
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActivatedTimeSlot, totalAppointmentTime, totalAppointmentTimeInt, setTimeObj, setSchedulingStep}){
 
@@ -294,11 +298,11 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
     
    if(activatedTimeSlot === specificTimeSlotId){
     return(
-        <>
+        <div className="TimeSlotDiv" >
         <div onClick={()=>{
             setActivatedTimeSlot(specificTimeSlotId)
         }}>
-            <h3>From {times[0]} To {times[1]}</h3>
+            <h3>{times[0]} - {times[1]}</h3>
 
             <h3>Your appointment is {totalAppointmentTime} long</h3>
             
@@ -315,11 +319,21 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
              <div
              style={{
                 display: 'flex',
-                flexDirection: 'row'
+                flexDirection: 'row',
+                margin: 'auto',
+                justifyContent: 'center'
              }}
              >
                 
-                <input type='number'  value={AppointmentHour} onChange={(e)=> {
+                <TextField 
+                variant="filled"
+                color="secondary"
+                placeholder="hour"
+                sx={{
+                    input: {color: 'white'},
+                    
+                }}
+                type='number'  value={AppointmentHour} onChange={(e)=> {
                     if(e.target.value<=12 && e.target.value.toString().length <= 2 && e.target.value.toString() !== '-'){
                         setAppointmentHour(e.target.value)
                     }
@@ -328,25 +342,46 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                     }
                     
                     
-                    }} max={2}></input> 
+                    }} max={2}></TextField> 
                 <h3>:</h3>
-                 <input type='number' value={appointmentMinute} onChange={(e)=>{
+                 <TextField 
+                 variant="filled"
+                 color="secondary"
+                 placeholder="minute"
+                 sx={{input: {color: 'white'}}}
+                 type='number' value={appointmentMinute} onChange={(e)=>{
                         if(e.target.value >59 || e.target.value.toString().length >2){
                             return
                         }else{
                             setAppointemntMinute(e.target.value)
                         }
-                 }} maxLength={2}></input>
-                <select onChange={(e)=> setAmorPm(e.target.value)} value={amOrPm}>
-                    <option value={'pm'}>pm</option>
-                    <option value={'am'}>am</option>
-                </select>
+                 }} maxLength={2}></TextField>
+                <Select color="secondary" inputProps={{
+                    classes: {
+                        icon: {
+                            fill: 'white',
+                        }
+                    }
+                }}
+                sx={{
+                    color: 'white',
+                    icon: {
+                        fill: 'white',
+                    }
+                }}
+                onChange={(e)=> setAmorPm(e.target.value)} value={amOrPm}>
+                    <MenuItem  color='tertiary' value={'pm'}>pm</MenuItem>
+                    <MenuItem   color='tertiary' value={'am'}>am</MenuItem>
+                </Select>
              </div>
              <br />
 
              {error}
              <br />
-             <button onClick={()=>{
+             <Button 
+             variant="contained"
+             color='secondary'
+             onClick={()=>{
                 let dedicatedAppointmentTime = `${AppointmentHour}:${appointmentMinute}${amOrPm}`
                 let timeObj = checkAppointmentTimes(times[0], times[1], totalAppointmentTimeInt, dedicatedAppointmentTime)
                 
@@ -381,12 +416,31 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                     }
                     console.log(timeObj.appointmentTimeWithinTimeFrames)
                 }
-             }}>Next</button>
+             }}>Continue</Button>
            
             
 
         </div>
-        </>
+
+        <style jsx>{`
+            
+        .TimeSlotDiv{
+                height: auto;
+                width: 100%;
+                margin: auto;
+                text-align: center;
+                position: relative;
+                padding: 20px;
+                border-radius: 12px;
+                margin-top: 5vh;
+                border: solid #d93c3c 2px;
+                
+            }
+            
+            `}
+
+        </style>
+        </div>
     )
    }
    if(!times){
@@ -396,14 +450,16 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
     return(
         <>
 
-        <div
+        <Button
         onClick={()=>{
             setActivatedTimeSlot(specificTimeSlotId)
         }}
+        color='secondary'
+        variant="contained"
         >
             <h3>From {times[0]} To {times[1]}</h3>
 
-        </div>
+        </Button>
         
         </>
     )

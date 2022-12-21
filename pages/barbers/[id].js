@@ -6,6 +6,8 @@ import SchedulingStep3 from "../../src/components/SchedulingStep3";
 import SchedulingStep4 from "../../src/components/SchedulingStep4";
 import SchedulingStep5 from "../../src/components/SchedulingStep5";
 import Checkout from "../../src/components/Checkout";
+import Button from '@mui/material/Button';
+import Loading from '../../src/components/Loading'
 import axios from "axios";
 
 
@@ -102,17 +104,17 @@ function Page(){
         console.log(selectedServicesList)
         if(schedulingStep===2){
             return(
-                <>
-                {barberObj.name}'s page
-                <h1> { serviceNameArray.length > 1 ?   `Select the services ${serviceNameArray[currentPersonSelectingServices]} would like` :  `${serviceNameArray[currentPersonSelectingServices]}, Select Services you would like` }</h1>
-                <br />
+                <div className="mainDiv">
+                <h1 className="header"> { serviceNameArray.length > 1 ?   `Select the services ${serviceNameArray[currentPersonSelectingServices]} would like` :  `${serviceNameArray[currentPersonSelectingServices]}, Select Services you would like` }</h1>
+                <div className="itemsDiv">
                 {barberObj.services.map(((service)=>{
                     return(
                     <ServiceCard setservicesCheckedObj={setservicesCheckedObj} servicesCheckedObj={servicesCheckedObj} setBarberObj={setBarberObj}   service={service} selectedServicesList={selectedServicesList} setSelectedServicesList={setSelectedServicesList}/>
                     )
                     
                 }))}
-                <button onClick={()=>{
+               </div>
+                <Button color="secondary" variant="contained" sx={{marginTop: '20px', width: '100%'}} onClick={()=>{
                     if(currentPersonSelectingServices + 2 > serviceNameArray.length){
                         let copyObj= {...completePurchaseObj}
 
@@ -136,9 +138,22 @@ function Page(){
                 disabled={checkServicesArentEmpty()}
                 >
                     Next
-                </button>
-        
-                </>
+                </Button>
+                <style jsx>{`
+                    .header{
+                        font-size: 1.5rem;
+                    }
+                    .itemsDiv{
+                        overflow-y: auto;
+                        height: 70%;
+                    }
+                   
+                    
+                    `}
+                </style>
+
+                
+                </div>
             )
         }
 

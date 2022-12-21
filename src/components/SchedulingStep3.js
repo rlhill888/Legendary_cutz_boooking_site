@@ -1,4 +1,5 @@
 import react, {useEffect, useState} from "react";
+import Button from '@mui/material/Button';
 
 function SchedulingStep3({completePurchaseObj, setSchedulingStep, setTotalAppointmentTime, setTotalAppointmentTimeInt, setrecieptsArray, recieptsArray, setNameArray}){
 console.log(completePurchaseObj)
@@ -138,7 +139,14 @@ console.log(`The total time your appointment will take is ${totalObj.totalDurrat
 }
 console.log(recieptsArray)
     return (
-        <>
+        <div className="mainDiv"
+        style={{
+            textAlign: 'left'
+        }}
+        >
+            <div className="receiptDetails">
+
+            
        {recieptsArray.map((array)=>{
         console.log(array)
         return (
@@ -165,13 +173,32 @@ console.log(recieptsArray)
        <h1>Total Price: ${totalReceipt.totalPrice} </h1>
        <br />
        </>) : <> </>}
+
+       </div>
        
-       <button
+       <Button
+       sx={{
+        marginTop: '20px'
+       }}
        onClick={()=>{
         setSchedulingStep(4)
        }}
-       >Select a date and time for your appointment</button>
-        </>
+       color='secondary'
+       variant="contained"
+       >Select a date and time for your appointment</Button>
+       <style jsx>{`
+        .dateButton{
+            position: absolute;
+            bottom: 20px;
+        }
+        .receiptDetails{
+            overflow-y: auto;
+            height:80%;
+        }
+        `}
+
+       </style>
+        </div>
     )
 }
 

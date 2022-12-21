@@ -1,6 +1,8 @@
 import react, {useEffect, useState} from "react";
 import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
 import axios from "axios";
+import Loading from "./Loading";
+import { Button } from "@mui/material";
 
 
 function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays, updateCalendar}){
@@ -185,7 +187,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
     if(monthData===null){
         return(
             <>
-            <h1>Loading...</h1>
+            <Loading />
             </>
         )
     }
@@ -194,7 +196,8 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
 
         {disableSelectionsForPreviousDaysPastTodaysDate ? 
             determineIfMonthAndYearAreBeforeTodaysDate() ?
-             <button
+             <Button
+             color="secondary"
              onClick={()=>{
                  if(month - 1 < 0){
                      setYear(year - 1)
@@ -203,13 +206,14 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                      setMonth(previous=> previous - 1)
                  }
              }}
-             >Previous Month</button> : 
-             <><button disabled>Previous Month</button> </>
+             >Previous Month</Button> : 
+             <><Button  color="secondary" disabled>Previous Month</Button> </>
              
              
              
              :
-             <button
+             <Button
+             color="secondary"
              onClick={()=>{
                  if(month - 1 < 0){
                      setYear(year - 1)
@@ -218,18 +222,18 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                      setMonth(previous=> previous - 1)
                  }
              }}
-             >Previous Month</button>
+             >Previous Month</Button>
     
         }
         
-        <button onClick={()=>{
+        <Button color="secondary"onClick={()=>{
             if(month + 1 > 11){
                 setYear(year + 1)
                 return setMonth(0)
             }else{
                 setMonth(previous=> previous + 1)
             }
-        }}>Next Month</button>
+        }}>Next Month</Button>
         <h1>{monthArray[month]} {year}</h1>
         <div
         style={{

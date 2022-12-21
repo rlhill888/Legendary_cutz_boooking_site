@@ -1,5 +1,5 @@
 export default colorScheme ={
-    primaryColor: '#B64949',
+    primaryColor: '#d93c3c',
     secondColor: '#5E605F',
     tertiary: 'black'
 }

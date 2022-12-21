@@ -44,7 +44,7 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
 
     return(
         <>
-        <div onClick={()=>{
+        <div style={blankCalendarDate ? {opacity: '0'} : {}} onClick={()=>{
             setDateOfAppointmentData(dayData)
             if(!disabled && !blankCalendarDate && !disabledDay){
 
@@ -58,7 +58,9 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
             <> </> :
             <h2 
             className="calendarDayHeader"
-            >{day}</h2>
+            >
+                {day}
+                </h2>
         }
             
             
@@ -70,7 +72,7 @@ function IndivisualCalendarDay({disabled, blankCalendarDate, day, availabilitySt
 <h2
             className={determineAvailabilityStatus()}
             >
-                {numberOfAppointments}
+                {/* {numberOfAppointments} */}
             </h2>
 
             }
