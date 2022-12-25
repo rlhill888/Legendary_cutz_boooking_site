@@ -454,6 +454,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         onClick={()=>{
             setActivatedTimeSlot(specificTimeSlotId)
         }}
+        sx={{marginBottom: '15px'}}
         color='secondary'
         variant="contained"
         >

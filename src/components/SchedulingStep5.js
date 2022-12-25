@@ -2,6 +2,8 @@ import react, { useState } from "react";
 import Reciept from "./reciept";
 import axios from "axios";
 import getStripe from "../../lib/get-stripe";
+import { Button } from "@mui/material";
+import Loading from "./Loading";
 
 function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData, nameArray}){
     let testDate
@@ -13,8 +15,20 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
     }
   console.log(testDate)
     const [totalReceipt, setTotalReciept]= useState({})
+    const [startedCheckoutProcess, setStartedCheckoutProcess]= useState(false)
 
     const redirectToCheckout = async ()=> {
+
+        function figureOutMonthDate(month, year){
+            if(parseInt(month) < 10 && month.length > 1){
+                let newMonth = month
+                newMonth= newMonth.substring(1)
+                console.log(`${newMonth}/${year}`)
+                return `${newMonth}/${year}`
+            }else{
+                return `${month}/${year}`
+            }
+        }
 
         let testDate
         let month= ''
@@ -67,7 +81,7 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
             appintmnetCustomerNames: JSON.stringify(nameArray),
             phomeNumber: '215', 
             dayCalendarId: dayData.id,
-            monthDate: `${month}/${year}`,
+            monthDate: figureOutMonthDate(month, year),
             year: parseInt(year)
 
         })
@@ -80,22 +94,31 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
     function turnRecieptsArrayIntoAString(){
         
     }
+    if(startedCheckoutProcess){
+        return(
+            <Loading loadingText={'Proceeding To Checkout...'}/>
+        )
+    }
 
     return(
 
-        <>
-        step 5 
+        <div className="mainDiv" style={{
+            overflowY: 'auto'
+        }}>
         <Reciept totalReceipt={totalReceipt} setTotalReciept={setTotalReciept} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime}  completePurchaseObj={completePurchaseObj} timeObj={timeObj}/>
-        <button
+        <Button
+        variant="contained"
+        color="secondary"
         onClick={()=>{
+            setStartedCheckoutProcess(true)
             redirectToCheckout()
         }}
-        >Pay $15 Down Deposit</button>
+        >Pay $15 Down Deposit</Button>
 
 
 
 
-        </>
+        </div>
     )
 }
 

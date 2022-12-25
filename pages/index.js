@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
+import Loading from '../src/components/Loading'
 export default function Home() {
   const [barbers, setBarbers]= useState(null)
   const router = useRouter()
@@ -24,7 +25,7 @@ export default function Home() {
   //^ this array will be fetched from backend
     if(!barbers){
       return(
-        <h1>Loading...</h1>
+        <Loading />
       )
     }
 

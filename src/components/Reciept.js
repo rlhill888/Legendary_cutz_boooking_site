@@ -140,7 +140,6 @@ console.log(`The total time your appointment will take is ${totalObj.totalDurrat
 console.log(recieptsArray)
     return (
         <>
-        this is the reciept
        {recieptsArray.map((array, index)=>{
         console.log(array)
         return (

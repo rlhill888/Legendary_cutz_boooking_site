@@ -84,7 +84,11 @@ function Sucess(){
 
     return(
         <>
-        <div>
+        <div className="mainDiv"
+        style={{
+            overflowY: 'auto'
+        }}
+        >
             {error ? (
                 <div>
                     <h1>There was an error</h1>
@@ -98,7 +102,7 @@ function Sucess(){
                             <>
                             <div>
                                 <h3>Your Appoitnment Services:</h3>
-                                <ol>
+                                <ol style={{textAlign: 'left'}}>
                                     {reciept.Services.map(service=>{
                                         return <li>{service}</li>
                                     })}
@@ -116,11 +120,14 @@ function Sucess(){
                             <div>
                                 <h2>Reciept for {reciept.Name}</h2>
                                 <h3>Services:</h3>
-                                <ol>
+                                <div>
+                                  <ol style={{textAlign: 'left'}}>
                                     {reciept.Services.map(service=>{
                                         return <li>{service}</li>
                                     })}
-                                </ol>
+                                    </ol>  
+                                </div>
+                                
                                 <br />
                                 <h2>Total Time of Services for {reciept.Name} {reciept.totalDurration}</h2>
                                 <h2>Total Price for {reciept.Name} {reciept.totalPrice}</h2>

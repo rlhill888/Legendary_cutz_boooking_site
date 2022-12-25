@@ -98,25 +98,6 @@ export default async (req, res)=>{
             // sort time slots functipn
             timeSlotsTakenArray.push(`${body.appointmentStartTime} - ${body.appointmentEndTime}`)
 
-            timeSlotsTakenArray = timeSlotsTakenArray.sort((a, b)=>{
-                const firstTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(a)
-                const secondTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(b)
-                return firstTimeMilitaryTimes[0] - secondTimeMilitaryTimes[0]
-            })
-            try{
-                const updateDay = await prisma.dayCalendar.update({
-                    where: {
-                        id: dayCalendar.id
-                    },
-                    data: {
-                        timeSlotsTaken: JSON.stringify(timeSlotsTakenArray) 
-                    }
-                })
-
-            }catch(error){
-                console.log(error)
-                res.json({error: error})
-            }
         try{
             const year = await prisma.yearCalendar.findUnique({
                 where: {
@@ -128,7 +109,7 @@ export default async (req, res)=>{
             })
             yearId = year.id
         }catch(error){
-            console.log(error)
+          return  console.log(error)
         }
 
         try{
@@ -142,7 +123,7 @@ export default async (req, res)=>{
             })
             monthId = month.id
         }catch(error){
-            console.log(error)
+           return console.log(error)
         }
         console.log(yearId)
         
@@ -185,7 +166,27 @@ export default async (req, res)=>{
             console.log(error)
             res.status(401).json({statusCode: 500, message: error.message})
         return 
-        }            
+        }
+        timeSlotsTakenArray = timeSlotsTakenArray.sort((a, b)=>{
+            const firstTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(a)
+            const secondTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(b)
+            return firstTimeMilitaryTimes[0] - secondTimeMilitaryTimes[0]
+        })
+        try{
+            const updateDay = await prisma.dayCalendar.update({
+                where: {
+                    id: dayCalendar.id
+                },
+                data: {
+                    timeSlotsTaken: JSON.stringify(timeSlotsTakenArray) 
+                }
+            })
+
+        }catch(error){
+            console.log(error)
+          return  res.json({error: error})
+        }
+
         }else{
             console.log('false')
         }

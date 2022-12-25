@@ -18,7 +18,7 @@ function ServiceCard({ service, selectedServicesList,  setSelectedServicesList, 
                 <h3>${service.price.toFixed(2)}</h3>
             </div>
             <div className="checkboxDiv">
-                <Checkbox sx={{color: 'white'}} id={`${service.name} checkbox`} color='secondary' size="medium" checked={servicesCheckedObj[`${service.name}`].checked} name={`checkbox ${service.name}`} 
+                <Checkbox sx={{color: 'white', width: '100%', maxWidth: '100px', height: '100%', maxHeight: '100px', margin: 'auto'}} id={`${service.name} checkbox`} color='secondary' size="medium" checked={servicesCheckedObj[`${service.name}`].checked} name={`checkbox ${service.name}`} 
                 onClick={()=>{
                     const checkbox = document.getElementById(`${service.name} checkbox`)
                     console.log(checkbox.checked)
