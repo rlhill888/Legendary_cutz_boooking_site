@@ -401,7 +401,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
                     if(timeObj.appointmentTimeWithinTimeFrames==='too late'){
                         return setError(<>
                             <div>
-                                <h2>{dedicatedAppointmentTime} is too late to start your appointment. Pick a time no later then {times[1]} </h2>
+                                <h2>{dedicatedAppointmentTime} is too late to start your appointment. Pick a time no later then {latestAppointmentTime} </h2>
                             </div>
                             </>)
                     }
@@ -409,7 +409,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
 
                        return  setError(<>
                             <div>
-                                <h2>Please pick a time that is from {times[0]} - {times[1]} </h2>
+                                <h2>Please pick a time that is from {times[0]} - {latestAppointmentTime} </h2>
                             </div>
                             </>)
 

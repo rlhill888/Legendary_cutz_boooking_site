@@ -9,6 +9,7 @@ import ScheduleTimeInput from "../../../src/components/ScheduleTimeInput";
 import axios from "axios";
 import TimeInput from "../../../src/components/TimeInput";
 import convertToMilitaryTime from "../../../lib/convertToMilitaryTime";
+import Modal from '../../../src/components/Modal'
 
 
 function Scheduling(){
@@ -23,6 +24,7 @@ function Scheduling(){
     const [showBlockOutPortionOfDayDiv, setShowBlockOutPortionOfDayDiv]= useState(false)
     const [blockedOffTimeAppointementErrorTime, setBlockedOffTimeAppointementErrorTime]= useState(null)
     const [cancelAppointmentStripeSessionId, setCancelAppointmentStripeSessionId]= useState(null)
+    const [testModal, setTestModal]= useState(true)
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
  
@@ -130,7 +132,13 @@ function Scheduling(){
 
     return(
         <>
+        <Modal modalActive={testModal} setModalActive={setTestModal} title={'Some crazy rediculous ling title fbsjakcbskabcdjksabcdhsjacvbsak'}>
+
+
+            <h1>hello</h1>
+        </Modal>
         <BarberNavigationMenu></BarberNavigationMenu>
+        
         
         <br />
         <br />
