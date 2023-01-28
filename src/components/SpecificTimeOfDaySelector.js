@@ -3,9 +3,8 @@ import react, {useState} from "react";
 import SpecificTimeSlot from "./SpecificTimeSlot";
 
 
-function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppointmentTime, totalAppointmentTimeInt, setTimeObj, setSchedulingStep, dayData}){
+function SpecificTimeOfDaySelector({timeSlotArray, dateOfAppointment, totalAppointmentTime, totalAppointmentTimeInt, setTimeObj, setSchedulingStep, dayData, activatedTimeSlot, setActivatedTimeSlot}){
     console.log(timeSlotArray)
-    const [activatedTimeSlot, setActivatedTimeSlot]= useState(0)
 
     function mapSpecificTimeSlots(){
         let specificTimeSlotId = 0

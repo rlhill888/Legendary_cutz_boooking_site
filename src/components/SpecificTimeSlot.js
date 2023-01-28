@@ -302,15 +302,15 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         <div onClick={()=>{
             setActivatedTimeSlot(specificTimeSlotId)
         }}>
-            <h3>{times[0]} - {times[1]}</h3>
+            <h3>{times[0]} - {latestAppointmentTime}</h3>
 
             <h3>Your appointment is {totalAppointmentTime} long</h3>
             
            
-            <h3> You can start your appointment at any time from {times[0]} - {latestAppointmentTime}.
+            {/* <h3> You can start your appointment at any time from {times[0]} - {latestAppointmentTime}.
               <br />
               <br />
-                The latest you can start this appointemnt is at {latestAppointmentTime}. </h3>
+                The latest you can start this appointemnt is at {latestAppointmentTime}. </h3> */}
              <h3>What time would you like to start your appointemnt?</h3>
              <br />
             
@@ -458,7 +458,7 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         color='secondary'
         variant="contained"
         >
-            <h3>From {times[0]} To {times[1]}</h3>
+            <h3>From {times[0]} To {latestAppointmentTime}</h3>
 
         </Button>
         

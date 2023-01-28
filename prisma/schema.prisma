@@ -104,7 +104,8 @@ model DayCalendar{
   specialAvailibility Boolean @default(false)
   weekDayInt Int
   weekDayString String
-  timeSlotsTaken String
+  timeSlotsTaken String @default("[]")
+  blockedOffTimesArray String @default("[]")
   dayBlockedOff Boolean
   timeUnavailable String
   date String

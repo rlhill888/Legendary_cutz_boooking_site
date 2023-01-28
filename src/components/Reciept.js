@@ -139,7 +139,7 @@ console.log(`The total time your appointment will take is ${totalObj.totalDurrat
 
 console.log(recieptsArray)
     return (
-        <>
+        <div>
        {recieptsArray.map((array, index)=>{
         console.log(array)
         return (
@@ -158,22 +158,29 @@ console.log(recieptsArray)
             </div>
         )
        })}
-       
+       <hr></hr>
        <h2>Total Time: {makeDurrationStringForTotalTime()}</h2>
        <h2>Your appointemnt will be from {timeObj.appointmentStartTime} to {timeObj.appointmentEndTime}</h2>
        <h1>Total Price: ${totalReceipt.totalPrice} </h1>
+        <hr />
        <h2>To finish booking your appointment at {timeObj.appointmentStartTime}, you must pay a $15 down deposit.
        <br />
        <br />
         After paying the down deposit, you will pay the remaining balance after your appointment is finished. </h2>
+
+        <hr></hr>
+
+        
         <h1>Total amount to be  paid after appointment is finished:
             <br />
             <br />
              ${totalReceipt.totalPrice - 15} </h1>
         
        <br />
-  
-        </>
+       <style jsx>{`
+        
+        `}</style>
+        </div>
     )
 }
 

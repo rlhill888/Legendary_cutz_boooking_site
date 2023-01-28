@@ -78,7 +78,6 @@ export default validateRoute(async (req, res, barber)=>{
                     monthId: monthId,
                     yearId: yearId,
                     timeUnavailable: '',
-                    timeSlotsTaken: ''
                 }
             })
             return day

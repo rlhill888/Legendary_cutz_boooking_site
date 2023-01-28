@@ -51,7 +51,7 @@ export default async (req, res)=>{
         let monthId
         let timeSlotsTakenArray
 
-        if(dayCalendar.timeSlotsTaken === ''){
+        if(dayCalendar.timeSlotsTaken === '' || dayCalendar.timeSlotsTaken==='[]'){
 
          timeSlotsTakenArray = []
         const militaryTimesForAppointmentTime= pickAppartIndivisualTimesAndMakeThemMilitary(`${body.appointmentStartTime} - ${body.appointmentEndTime}`)

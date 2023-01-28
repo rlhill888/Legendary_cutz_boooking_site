@@ -5,7 +5,7 @@ import Loading from "./Loading";
 import { Button } from "@mui/material";
 
 
-function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays, updateCalendar}){
+function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays, updateCalendar, setResetFunction, resetValue}){
     const monthArray = ['January', 'Febuary', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const weekArray= ['Sun', 'Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat' ]
     const calendarNumberOfWeeksInAMonthArray = [1, 2, 3, 4, 5, 6]
@@ -130,37 +130,37 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay  blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay  resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false){
                    
                     foundFirstOfMonthStartDate = true
-                    return <IndivisualCalendarDay blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
                 }
 
 
                 if(foundFirstOfMonthStartDate === false && index !== firstofMonthDay || dayCount > monthArray[month]){
                     
-                    return <IndivisualCalendarDay blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
                 }
 
 
                 if( dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                    
-                    return   <IndivisualCalendarDay blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
 
                 else{
                   
-                    return <IndivisualCalendarDay blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
                 }
                 
             })
@@ -197,8 +197,10 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         {disableSelectionsForPreviousDaysPastTodaysDate ? 
             determineIfMonthAndYearAreBeforeTodaysDate() ?
              <Button
+             
              color="secondary"
              onClick={()=>{
+                setResetFunction(resetValue)
                  if(month - 1 < 0){
                      setYear(year - 1)
                      return setMonth(11)
@@ -215,6 +217,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
              <Button
              color="secondary"
              onClick={()=>{
+                setResetFunction(resetValue)
                  if(month - 1 < 0){
                      setYear(year - 1)
                      return setMonth(11)
@@ -227,6 +230,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         }
         
         <Button color="secondary"onClick={()=>{
+            setResetFunction(resetValue)
             if(month + 1 > 11){
                 setYear(year + 1)
                 return setMonth(0)

@@ -21,6 +21,8 @@ function Scheduling(){
     const [dayBlocked, setDayBlocked]= useState(false)
     const [updateData, setUpdateData]= useState(1)
     const [showBlockOutPortionOfDayDiv, setShowBlockOutPortionOfDayDiv]= useState(false)
+    const [blockedOffTimeAppointementErrorTime, setBlockedOffTimeAppointementErrorTime]= useState(null)
+    const [cancelAppointmentStripeSessionId, setCancelAppointmentStripeSessionId]= useState(null)
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
  
@@ -66,6 +68,56 @@ function Scheduling(){
         fetchData()
        
     }, [])
+
+    function detectBlockedTimeErrors(){
+            return(
+            <div>
+                <h3>
+                    The time you tried to block off iterferes with an appoinment from {blockedOffTimeAppointementErrorTime}. Would you like to cancel this appointment?
+                </h3>
+                <br />
+                <button onClick={async ()=>{
+
+                    try{
+                        const response = await axios({
+                        url: '/api/appointments/cancel_appointment',
+                        method: 'PATCH',
+                        data: {
+                            stripeSessionsId: cancelAppointmentStripeSessionId
+                        }
+                        }).then( async ()=>{
+
+                            console.log(response.data)
+                            try{
+                                const response = await axios({
+                                    method: 'PATCH',
+                                    url: '/api/barbers/schedule/blockOffTimeInDay',
+                                    data: {
+                                        timeBlockedOff: fullTimeSlot,
+                                        dayCalendarId: dayData.id
+        
+                                    }
+                                })
+                                console.log(response)
+                                window.location.reload(false)
+                            }catch(e){
+                                console.log(e.response)
+                            }
+                        })
+                    
+
+                    
+
+
+                    }catch(error){
+                        console.log(error.response)
+                    }
+                    
+                }}>Yes</button>
+                <button onClick={()=> setBlockedOffTimeAppointementErrorTime(null)}>No</button>
+            </div>
+            )
+    }
 
   
 
@@ -123,7 +175,7 @@ function Scheduling(){
        <br />
         <br />
         
-        <Calendar updateCalendar={updateData}  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData} barberScheduleMenu={true}/>
+        <Calendar setResetFunction={setDate} resetValue={''} updateCalendar={updateData}  barberId={barber.id} setDateOfAppointment={setDate} setDateOfAppointmentData={setDayData} barberScheduleMenu={true}/>
 
 
     {date ? 
@@ -132,7 +184,8 @@ function Scheduling(){
     <div>
         <h2>{date}</h2>
         <br />
-        {dayData.availibility === 'none' ? <h3>You are not availible for this day</h3> : 
+        {
+        dayData.availibility === 'none' ? <h3>You are not availible for this day</h3> : 
          <h3>Your Availibility for this day is {dayData.availibility}</h3>
         }
 
@@ -178,18 +231,62 @@ function Scheduling(){
 
                                 }
                             })
-
+                            console.log(response)
                             window.location.reload()
                         }catch(e){
                             console.log(e.response)
+                            if(e.response.data.error === 'Blocked Off Time Interferes With a Scheduled Appointment'){
+                                setBlockedOffTimeAppointementErrorTime(e.response.data.time)
+                                setCancelAppointmentStripeSessionId(e.response.data.stripeSessionsId)
+                            }
+                            if(e.response.data.error ==='Blocked Off Time Interferes With another blocked off time'){
+                                console.log('Blocked Off Time Interferes With another blocked off time')
+                            }
                         }
                     }} timeFunctionTitle={'Block off time portion'} />
+                    {blockedOffTimeAppointementErrorTime ? 
+
+                        detectBlockedTimeErrors()
+
+                        :
+                        <></>
+                    
+                    
+                    }
+
+                    <h3>Currently Blocked Out Times:</h3>
+                    {JSON.parse(dayData.blockedOffTimesArray).map(time=>{
+                        return(
+                            <p>{time} 
+                            <button
+                            // when this button is clicked, remove that time that is blocked off
+                            onClick={async ()=>{
+                                try{
+                                    const response = await axios({
+                                        method: 'PATCH',
+                                        url: '/api/barbers/schedule/removeBlockedOffTime',
+                                        data: {
+                                            timeBlockedOff: time,
+                                            dayCalendarId: dayData.id
+        
+                                        }
+                                    })
+                                    console.log(response)
+                                    window.location.reload()
+                                }catch(e){
+                                    console.log(e.response)
+                                }
+                            }}
+                            >X</button>
+                            </p>
+                        )
+                    })}
                     
                 </div>
                 }
 
                  <h3>
-                    Block Out Entire Day
+                    Block Out Appointment Scheduling for the rest of this Day
                     <input checked={dayBlocked}
                     onClick={async (e)=>{ 
                         console.log(e.target.checked)

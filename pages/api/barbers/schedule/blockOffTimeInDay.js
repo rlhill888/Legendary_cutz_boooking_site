@@ -192,12 +192,31 @@ export default validateRoute(async (req, res, barber)=>{
         return (`${hour}:${minute} ${amOrPM}`)
     }
 
+    function createSpaceInTime(time){
+        let hitAmOrPm = false
+        let index= -1
+        let string = ''
+        for(let character of time){
+            index++
+            if(character.toLowerCase() === 'a' || character.toLowerCase() === 'p'){
+                hitAmOrPm = true
+                string = string + ' '
+                break;
+            }else{
+                string = string + character
+            }
+            
+        }
+        const newString = string + time.substring(index)
+        return newString
+    }
+
 
     ///
 
 
 
-    if(req.method === 'PATCH'){
+    if(req.method === 'PATCH' && barber){
 
 
         const body = req.body
@@ -206,14 +225,80 @@ export default validateRoute(async (req, res, barber)=>{
         const day = await prisma.dayCalendar.findUnique({
             where: {
                 id: body.dayCalendarId
+            },
+            include: {
+                appointments: true
             }
         })
 
-
+        
+        const blockedOffTimesArray = JSON.parse(day.blockedOffTimesArray)
         const timeToBeBlockedOff = body.timeBlockedOff
         const timeSlotsTaken = JSON.parse(day.timeSlotsTaken)
-
         const timeBlockedOffMilitaryTime = pickAppartIndivisualTimesAndMakeThemMilitary(timeToBeBlockedOff)
+
+        if(blockedOffTimesArray.length >=1){
+            for(let time of blockedOffTimesArray){
+                const timeSlotMilitaryTime= pickAppartIndivisualTimesAndMakeThemMilitary(time)
+                if((timeSlotMilitaryTime[0] > timeBlockedOffMilitaryTime[0] && timeSlotMilitaryTime[0] < timeBlockedOffMilitaryTime[1]) || (timeSlotMilitaryTime[1] > timeBlockedOffMilitaryTime[0] && timeSlotMilitaryTime[1] < timeBlockedOffMilitaryTime[1]) ){
+                    res.status(422).send({error: 'Blocked Off Time Interferes With another blocked off time', time: time})
+                }
+            }  
+        }
+
+        if(timeSlotsTaken.length >=1){
+            for(let time of timeSlotsTaken){
+                const timeSlotMilitaryTime= pickAppartIndivisualTimesAndMakeThemMilitary(time)
+                console.log(`${timeSlotMilitaryTime[0]} > ${timeBlockedOffMilitaryTime[0]} and ${timeSlotMilitaryTime[0]} < ${timeBlockedOffMilitaryTime[1]}`)
+                if((timeSlotMilitaryTime[0] > timeBlockedOffMilitaryTime[0] && timeSlotMilitaryTime[0] < timeBlockedOffMilitaryTime[1]) || (timeSlotMilitaryTime[1] > timeBlockedOffMilitaryTime[0] && timeSlotMilitaryTime[1] < timeBlockedOffMilitaryTime[1]) ){
+                    console.log('true')
+
+                    let stripeSessionsId
+                    const appointmentIndex = day.appointments.findIndex(appointment=>{
+                    console.log(time)
+                    console.log(`${createSpaceInTime(appointment.appointmentStartTime)} - ${ createSpaceInTime(appointment.appointmentEndTime)}`)
+
+                        return time === `${(appointment.appointmentStartTime)} - ${(appointment.appointmentEndTime)}`
+                    })
+
+                    console.log(`apppointment index:`, appointmentIndex)
+                    stripeSessionsId = day.appointments[appointmentIndex].stripeSessionsId
+                    return res.status(422).send({error: 'Blocked Off Time Interferes With a Scheduled Appointment', time: time, stripeSessionsId})
+                    
+                }else{
+                    console.log('false')
+                }
+
+            }            
+        }
+
+
+
+
+
+
+
+
+        
+       
+        let newBlockedOffTimesArray = [...blockedOffTimesArray, body.timeBlockedOff.toLowerCase()]
+   
+        try{
+            const updatedDay = await prisma.dayCalendar.update({
+                where: {
+                    id: day.id
+                },
+                data: {
+                    blockedOffTimesArray: JSON.stringify(newBlockedOffTimesArray)
+                }
+            })
+        }catch(error){
+            return res.status(405).send('Error adding blocked off time to day')
+        }
+
+
+
+        
 
         let newTimeSlotArray = []
         let blockOffTimeStartTime= null

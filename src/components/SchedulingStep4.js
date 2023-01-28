@@ -15,11 +15,12 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
     //     ['6:45pm', '9:00pm']
     // ]
     const [timeSlotArray, setTimeSlotArray]= useState(null)
+    const [activatedTimeSlot, setActivatedTimeSlot]= useState(0)
   
     useEffect(()=>{
         console.log(dayData)
         if(dayData){
-            if(dayData.timeSlotsTaken === ''){
+            if(dayData.timeSlotsTaken === '' || dayData.timeSlotsTaken === '[]'){
 
                 // setTimeSlotArray([dayData.availibility])
                 const availibiltyTime = dayData.availibility.toLowerCase()
@@ -336,7 +337,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
     return(
         <>
-        <Calendar blockOutUnavailibleDays={true} setDateOfAppointmentData={setDayData} barberId={barberId} disableSelectionsForPreviousDaysPastTodaysDate setDateOfAppointment={setDateOfAppointment}/>
+        <Calendar blockOutUnavailibleDays={true} setDateOfAppointmentData={setDayData} barberId={barberId} disableSelectionsForPreviousDaysPastTodaysDate setDateOfAppointment={setDateOfAppointment} setResetFunction={setActivatedTimeSlot} resetValue={0}/>
 
         {dateOfAppointment  ? 
         
@@ -349,7 +350,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
         >
 
         
-        <SpecificTimeOfDaySelector dayData={dayData} setSchedulingStep={setSchedulingStep} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} timeSlotArray={timeSlotArray} dateOfAppointment={dateOfAppointment} />
+        <SpecificTimeOfDaySelector setActivatedTimeSlot={setActivatedTimeSlot} activatedTimeSlot={activatedTimeSlot} dayData={dayData} setSchedulingStep={setSchedulingStep} setTimeObj={setTimeObj} totalAppointmentTimeInt={totalAppointmentTimeInt} totalAppointmentTime={totalAppointmentTime} timeSlotArray={timeSlotArray} dateOfAppointment={dateOfAppointment} />
         </div>
         
         : <> </>}
