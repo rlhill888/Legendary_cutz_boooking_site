@@ -22,6 +22,8 @@ export default async function handler(req, res){
         return newString
     }
 
+
+
     if(req.method === 'PATCH'){
         try{
             const appointment = await prisma.appointment.findUnique({
@@ -53,6 +55,47 @@ export default async function handler(req, res){
                         timeSlotsTaken: JSON.stringify(dayTimeSlotArray)
                     }
                 })
+
+                function findNameString(){
+                    let string = ''
+                    const nameArray = JSON.parse(appointment.appintmnetCustomerNames)
+                    if(nameArray.length === 1){
+                        return nameArray[0]
+                    }else{
+                        nameArray.map((name, index)=>{
+                            if(index === 0){
+                                return string = string + `${name}`
+                            }
+                            if(index === nameArray.length - 1){
+                                return string = string + ` and ${name}`
+                            }else{
+                                return string = string + `, ${name}`
+                            }
+                        })
+                        return string
+                    }
+                }
+
+                const today = new Date();
+                const date =  (today.getMonth()+1) + '/' +  today.getDate() + '/' + today.getFullYear();
+                const time = today.getHours() + ":" + today.getMinutes();
+
+                
+
+                const cancelMessage = await prisma.message.create({
+                    data: {
+                        title: `Appointment for ${findNameString()} Cancelled`,
+                        cancelledAppointmentNotification: true,
+                        cancelledAppointmentId: appointment.id,
+                        messageText: `Appointment for ${findNameString()} has been cancelled on ${date} at ${time}`,
+                        messageData: '',
+                        barber:{ 
+                            connect:{ 
+                                id: appointment.barberId
+                            }
+                        }
+                    }
+                })
                 console.log(updatedDayCalendar)
                 res.json(updatedAppointemtn)
             }else{
@@ -62,7 +105,7 @@ export default async function handler(req, res){
             }
 
         }catch(error){
-            console.log(error)
+           return  console.log(error)
         }
     }
 }

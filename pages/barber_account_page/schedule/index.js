@@ -9,7 +9,8 @@ import ScheduleTimeInput from "../../../src/components/ScheduleTimeInput";
 import axios from "axios";
 import TimeInput from "../../../src/components/TimeInput";
 import convertToMilitaryTime from "../../../lib/convertToMilitaryTime";
-import Modal from '../../../src/components/Modal'
+import Modal from '../../../src/components/Modal';
+import Loading from '../../../src/components/Loading';
 
 
 function Scheduling(){
@@ -126,7 +127,8 @@ function Scheduling(){
     if(!barber || !weeklySchedule){
         return(
             <>
-            <h1>Loading...</h1></>
+            <Loading />
+            </>
         )
     }
 

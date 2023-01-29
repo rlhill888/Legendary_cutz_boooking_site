@@ -2,6 +2,8 @@ import React, {useState, useEffect} from "react";
 import BarberNavigationMenu from "../../../src/components/BarberNavigationMenu";
 import { useRouter } from "next/router";
 import { auth } from "../../../lib/mutations";
+import { Button } from "@mui/material";
+
 
 function CreateService(){
     const [name, setName]= useState('')
@@ -75,7 +77,7 @@ function CreateService(){
             //make input for uploading pictures
         }
 
-        <button>Create New Service</button>
+        <Button variant="contained" color="secondary">Create New Service</Button>
         </form>
        
         </>

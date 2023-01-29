@@ -3,6 +3,8 @@ import BarberNavigationMenu from "../../../src/components/BarberNavigationMenu";
 import { useRouter } from "next/router";
 import { auth } from "../../../lib/mutations";
 import IndivisualServiceComponent from "../../../src/components/IndivisualServiceComponent";
+import Loading from '../../../src/components/Loading';
+import { Button } from "@mui/material";
 
 function Services(){
 
@@ -31,7 +33,7 @@ function Services(){
     if(!barber){
         return(
             <>
-            <h1>Loading</h1>
+            <Loading />
             </>
         )
     }
@@ -62,9 +64,9 @@ function Services(){
                 <h1>Services</h1>
                 <br />
                 <br />
-                <button onClick={()=>{
+                <Button  variant="contained" onClick={()=>{
                     router.push('services/createService')
-                }}>Create a New Service</button>
+                }}>Create a New Service</Button>
                 <br />
                 <br />
                 {
@@ -77,10 +79,10 @@ function Services(){
                 <br />
             </div>
             }
-            <button onClick={()=> setEditing(previous=> !previous)}>
+            <Button variant="contained" onClick={()=> setEditing(previous=> !previous)}>
                 {
                     !editing ? 'Edit Services' : 'Back'
-                }</button>
+                }</Button>
         
         </div>
         </>

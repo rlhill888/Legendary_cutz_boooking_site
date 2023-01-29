@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import BarberNavigationMenu from "../../src/components/BarberNavigationMenu";
 import axios from "axios";
 import BarberScheduleAppointmentCard from "../../src/components/BarberScheduleAppointmentCard";
+import Loading from '../../src/components/Loading'
 
 
 function Home(){
@@ -83,7 +84,7 @@ function Home(){
     if(!barber || !dayData){
         return(
             <>
-            <h1>Loading...</h1>
+            <Loading />
             </>
         )
     }

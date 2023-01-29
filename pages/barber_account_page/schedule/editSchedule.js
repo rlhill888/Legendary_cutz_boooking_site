@@ -4,6 +4,7 @@ import { auth } from "../../../lib/mutations";
 import axios from "axios";
 import TimeInputComponent from "../../../src/components/TimeInputComponent";
 import UpdateTimeInputComponent from "../../../src/components/UpdateTimeComponent";
+import Loading from '../../../src/components/Loading';
 
 function EditSchedule(){
     const [barber, setBarber]= useState(null)
@@ -59,7 +60,7 @@ function EditSchedule(){
        
     }, [])
     if(!barber){
-        return <h1>Loading...</h1>
+        return <Loading />
     }
 
     return(

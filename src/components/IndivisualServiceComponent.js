@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { Button } from "@mui/material";
 
 
 function IndivisualServiceComponent({service, setUpdateServices}){
@@ -51,8 +52,8 @@ function IndivisualServiceComponent({service, setUpdateServices}){
 
             <br />
             <br />
-            <button type="button" onClick={()=>setCurrentlyShowing('') }>Back</button>
-            <button type='submit'>Change Service</button>
+            <Button color="secondary" type="button" onClick={()=>setCurrentlyShowing('') }>Back</Button>
+            <Button  color="secondary" type='submit'>Change Service</Button>
             </form>
             <br />
             <div>
@@ -70,8 +71,8 @@ function IndivisualServiceComponent({service, setUpdateServices}){
 
         <h3>${service.price}</h3>
         <div>
-        <button onClick={()=>setCurrentlyShowing('update') }>Change {service.name}</button>
-        <button onClick={()=>{
+        <Button color="secondary" onClick={()=>setCurrentlyShowing('update') }>Change {service.name}</Button>
+        <Button color="secondary" onClick={()=>{
             fetch('/api/barbers/services/Delete', {
                 method: 'DELETE',
                 headers: {
@@ -91,7 +92,7 @@ function IndivisualServiceComponent({service, setUpdateServices}){
                     res.json().then(res=> console.log(res))
                 }
             })
-        }}>Delete Service</button>
+        }}>Delete Service</Button>
         </div>
         </>
     )

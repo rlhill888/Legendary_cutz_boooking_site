@@ -3,6 +3,7 @@ import BarberNavigationMenu from "../../../src/components/BarberNavigationMenu";
 import { useRouter } from "next/router";
 import { auth } from "../../../lib/mutations";
 import axios from "axios";
+import Loading from '../../../src/components/Loading';
 function Account(){
     const [editMode, setEditMode]= useState(false)
     const [barber, setBarber]= useState(null)
@@ -44,7 +45,7 @@ function Account(){
     }, [update])
 
     if(!barber){
-        return <h1>Loading...</h1>
+        return <Loading />
     }
 
     if(editMode === false){

@@ -30,6 +30,7 @@ model Barber {
   appointments Appointment[]
   monthCalendars MonthCalendar[]
   dayCalendars DayCalendar[]
+  messages Message[]
 }
 
 model Service {
@@ -117,5 +118,19 @@ model DayCalendar{
   month MonthCalendar ?  @relation(fields: [monthId], references: [id])
   barber Barber? @relation(fields: [barberId], references: [id])
    @@unique(fields: [date, barberId ], name: "dayBarberId")
+
+}
+
+model Message{
+  id Int @id @default(autoincrement())
+  messageText String 
+  cancelledAppointmentNotification Boolean
+  cancelledAppointmentId Int
+  messageData String
+  title String @default("")
+  messageSeen Boolean @default(false)
+
+  barberId Int
+  barber Barber? @relation(fields: [barberId], references: [id])
 
 }
