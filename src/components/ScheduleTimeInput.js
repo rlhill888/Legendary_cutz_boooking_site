@@ -1,5 +1,9 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { Button } from "@mui/material";
 
 function ScheduleTimeInput({availibility, dayData, setUpdateData}){
     const [startTimeHour, setStartTimeHour]= useState('')
@@ -128,23 +132,70 @@ function ScheduleTimeInput({availibility, dayData, setUpdateData}){
 
     return(
         <>
-        <div>
-            <input type='number' value={startTimeHour} onChange={(e)=>{changeHour(e, setStartTimeHour)}}></input>:<input  onChange={(e)=> changeMinute(e, setStartTimeMinute)} value={startTimeMinute}></input>
-            <select value={startTimeAmOrPM} onChange={(e)=> setStartTimeAmOrPM(e.target.value)}>
-                <option value='AM'>AM</option>
-                <option value='PM'>PM</option>
-            </select>
+        <div style={{
+            textAlign: 'center'
+        }}>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center'
+            }}>
+            <TextField 
+            style={{
+                width: '70px',
+            }}
+            sx={{ input: { color: 'white' } }}
+            color="secondary" variant="filled" type='number' value={startTimeHour} onChange={(e)=>{changeHour(e, setStartTimeHour)}}></TextField><p style={{marginTop: '25px'}}>:</p><TextField 
+            style={{
+                width: '70px',
+            }}
+            sx={{ input: { color: 'white' } }}
+            color="secondary" variant="filled" type='number' onChange={(e)=> changeMinute(e, setStartTimeMinute)} value={startTimeMinute}></TextField>
+            <Select 
+            variant="filled"
+            style={{
+                color: 'white'
+            }}
+            color="secondary"
+            value={startTimeAmOrPM} onChange={(e)=> setStartTimeAmOrPM(e.target.value)}>
+                <MenuItem value='AM'>AM</MenuItem>
+                <MenuItem value='PM'>PM</MenuItem>
+            </Select>
+            </div>
             
-             - 
-             
-             <input type='number' value={endTimeHour} onChange={(e)=>{changeHour(e, setEndTimeHour)}}></input>:<input  onChange={(e)=> changeMinute(e, setEndTimeMinute)} value={endTimeMinute}></input>
-            <select value={endTimeAmOrPM} onChange={(e)=> setEndTimeAmOrPm(e.target.value)}>
-                <option value='AM'>AM</option>
-                <option value='PM'>PM</option>
-            </select>
+             <h3
+             >To</h3>
+
+             <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center'
+            }}
+             >
+                <TextField style={{
+                width: '70px',
+            }}
+            sx={{ input: { color: 'white' } }}
+            color="secondary" variant="filled" type='number' value={endTimeHour} onChange={(e)=>{changeHour(e, setEndTimeHour)}}></TextField><p style={{marginTop: '25px'}}>:</p><TextField  style={{
+                width: '70px',
+            }}
+            sx={{ input: { color: 'white' } }}
+            color="secondary" variant="filled" onChange={(e)=> changeMinute(e, setEndTimeMinute)} value={endTimeMinute}></TextField>
+                <Select 
+                variant="filled"
+                style={{
+                    color: 'white'
+                }}
+                color="secondary" value={endTimeAmOrPM} onChange={(e)=> setEndTimeAmOrPm(e.target.value)}>
+                    <MenuItem value='AM'>AM</MenuItem>
+                    <MenuItem value='PM'>PM</MenuItem>
+                </Select>
+
+             </div>
             <br />
             <br />
-            <button onClick={ async ()=>{
+            <Button color="secondary" variant="contained" onClick={ async ()=>{
                 if(startTimeHour!=='' && startTimeMinute!== '' && endTimeHour!=='' && endTimeMinute!==''){
                     const newAvailibility = `${startTimeHour}:${startTimeMinute.length > 1 ? startTimeMinute : `0${startTimeMinute}`} ${startTimeAmOrPM} - ${endTimeHour}:${endTimeMinute.length > 1 ? endTimeMinute : `0${endTimeMinute}`} ${endTimeAmOrPM} `
                     const dayId = dayData.dayId
@@ -168,7 +219,7 @@ function ScheduleTimeInput({availibility, dayData, setUpdateData}){
                 }else{
                     console.log('Please Make sure none of the time inputs are blank')
                 }
-            }}>Change Availibility</button>
+            }}>Change Availibility</Button>
         </div>
 
         </>

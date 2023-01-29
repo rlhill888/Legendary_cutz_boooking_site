@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import axios from "axios";
+import Modal from "./Modal";
+import { Button } from "@mui/material";
 
 
-function BarberScheduleAppointmentCard({appointment}){
+function BarberScheduleAppointmentCard({appointment, setAppointmentModalOpen, setAppointmentModalJSX, setAppointmentModalTitle}){
     const [openDetails, setOpenDetails]= useState(false)
     const recieptObj = JSON.parse(appointment.recieptDetails)
     console.log(recieptObj)
@@ -38,18 +40,14 @@ function BarberScheduleAppointmentCard({appointment}){
             <>
             <div>
                 <h3>Appointment for {findNameString()}: {appointment.appointmentStartTime} - {appointment.appointmentEndTime}</h3>
-                <button onClick={()=>setOpenDetails(!openDetails) }>
-                {openDetails ? 'Close Appointment Deatails' : 'Open Appointment Details'}
-                </button>
-            </div>
-            
-            </>
-        )
-    }
-    return (
+                <Button variant="contained" color="secondary" onClick={()=>{
+                    setAppointmentModalOpen(true) 
+                    setAppointmentModalTitle(`Appointment for ${findNameString()}: ${appointment.appointmentStartTime} - ${appointment.appointmentEndTime}`)
+                    setAppointmentModalJSX(
+                        <>
+        
 
-        <>
-        <div>
+            <div>
         {appointment.canceledAppointment ? <h3>This Appointment has been cancelled</h3> : <></>}
         <h3>Total Price of Appointment After Downpayment: ${appointment.totalPriceAfterDownPayment}</h3>   
         <h4>Appoitnment Time: {appointment.appointmentStartTime} - {appointment.appointmentEndTime}</h4>
@@ -101,7 +99,8 @@ function BarberScheduleAppointmentCard({appointment}){
         :
 
         <>
-        <button
+        <Button
+        color="secondary"
         onClick={async ()=>{
             try{
               const response = await axios({
@@ -118,7 +117,7 @@ function BarberScheduleAppointmentCard({appointment}){
             }
             
          }}
-        >Cancel Appointment</button> 
+        >Cancel Appointment</Button> 
         </>
 
         }
@@ -128,12 +127,28 @@ function BarberScheduleAppointmentCard({appointment}){
         <br />
 
 
-        <button  onClick={()=>setOpenDetails(!openDetails) }>
-            
-            {openDetails ? 'Close Appointment Details' : 'Open Appointment Details'}
-        </button>
+        
         
         </div>
+        
+        </>
+                    )
+                }
+                }>
+                Open Appointment Details
+                </Button>
+            </div>
+            
+            </>
+        )
+    }
+    return (
+
+        <>
+        
+
+            
+        
         </>
     )
 }

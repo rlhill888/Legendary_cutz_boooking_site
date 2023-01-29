@@ -1,5 +1,5 @@
-import { Button } from '@mui/material'
-import react from 'react'
+import { Button } from '@mui/material';
+import react from 'react';
 
 function Modal({modalActive, setModalActive, children, title}){
     return(
@@ -27,7 +27,7 @@ function Modal({modalActive, setModalActive, children, title}){
                             X
                         </Button>                        
                     </div>
-                    {title ? <h1 className='title'>{title}</h1> : <></>}
+                    {title ? <h2 className='title'>{title}</h2> : <></>}
                     <div className='children'>
                      {children}   
                     </div>
@@ -48,7 +48,7 @@ function Modal({modalActive, setModalActive, children, title}){
                         align-items: center;
                         background-color: rgba(0, 0, 0, 0.552);
                         z-index: 1000;
-                        ${modalActive ? `` : `display: none;`}
+                        ${modalActive ? `` : `display: none;`};
                     }
                     .modalOuterContentsDiv{
                         width: 80vw;
@@ -68,7 +68,7 @@ function Modal({modalActive, setModalActive, children, title}){
 
                     }
                     .children{
-                        padding: 2%;
+                        padding: 8%;
                         position: relative;
                         height: ${title ? '70%' : '80%'};
                         overflow-y: auto;

@@ -11,6 +11,7 @@ import TimeInput from "../../../src/components/TimeInput";
 import convertToMilitaryTime from "../../../lib/convertToMilitaryTime";
 import Modal from '../../../src/components/Modal';
 import Loading from '../../../src/components/Loading';
+import { Button } from "@mui/material";
 
 
 function Scheduling(){
@@ -25,7 +26,9 @@ function Scheduling(){
     const [showBlockOutPortionOfDayDiv, setShowBlockOutPortionOfDayDiv]= useState(false)
     const [blockedOffTimeAppointementErrorTime, setBlockedOffTimeAppointementErrorTime]= useState(null)
     const [cancelAppointmentStripeSessionId, setCancelAppointmentStripeSessionId]= useState(null)
-    const [testModal, setTestModal]= useState(true)
+    const [appointmentModalOpen, setAppointmentModalOpen]= useState(false)
+    const [appointmentModalJSX, setAppointmentModalJSX]= useState(null)
+    const [appointmentModalTitle, setAppointmentModalTitle]= useState(null)
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
  
@@ -134,54 +137,170 @@ function Scheduling(){
 
     return(
         <>
-        <Modal modalActive={testModal} setModalActive={setTestModal} title={'Some crazy rediculous ling title fbsjakcbskabcdjksabcdhsjacvbsak'}>
-
-
-            <h1>hello</h1>
+        <Modal modalActive={appointmentModalOpen} setModalActive={setAppointmentModalOpen} title={appointmentModalTitle}>
+                {appointmentModalJSX}
         </Modal>
-        <BarberNavigationMenu></BarberNavigationMenu>
-        
-        
-        <br />
-        <br />
 
-        {showWeeklySchedule ? 
+    <Modal modalActive={showWeeklySchedule} setModalActive={setshowWeeklySchedule} title={'Your Weekly Schedule'}>
+            <div>
+                {weeklySchedule.map((day, index)=>{
+                    if(day===null){
+                        return <h4>{weekArray[index]}: You are off on {weekArray[index]}</h4>
+                    }else{
+                        return <h4>{weekArray[index]}: {day}</h4>
+                    }
+                })}
+                <Button
+                color="secondary"
+                onClick={()=>{
+                    router.push('schedule/editSchedule')
+                }}
+                >Edit Schedule</Button>
+                <br />
+                <br />
+            </div> 
+        </Modal>
+
+        <Modal modalActive={changeAvailibilityButton} setModalActive={setChangeAvailibilityButton} title={'Change Availibility Menu'}>
+        {date ? 
+
+            <div>
+
+            <h3>{date} current availibility</h3>
+
+            {dayBlocked ? <></> : <>
+
+            <ScheduleTimeInput setUpdateData={setUpdateData} availibility={dayData.availibility} dayData={dayData}/>
+
+
+            </>}
+            <br />
+            <Button color="secondary"  onClick={()=> setShowBlockOutPortionOfDayDiv(previous=> !previous)}>{showBlockOutPortionOfDayDiv ? 'Close Block Off Times Menu' : 'Open Block Off Times Menu' }</Button>
+            {!showBlockOutPortionOfDayDiv ? <></> 
+            : 
+
+            <div>
+                <h3>What Portion of the day would you like to block off?</h3>
+                <TimeInput timeFunction={ async (startTime, endTime, fullTimeSlot)=>{
+
+                    try{
+                        const response = await axios({
+                            method: 'PATCH',
+                            url: '/api/barbers/schedule/blockOffTimeInDay',
+                            data: {
+                                timeBlockedOff: fullTimeSlot,
+                                dayCalendarId: dayData.id
+
+                            }
+                        })
+                        console.log(response)
+                        window.location.reload()
+                    }catch(e){
+                        console.log(e.response)
+                        if(e.response.data.error === 'Blocked Off Time Interferes With a Scheduled Appointment'){
+                            setBlockedOffTimeAppointementErrorTime(e.response.data.time)
+                            setCancelAppointmentStripeSessionId(e.response.data.stripeSessionsId)
+                        }
+                        if(e.response.data.error ==='Blocked Off Time Interferes With another blocked off time'){
+                            console.log('Blocked Off Time Interferes With another blocked off time')
+                        }
+                    }
+                }} timeFunctionTitle={'Block off time portion'} />
+                {blockedOffTimeAppointementErrorTime ? 
+
+                    detectBlockedTimeErrors()
+
+                    :
+                    <></>
+                
+                
+                }
+
+                <h3>Currently Blocked Out Times:</h3>
+                {JSON.parse(dayData.blockedOffTimesArray).map(time=>{
+                    return(
+                        <p>{time} 
+                        <Button
+                        // when this button is clicked, remove that time that is blocked off
+                        color="secondary"
+                        onClick={async ()=>{
+                            try{
+                                const response = await axios({
+                                    method: 'PATCH',
+                                    url: '/api/barbers/schedule/removeBlockedOffTime',
+                                    data: {
+                                        timeBlockedOff: time,
+                                        dayCalendarId: dayData.id
+
+                                    }
+                                })
+                                console.log(response)
+                                window.location.reload()
+                            }catch(e){
+                                console.log(e.response)
+                            }
+                        }}
+                        >X</Button>
+                        </p>
+                    )
+                })}
+                
+            </div>
+            }
+
+            <h3>
+                Block Out Appointment Scheduling for the rest of this Day
+                <input checked={dayBlocked}
+                onClick={async (e)=>{ 
+                    console.log(e.target.checked)
+                    if(e.target.checked===true){
+                        try{
+                            const response = await axios({
+                                method: 'PATCH',
+                                url: '/api/barbers/schedule/updateSpecificDayAvailibility',
+                                data: {
+                                    dayData,
+                                    availibility: 'none'
+                                }
+                            })
+                            console.log(response.data)
+                            setDayBlocked(true)
+                            window.location.reload(false)
+                        }catch(error){
+                            console.log(error)
+
+                        }
+
+                    }else{
+                        setDayBlocked(e.target.checked)
+                    }
+                    }} type='checkbox'></input>
+            </h3>
+
+
+            </div> : <></>
         
-        <div>
-        <h3>Your Weekly Schedule: </h3>
-    {weeklySchedule.map((day, index)=>{
-        if(day===null){
-            return <h4>{weekArray[index]}: You are off on {weekArray[index]}</h4>
-        }else{
-            return <h4>{weekArray[index]}: {day}</h4>
         }
-    })}
-    <button
-    onClick={()=>{
-        router.push('schedule/editSchedule')
-    }}
-    >Edit Schedule</button>
-    <br />
-    <br />
-    <button
-     onClick={()=>{
-        setshowWeeklySchedule(previous=> !previous)
-    }}
-    >Close Schedue</button>
-    </div> 
+        
 
-    : 
+        </Modal>
 
-    <> 
-    <button 
-    
+        <BarberNavigationMenu></BarberNavigationMenu>
+
+
+        
+        
+        
+        <br />
+        <br />
+
+    <Button 
+    variant="contained"
     onClick={()=>{
         setshowWeeklySchedule(previous=> !previous)
     }}
-    >Show Schedule</button>
-    </>
-    
-    }
+    >Show Schedule</Button>
+   
        <br />
         <br />
         
@@ -199,141 +318,9 @@ function Scheduling(){
          <h3>Your Availibility for this day is {dayData.availibility}</h3>
         }
 
-
-        
-
-
-        {
-        changeAvailibilityButton ? <>
-            <div>
-            <button onClick={()=>{
-            setChangeAvailibilityButton(false)
-        }}>Close Change Availibility Menu </button>
-
-
-                <h1>Change availibility</h1>
-
-                <h3>{date} current availibility</h3>
-               
-                {dayBlocked ? <></> : <>
-                
-                <ScheduleTimeInput setUpdateData={setUpdateData} availibility={dayData.availibility} dayData={dayData}/>
-                
-                
-                </>}
-                <h3>Block Out Portion of day
-                    <input type='checkbox' checked={showBlockOutPortionOfDayDiv} onChange={(e)=> setShowBlockOutPortionOfDayDiv(e.target.checked) }></input>
-                </h3>
-                {!showBlockOutPortionOfDayDiv ? <></> 
-                : 
-                
-                <div>
-                    <h3>What Portion of the day would you like to block off?</h3>
-                    <TimeInput timeFunction={ async (startTime, endTime, fullTimeSlot)=>{
-
-                        try{
-                            const response = await axios({
-                                method: 'PATCH',
-                                url: '/api/barbers/schedule/blockOffTimeInDay',
-                                data: {
-                                    timeBlockedOff: fullTimeSlot,
-                                    dayCalendarId: dayData.id
-
-                                }
-                            })
-                            console.log(response)
-                            window.location.reload()
-                        }catch(e){
-                            console.log(e.response)
-                            if(e.response.data.error === 'Blocked Off Time Interferes With a Scheduled Appointment'){
-                                setBlockedOffTimeAppointementErrorTime(e.response.data.time)
-                                setCancelAppointmentStripeSessionId(e.response.data.stripeSessionsId)
-                            }
-                            if(e.response.data.error ==='Blocked Off Time Interferes With another blocked off time'){
-                                console.log('Blocked Off Time Interferes With another blocked off time')
-                            }
-                        }
-                    }} timeFunctionTitle={'Block off time portion'} />
-                    {blockedOffTimeAppointementErrorTime ? 
-
-                        detectBlockedTimeErrors()
-
-                        :
-                        <></>
-                    
-                    
-                    }
-
-                    <h3>Currently Blocked Out Times:</h3>
-                    {JSON.parse(dayData.blockedOffTimesArray).map(time=>{
-                        return(
-                            <p>{time} 
-                            <button
-                            // when this button is clicked, remove that time that is blocked off
-                            onClick={async ()=>{
-                                try{
-                                    const response = await axios({
-                                        method: 'PATCH',
-                                        url: '/api/barbers/schedule/removeBlockedOffTime',
-                                        data: {
-                                            timeBlockedOff: time,
-                                            dayCalendarId: dayData.id
-        
-                                        }
-                                    })
-                                    console.log(response)
-                                    window.location.reload()
-                                }catch(e){
-                                    console.log(e.response)
-                                }
-                            }}
-                            >X</button>
-                            </p>
-                        )
-                    })}
-                    
-                </div>
-                }
-
-                 <h3>
-                    Block Out Appointment Scheduling for the rest of this Day
-                    <input checked={dayBlocked}
-                    onClick={async (e)=>{ 
-                        console.log(e.target.checked)
-                        if(e.target.checked===true){
-                            try{
-                                const response = await axios({
-                                    method: 'PATCH',
-                                    url: '/api/barbers/schedule/updateSpecificDayAvailibility',
-                                    data: {
-                                        dayData,
-                                        availibility: 'none'
-                                    }
-                                })
-                                console.log(response.data)
-                                setDayBlocked(true)
-                                window.location.reload(false)
-                            }catch(error){
-                                console.log(error)
-        
-                            }
-
-                        }else{
-                            setDayBlocked(e.target.checked)
-                        }
-                        }} type='checkbox'></input>
-                </h3>
-                
-                
-            </div>
-        </> :
-        
-        <>
-        <button onClick={()=>{
+        <Button variant="contained" onClick={()=>{
             setChangeAvailibilityButton(true)
-        }}>Change This Day's Availibility</button>
-        </>
-        }
+        }}>Change This Day's Availibility</Button>
         <br />
 
 
@@ -344,7 +331,7 @@ function Scheduling(){
             <h3>Appointments for this day:</h3>
             <br />
             {dayData.appointments.map((appointment =>{
-                return ( <BarberScheduleAppointmentCard key={`${appointment.id}`} appointment={appointment}/>)
+                return ( <BarberScheduleAppointmentCard key={`${appointment.id}`} appointment={appointment} appointmentModalOpen={appointmentModalOpen} setAppointmentModalJSX={setAppointmentModalJSX} setAppointmentModalTitle={setAppointmentModalTitle} setAppointmentModalOpen={setAppointmentModalOpen}/>)
             }))}
             </div>
         }
@@ -357,7 +344,11 @@ function Scheduling(){
     <> 
     </>}
 
+    
+
         </>
+
+        
     )
 }
 
