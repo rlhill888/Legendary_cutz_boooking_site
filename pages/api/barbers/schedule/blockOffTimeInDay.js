@@ -237,6 +237,8 @@ export default validateRoute(async (req, res, barber)=>{
         const timeSlotsTaken = JSON.parse(day.timeSlotsTaken)
         const timeBlockedOffMilitaryTime = pickAppartIndivisualTimesAndMakeThemMilitary(timeToBeBlockedOff)
 
+        const dayAvailibilityMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(day.availibility)
+
         if(blockedOffTimesArray.length >=1){
             for(let time of blockedOffTimesArray){
                 const timeSlotMilitaryTime= pickAppartIndivisualTimesAndMakeThemMilitary(time)
@@ -270,6 +272,11 @@ export default validateRoute(async (req, res, barber)=>{
                 }
 
             }            
+        }
+
+        if((timeBlockedOffMilitaryTime[0] < dayAvailibilityMilitaryTimes[0] || timeBlockedOffMilitaryTime[0] > dayAvailibilityMilitaryTimes[1] || timeBlockedOffMilitaryTime[1] < dayAvailibilityMilitaryTimes[0] || timeBlockedOffMilitaryTime[1] > dayAvailibilityMilitaryTimes[1])){
+            
+            return res.status(422).send({error: 'Blocked Off Time Is Not Within Day Availibility'})
         }
 
 

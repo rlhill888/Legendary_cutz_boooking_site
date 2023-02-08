@@ -35,9 +35,10 @@ export default validateRoute(async (req, res, barber)=>{
             return dayDate >= today
 
         })
-       
-
-        filteredDays.map(async (day)=>{
+       console.log('Changing days')
+       const length = filteredDays.length
+       let dayCount= 0;
+        for( let day of filteredDays){
             if(body.weeklySchedule[day.weekDayInt]=== null){
                 try{
                     const updateDay = await prisma.dayCalendar.update({
@@ -50,8 +51,10 @@ export default validateRoute(async (req, res, barber)=>{
                         }
                     })
                     resArray.push(updateDay)
+                    console.log(`day ${dayCount} out of ${length} completed`)
+                    dayCount++
                 }catch(error){
-                    res.json({error: error}).status(422)
+                   return res.json({error: error}).status(422)
                 }  
 
 
@@ -65,16 +68,20 @@ export default validateRoute(async (req, res, barber)=>{
                         availibility: body.weeklySchedule[day.weekDayInt]
                     }
                 })
-             resArray.push(updateDay)
+                resArray.push(updateDay)
+                console.log(`day ${dayCount} out of ${length} completed`)
+                dayCount++
 
             }catch(error){
-                res.json({error: error}).status(422)
+                return res.json({error: error}).status(422)
             }  
 
 
             }
             
-        })
+        }
+        console.log('finished changing days')
+
 
         return res.json({sucess: 'sucess'})
     }

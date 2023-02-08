@@ -2,7 +2,7 @@ import prisma from "../../../lib/prisma";
 import convertToMilitaryTime from "../../../lib/convertToMilitaryTime";
 
 
-export default async (req, res)=>{
+export default async function  CreateAppointment(req, res){
 
     const body = req.body
     function pickAppartIndivisualTimesAndMakeThemMilitary(theTwoTimes){
@@ -68,8 +68,6 @@ export default async (req, res)=>{
             if((militaryTimesForAppointmentTime[0] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[0] < militaryTimesForTimeSlot[1]) || (militaryTimesForAppointmentTime[1] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[1] < militaryTimesForTimeSlot[1])){
                 appointmentTimesWithinSlot = false
                 return res.json({error: 'Appointment Time Conflicts With Barber Schedule Time'}).status(422)
-            }else{
-                appointmentTimesWithinSlot = true
             }
         }   
 
@@ -86,8 +84,6 @@ export default async (req, res)=>{
             if((militaryTimesForAppointmentTime[0] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[0] < militaryTimesForTimeSlot[1]) || (militaryTimesForAppointmentTime[1] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[1] < militaryTimesForTimeSlot[1])){
                 appointmentTimesWithinSlot = false
                 return res.json({error: 'Appointment Time Conflicts With Barber Schedule Time'}).status(422)
-            }else{
-                appointmentTimesWithinSlot = true
             }
         }   
         }
@@ -95,7 +91,6 @@ export default async (req, res)=>{
 
 
         if(appointmentTimesWithinSlot=== true){
-            // sort time slots functipn
             timeSlotsTakenArray.push(`${body.appointmentStartTime} - ${body.appointmentEndTime}`)
 
         try{
@@ -167,25 +162,29 @@ export default async (req, res)=>{
             res.status(401).json({statusCode: 500, message: error.message})
         return 
         }
-        timeSlotsTakenArray = timeSlotsTakenArray.sort((a, b)=>{
-            const firstTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(a)
-            const secondTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(b)
-            return firstTimeMilitaryTimes[0] - secondTimeMilitaryTimes[0]
-        })
-        try{
-            const updateDay = await prisma.dayCalendar.update({
-                where: {
-                    id: dayCalendar.id
-                },
-                data: {
-                    timeSlotsTaken: JSON.stringify(timeSlotsTakenArray) 
-                }
-            })
 
-        }catch(error){
-            console.log(error)
-          return  res.json({error: error})
-        }
+        ////////////////////
+        // timeSlotsTakenArray = timeSlotsTakenArray.sort((a, b)=>{
+        //     const firstTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(a)
+        //     const secondTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(b)
+        //     return firstTimeMilitaryTimes[0] - secondTimeMilitaryTimes[0]
+        // })
+        // try{
+        //     const updateDay = await prisma.dayCalendar.update({
+        //         where: {
+        //             id: dayCalendar.id
+        //         },
+        //         data: {
+        //             timeSlotsTaken: JSON.stringify(timeSlotsTakenArray) 
+        //         }
+        //     })
+
+        // }catch(error){
+        //     console.log(error)
+        //   return  res.json({error: error})
+        // }
+
+        //////////////////////
 
         }else{
             console.log('false')

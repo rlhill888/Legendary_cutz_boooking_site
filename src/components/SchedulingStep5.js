@@ -5,7 +5,7 @@ import getStripe from "../../lib/get-stripe";
 import { Button } from "@mui/material";
 import Loading from "./Loading";
 
-function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData, nameArray}){
+function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData, nameArray, setSchedulingStep}){
     let testDate
 
     if(dateOfAppointment.toLowerCase().includes('thurs')){
@@ -105,11 +105,15 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
         <div className="mainDiv" style={{
             overflowY: 'auto'
         }}>
+        <Button onClick={()=>{
+            setSchedulingStep(previous => previous - 1)
+        }} color="secondary">Back</Button>
         <Reciept totalReceipt={totalReceipt} setTotalReciept={setTotalReciept} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime}  completePurchaseObj={completePurchaseObj} timeObj={timeObj}/>
         <Button
         variant="contained"
         color="secondary"
         onClick={()=>{
+            
             setStartedCheckoutProcess(true)
             redirectToCheckout()
         }}

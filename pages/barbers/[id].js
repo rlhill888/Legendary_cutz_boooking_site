@@ -105,6 +105,9 @@ function Page(){
         if(schedulingStep===2){
             return(
                 <div className="mainDiv">
+                    <Button onClick={()=>{
+            setSchedulingStep(previous => previous - 1)
+        }} color="secondary">Back</Button>
                 <h1 className="header"> { serviceNameArray.length > 1 ?   `Select the services ${serviceNameArray[currentPersonSelectingServices]} would like` :  `${serviceNameArray[currentPersonSelectingServices]}, Select Services you would like` }</h1>
                 <div className="itemsDiv">
                 {barberObj.services.map(((service)=>{

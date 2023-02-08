@@ -3,6 +3,7 @@ import IndivisualCalendarDay from "./Calendar_components/IndivisualCalendarDay";
 import axios from "axios";
 import Loading from "./Loading";
 import { Button } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTodaysDate, barberId, setDateOfAppointmentData, barberScheduleMenu, blockOutUnavailibleDays, updateCalendar, setResetFunction, resetValue}){
@@ -15,6 +16,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
     const [date, setDate]= useState(null)
     const [todaysDay, setTodaysDay]= useState(null)
     const [monthData, setMonthData]= useState(null)
+    const [calendarLoading, setCalendarLoading]= useState(false)
 
     // going to fetch barbers availability inside of this function to find out what each day looks like
     useEffect( ()=>{
@@ -25,6 +27,8 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
             setTodaysDay(todayDay)
             const newmonth = newdate.getMonth()
             const newyear = newdate.getFullYear()
+
+            
             if(!year){
                 setYear(newyear)
             }
@@ -72,7 +76,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                 let dataDaysArray = data.days.sort(compare)
                 data.days = dataDaysArray
                 setMonthData(data)
-                console.log(data)
+                setCalendarLoading(false)
             }catch(error){
                 console.log(error)
             }
@@ -98,7 +102,9 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                 )
             }
 
-            return <div style={{
+            return <div 
+            key={`${week} week mapped out`}
+            style={{
                 display: 'flex',
                 flexDirection: 'row'
             }}>
@@ -130,37 +136,37 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay  resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay key={`${month} ${index} Calendar Mapped Out`} resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false &&  dayCount <= todaysDay -1 ){
                     startDayCount = true
                     foundFirstOfMonthStartDate = true
-                    return   <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay key={`${month} ${index} Calendar Mapped Out`} resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} availabilityStatus={3}  day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
                 if(index === firstofMonthDay && foundFirstOfMonthStartDate === false){
                    
                     foundFirstOfMonthStartDate = true
-                    return <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay key={`${month} ${index} Calendar Mapped Out`} resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount} availabilityStatus={2} year={year} month={month} dayData={dayData}/>
                 }
 
 
                 if(foundFirstOfMonthStartDate === false && index !== firstofMonthDay || dayCount > monthArray[month]){
                     
-                    return <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay key={`${month} ${index} Calendar Mapped Out`} resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays} setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabled blankCalendarDate year={year} month={month} dayData={dayData}/>
                 }
 
 
                 if( dayCount <= todaysDay -1 && month === todayMonth && year === todayYear && disableSelectionsForPreviousDaysPastTodaysDate){
                    
-                    return   <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
+                    return   <IndivisualCalendarDay key={`${month} ${index} Calendar Mapped Out`} resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} disabledDay day={dayCount} year={year} month={month} dayData={dayData}/>
                 }
 
 
                 else{
                   
-                    return <IndivisualCalendarDay resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
+                    return <IndivisualCalendarDay key={`${month} ${index} Calendar Mapped Out`} resetValue={resetValue} setResetFunction={setResetFunction} blockOutUnavailibleDays={blockOutUnavailibleDays}  setDateOfAppointmentData={setDateOfAppointmentData} setDateOfAppointment={setDateOfAppointment} day={dayCount}  availabilityStatus={3} year={year} month={month} dayData={dayData}/>
                 }
                 
             })
@@ -187,12 +193,23 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
     if(monthData===null){
         return(
             <>
-            <Loading />
+            <div
+            style={{
+                width: '100vw',
+                height: '70vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+            >
+                <CircularProgress color="secondary" />
+            </div>
+            
             </>
         )
     }
     return(
-        <>
+        <div>
 
         {disableSelectionsForPreviousDaysPastTodaysDate ? 
             determineIfMonthAndYearAreBeforeTodaysDate() ?
@@ -201,6 +218,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
              color="secondary"
              onClick={()=>{
                 setResetFunction(resetValue)
+                setCalendarLoading(true)
                  if(month - 1 < 0){
                      setYear(year - 1)
                      return setMonth(11)
@@ -218,6 +236,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
              color="secondary"
              onClick={()=>{
                 setResetFunction(resetValue)
+                setCalendarLoading(true)
                  if(month - 1 < 0){
                      setYear(year - 1)
                      return setMonth(11)
@@ -230,7 +249,9 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         }
         
         <Button color="secondary"onClick={()=>{
+            
             setResetFunction(resetValue)
+            setCalendarLoading(true)
             if(month + 1 > 11){
                 setYear(year + 1)
                 return setMonth(0)
@@ -249,6 +270,7 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
           {weekArray.map(weekday=>{
             return <div
             className="caledarWeekdayHeader"
+            key={`week day calendar mapped out ${weekday}`}
             >
                 <h3>
                     {weekday}
@@ -257,9 +279,38 @@ function Calendar({setDateOfAppointment, disableSelectionsForPreviousDaysPastTod
         })}  
         </div>
         
-        {mapCalendarOut()}
+        {
+        calendarLoading ?
+        <div
+            style={{
+                width: '100vw',
+                height: '30vh',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+            >
+                <CircularProgress color="secondary" />
+        </div>
+
+        :
+        <div
+        className="calendarDaysDiv"
+        >
+            {mapCalendarOut()}
+        </div>
+        
+        
+        }
+        <style jsx>{`
+            
+            .calendarDaysDiv{
+            }
+            `}
+
+        </style>
        
-        </>
+        </div>
     )
 }
 

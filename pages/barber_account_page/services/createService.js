@@ -2,7 +2,8 @@ import React, {useState, useEffect} from "react";
 import BarberNavigationMenu from "../../../src/components/BarberNavigationMenu";
 import { useRouter } from "next/router";
 import { auth } from "../../../lib/mutations";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import Errors from "../../../src/components/Errors";
 
 
 function CreateService(){
@@ -11,6 +12,7 @@ function CreateService(){
     const [servicePrice, setServicePrice]= useState('')
     const router = useRouter()
     const [barber, setBarber]= useState('')
+    const [errorsArray, setErrorsArray]= useState([])
 
     useEffect( ()=>{
 
@@ -32,9 +34,40 @@ function CreateService(){
     return(
         <>
         <BarberNavigationMenu></BarberNavigationMenu>
+        <Errors errorsArray={errorsArray} setErrorsArray={setErrorsArray}></Errors>
         <form
         onSubmit={(e)=>{
             e.preventDefault()
+            let errors = false
+            if(name.trim()  === ''){
+                errors= true
+                setErrorsArray((previous)=>{
+                    let copyArray = [...previous]
+                    copyArray.push('The service name cannot be blank')
+                    return copyArray
+                })
+            }
+            if(serviceDurration.trim()  === ''){
+                errors= true
+                setErrorsArray((previous)=>{
+                    let copyArray = [...previous]
+                    copyArray.push('The service duration cannot be blank')
+                    return copyArray
+                })
+                
+            }
+            if(servicePrice.trim() === ''){
+                errors= true
+                setErrorsArray((previous)=>{
+                    let copyArray = [...previous]
+                    copyArray.push('The service price cannot be blank')
+                    return copyArray
+                })
+                
+            }
+            if(errors){
+                return
+            }
             fetch('/api/barbers/services/CreateService', {
                 method: 'POST',
                 headers: {
@@ -65,19 +98,19 @@ function CreateService(){
         <h1>Create a new Service</h1>
         <br />
         <h2>Service Name</h2>
-        <input value={name} onChange={(e)=> setName(e.target.value)}></input>
+        <TextField sx={{input: {color: 'white'}}} color="secondary" variant="standard" value={name} onChange={(e)=> setName(e.target.value)}></TextField>
         <br />
         <h2>Service Duration</h2>
-        <input type='number' value={serviceDurration} onChange={(e)=>{ setServiceDurration(e.target.value)}}></input> 
+        <TextField sx={{input: {color: 'white'}}} color="secondary" variant="standard" type='number' value={serviceDurration} onChange={(e)=>{ setServiceDurration(e.target.value)}}></TextField> 
         <h2>Service Price</h2>
-        <input type='number' value={servicePrice} onChange={(e)=>{ setServicePrice(e.target.value)}}></input>
+        <TextField sx={{input: {color: 'white'}}} color="secondary" variant="standard" type='number' value={servicePrice} onChange={(e)=>{ setServicePrice(e.target.value)}}></TextField>
         <br />
         <br />
         {
             //make input for uploading pictures
         }
 
-        <Button variant="contained" color="secondary">Create New Service</Button>
+        <Button type="submit" variant="contained" color="secondary">Create New Service</Button>
         </form>
        
         </>

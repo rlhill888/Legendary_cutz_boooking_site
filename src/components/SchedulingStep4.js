@@ -2,6 +2,7 @@ import { formControlClasses } from "@mui/material";
 import react, {useState, useEffect} from "react";
 import Calendar from "./Calendar";
 import SpecificTimeOfDaySelector from "./SpecificTimeOfDaySelector";
+import { Button } from "@mui/material";
 
 function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj, setDateOfAppointment, dateOfAppointment, barberId, dayData, setDayData}){
 
@@ -337,6 +338,9 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
 
     return(
         <>
+        <Button onClick={()=>{
+            setSchedulingStep(previous => previous - 1)
+        }} color="secondary">Back</Button>
         <Calendar blockOutUnavailibleDays={true} setDateOfAppointmentData={setDayData} barberId={barberId} disableSelectionsForPreviousDaysPastTodaysDate setDateOfAppointment={setDateOfAppointment} setResetFunction={setActivatedTimeSlot} resetValue={0}/>
 
         {dateOfAppointment  ? 

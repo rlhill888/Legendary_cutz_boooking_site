@@ -4,6 +4,10 @@ import { useRouter } from "next/router";
 import TimeInputComponent from "../../../src/components/TimeInputComponent";
 import mapOutYear from "../../../lib/mapOutYearObj";
 import axios from "axios";
+import { Button } from "@mui/material";
+import Loading from '../../../src/components/Loading';
+import pickApartIndividualTimesAndMakeThemMilitary from '../../../lib/pickApartIndividuakTimesAndMakeThemMilitary';
+import Checkbox from '@mui/material/Checkbox';
 
 function Setupschedule(){
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -14,6 +18,7 @@ function Setupschedule(){
     const [timeFinalized, setTimeFinalized]= useState(false)
     const [finalizeTime, setFinalizeTime]= useState(false)
     const [error, setError]= useState([])
+    const [loading, setLoading]= useState(false)
     const router = useRouter()
 
 
@@ -42,6 +47,11 @@ function Setupschedule(){
         fetchData()
        
     }, [])
+    if(loading){
+        return(
+            <Loading loadingText={'Creating Your Initial Calendar... This may take some time. Do Not Reload or Exit From this Page While Your Schedule is Being Created'}/>
+        )
+    }
 
     return(
     <>
@@ -49,49 +59,49 @@ function Setupschedule(){
     <br />
     <h2>Are there any days you would like to consistently have off?</h2>
     <div>
-        <h3>Monday <input  onChange={(e)=> {
+        <h3>Monday <Checkbox color="secondary"  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[1] = !copyArray[1]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
           
-        }} value={weekdayArray[1]} type='checkbox'></input></h3>
-         <h3>Tuesday <input  onChange={(e)=> {
+        }} value={weekdayArray[1]} type='checkbox'></Checkbox></h3>
+         <h3>Tuesday <Checkbox color="secondary" onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[2] = !copyArray[2]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-        }} value={weekdayArray[2]} type='checkbox'></input></h3>
-        <h3>Wednesday <input  onChange={(e)=> {
+        }} value={weekdayArray[2]} type='checkbox'></Checkbox></h3>
+        <h3>Wednesday <Checkbox color="secondary" onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[3] = !copyArray[3]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-        }} value={weekdayArray[3]} type='checkbox'></input></h3>
-        <h3>Thursday <input  onChange={(e)=> {
+        }} value={weekdayArray[3]} type='checkbox'></Checkbox></h3>
+        <h3>Thursday <Checkbox color="secondary" onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[4] = !copyArray[4]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-        }} value={weekdayArray[4]} type='checkbox'></input></h3>
-         <h3>Friday <input  onChange={(e)=> {
+        }} value={weekdayArray[4]} type='checkbox'></Checkbox></h3>
+         <h3>Friday <Checkbox color="secondary"  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[5] = !copyArray[5]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-        }} value={weekdayArray[5]} type='checkbox'></input></h3>
-         <h3>Saturday <input  onChange={(e)=> {
+        }} value={weekdayArray[5]} type='checkbox'></Checkbox></h3>
+         <h3>Saturday <Checkbox color="secondary"  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[6] = !copyArray[6]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-        }} value={weekdayArray[6]} type='checkbox'></input></h3>
-         <h3>Sunday <input  onChange={(e)=> {
+        }} value={weekdayArray[6]} type='checkbox'></Checkbox></h3>
+         <h3>Sunday <Checkbox color="secondary"  onChange={(e)=> {
             let copyArray = weekdayArray
             copyArray[0] = !copyArray[0]
             setWeekdayArray(copyArray)
             setUpdateChange(previous=> previous +1)
-        }} value={weekdayArray[0]} type='checkbox'></input></h3>
+        }} value={weekdayArray[0]} type='checkbox'></Checkbox></h3>
         
     </div>
     <br />
@@ -104,12 +114,18 @@ function Setupschedule(){
        
     })}
     <br />
-    <button
+    <Button
+    color="secondary"
+    variant="contained"
     onClick={ async ()=>{ 
-        
+       
+
+
+
         setFinalizeTime(previous=> !previous)
         let timeSucess= true
         let erorIndex= []
+        let errorMessage= []
 
         for(let i = 0; i < 7; i++){
             const index = i
@@ -117,13 +133,25 @@ function Setupschedule(){
                 timeSucess = false
                 erorIndex.push(i)
             }
+            if(time[index]){
+                const militaryTimesForTime= pickApartIndividualTimesAndMakeThemMilitary(time[index])
+                if(militaryTimesForTime[0] >= militaryTimesForTime[1]){
+                    timeSucess = false
+                    errorMessage.push(`Your end time is before your start time for this time slot: ${time[index]}`)
+                }
+                
+            }
         }
         if(timeSucess=== false){
             console.log(`Please make sure you entered a time for ${erorIndex.map(error=>{
                 return(` ${weekArray[error]}`)
             })}`)
+            errorMessage.map(error=>{
+                console.log(error)
+            })
             return 
         }
+        setLoading(true)
         let daysOffArray = []
         weekdayArray.map((day, index)=>{
             if(day){
@@ -151,6 +179,7 @@ function Setupschedule(){
         }catch(error){
             console.log(error)
             requestGood = false
+            setLoading(false)
         }
         if(requestGood){
             try{
@@ -167,14 +196,12 @@ function Setupschedule(){
             router.push('/barber_account_page/schedule')
             }catch(error){
                 console.log(error)
+                setLoading(false)
             }
-            
         }
-
         })
     }}
-    
-    >Create Schedule</button>
+    >Create Schedule</Button>
 
 
     </>

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import prisma from '../../lib/prisma.js'
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default async (req, res) =>{
 
     if(req.method === 'POST'){
@@ -20,7 +21,7 @@ export default async (req, res) =>{
                 data: {
                     gmail: body.gmail,
                     password: bcrypt.hashSync(body.password, salt), 
-                    phoneNumber: parseInt(body.phoneNumber) ,
+                    phoneNumber: body.phoneNumber,
                     name: body.name,
                     recieveNewAppointmentReminders: body.recieveNewAppointmentReminders,
                     recieveCanceledAppointmentReminders: body.recieveCanceledAppointmentReminders,

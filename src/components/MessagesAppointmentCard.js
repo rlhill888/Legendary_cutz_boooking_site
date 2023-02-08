@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 
 function MessagesAppointmentCard({id}){
@@ -67,9 +68,9 @@ function MessagesAppointmentCard({id}){
         return(
             <>
             <div>
-                <button onClick={()=>setOpenDetails(!openDetails) }>
+                <Button variant="contained" color='secondary' onClick={()=>setOpenDetails(!openDetails) }>
                 {openDetails ? 'Close Appointment Deatails' : 'Open Appointment Details'}
-                </button>
+                </Button>
             </div>
             
             </>
@@ -129,7 +130,8 @@ function MessagesAppointmentCard({id}){
         :
 
         <>
-        <button
+        <Button
+        color='secondary'
         onClick={async ()=>{
             try{
               const response = await axios({
@@ -146,7 +148,7 @@ function MessagesAppointmentCard({id}){
             }
             
          }}
-        >Cancel Appointment</button> 
+        >Cancel Appointment</Button> 
         </>
 
         }
@@ -156,10 +158,10 @@ function MessagesAppointmentCard({id}){
         <br />
 
 
-        <button  onClick={()=>setOpenDetails(!openDetails) }>
+        <Button color='secondary' variant='contained' onClick={()=>setOpenDetails(!openDetails) }>
             
             {openDetails ? 'Close Appointment Details' : 'Open Appointment Details'}
-        </button>
+        </Button>
         
         </div>
         </>

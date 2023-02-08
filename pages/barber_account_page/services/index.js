@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { auth } from "../../../lib/mutations";
 import IndivisualServiceComponent from "../../../src/components/IndivisualServiceComponent";
 import Loading from '../../../src/components/Loading';
+import Errors from "../../../src/components/Errors";
 import { Button } from "@mui/material";
 
 function Services(){
@@ -12,6 +13,7 @@ function Services(){
     const router = useRouter()
     const [barber, setBarber]= useState(null)
     const [updateServices, setUpdateServices]= useState(1)
+    const [errorsArray, setErrorsArray]= useState([])
      useEffect( ()=>{
 
         async function fetchData(){
@@ -40,6 +42,7 @@ function Services(){
     return(
         <>
         <BarberNavigationMenu />
+        <Errors errorsArray={errorsArray} setErrorsArray={setErrorsArray}></Errors>
         <div>
             {
                 editing === false ? 
@@ -72,7 +75,7 @@ function Services(){
                 {
                 barber.services.map((service)=>{
                     return(
-                        <IndivisualServiceComponent setUpdateServices={setUpdateServices} key={`service: ${service.id}`} service={service}/>
+                        <IndivisualServiceComponent setErrorsArray={setErrorsArray} setUpdateServices={setUpdateServices} key={`service: ${service.id}`} service={service}/>
                     )
                 })
                 }

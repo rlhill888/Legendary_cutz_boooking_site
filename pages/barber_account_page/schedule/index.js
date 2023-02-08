@@ -12,6 +12,7 @@ import convertToMilitaryTime from "../../../lib/convertToMilitaryTime";
 import Modal from '../../../src/components/Modal';
 import Loading from '../../../src/components/Loading';
 import { Button } from "@mui/material";
+import Errors from '../../../src/components/Errors'
 
 
 function Scheduling(){
@@ -29,16 +30,16 @@ function Scheduling(){
     const [appointmentModalOpen, setAppointmentModalOpen]= useState(false)
     const [appointmentModalJSX, setAppointmentModalJSX]= useState(null)
     const [appointmentModalTitle, setAppointmentModalTitle]= useState(null)
+    const [reRender, setReRender]= useState(0)
+    const [errorsArray, setErrorsArray]= useState([])
     const weekArray= ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
  
     const router= useRouter()
-    console.log(date)
     useEffect(()=>{
         setChangeAvailibilityButton(false)
         if(dayData){
            if(dayData.availibility==='none'){
-            console.log(dayData.availibility)
             setDayBlocked(true)
         }else{
             setDayBlocked(false)
@@ -52,7 +53,6 @@ function Scheduling(){
              await auth('me').then(res=>{
             if(res.ok){
                 res.json().then(res=> {
-                    console.log(res)
                     if(res.fiveYearScheduleCreated===false){
                         router.push('/barber_account_page/schedule/setupschedule')
                     }
@@ -92,8 +92,6 @@ function Scheduling(){
                             stripeSessionsId: cancelAppointmentStripeSessionId
                         }
                         }).then( async ()=>{
-
-                            console.log(response.data)
                             try{
                                 const response = await axios({
                                     method: 'PATCH',
@@ -104,7 +102,6 @@ function Scheduling(){
         
                                     }
                                 })
-                                console.log(response)
                                 window.location.reload(false)
                             }catch(e){
                                 console.log(e.response)
@@ -137,6 +134,7 @@ function Scheduling(){
 
     return(
         <>
+       
         <Modal modalActive={appointmentModalOpen} setModalActive={setAppointmentModalOpen} title={appointmentModalTitle}>
                 {appointmentModalJSX}
         </Modal>
@@ -145,9 +143,9 @@ function Scheduling(){
             <div>
                 {weeklySchedule.map((day, index)=>{
                     if(day===null){
-                        return <h4>{weekArray[index]}: You are off on {weekArray[index]}</h4>
+                        return <h4 key={`${day} ${index} weekly schedule`}>{weekArray[index]}: You are off on {weekArray[index]}</h4>
                     }else{
-                        return <h4>{weekArray[index]}: {day}</h4>
+                        return <h4 key={`${day} ${index} weekly schedule`}>{weekArray[index]}: {day}</h4>
                     }
                 })}
                 <Button
@@ -181,7 +179,7 @@ function Scheduling(){
 
             <div>
                 <h3>What Portion of the day would you like to block off?</h3>
-                <TimeInput timeFunction={ async (startTime, endTime, fullTimeSlot)=>{
+                <TimeInput setErrorsArray={setErrorsArray} timeFunction={ async (startTime, endTime, fullTimeSlot)=>{
 
                     try{
                         const response = await axios({
@@ -193,7 +191,6 @@ function Scheduling(){
 
                             }
                         })
-                        console.log(response)
                         window.location.reload()
                     }catch(e){
                         console.log(e.response)
@@ -217,9 +214,11 @@ function Scheduling(){
                 }
 
                 <h3>Currently Blocked Out Times:</h3>
-                {JSON.parse(dayData.blockedOffTimesArray).map(time=>{
+                {JSON.parse(dayData.blockedOffTimesArray).map((time, index)=>{
                     return(
-                        <p>{time} 
+                        <p
+                        key={`${index} ${time} blocked off times array`}
+                        >{time} 
                         <Button
                         // when this button is clicked, remove that time that is blocked off
                         color="secondary"
@@ -234,7 +233,6 @@ function Scheduling(){
 
                                     }
                                 })
-                                console.log(response)
                                 window.location.reload()
                             }catch(e){
                                 console.log(e.response)
@@ -252,7 +250,6 @@ function Scheduling(){
                 Block Out Appointment Scheduling for the rest of this Day
                 <input checked={dayBlocked}
                 onClick={async (e)=>{ 
-                    console.log(e.target.checked)
                     if(e.target.checked===true){
                         try{
                             const response = await axios({
@@ -267,7 +264,11 @@ function Scheduling(){
                             setDayBlocked(true)
                             window.location.reload(false)
                         }catch(error){
-                            console.log(error)
+                            setErrorsArray((previous)=>{
+                                let copyArray = [...previous]
+                                copyArray.push(error)
+                                return copyArray
+                            })
 
                         }
 
@@ -286,6 +287,7 @@ function Scheduling(){
         </Modal>
 
         <BarberNavigationMenu></BarberNavigationMenu>
+        <Errors setErrorsArray={setErrorsArray} errorsArray={errorsArray}></Errors>
 
 
         
@@ -320,7 +322,7 @@ function Scheduling(){
 
         <Button variant="contained" onClick={()=>{
             setChangeAvailibilityButton(true)
-        }}>Change This Day's Availibility</Button>
+        }}>Change This days Availibility</Button>
         <br />
 
 

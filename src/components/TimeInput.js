@@ -4,8 +4,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "@mui/material";
 import TextField from '@mui/material/TextField';
+import pickApartIndividualTimesAndMakeThemMilitary from "../../lib/pickApartIndividuakTimesAndMakeThemMilitary";
 
-function TimeInput({timeFunction, timeFunctionTitle}){
+function TimeInput({timeFunction, timeFunctionTitle, setErrorsArray}){
 
     const [startTimeHour, setStartTimeHour]= useState('')
     const [startTimeMinute, setStartTimeMinute]= useState('')
@@ -134,13 +135,27 @@ function TimeInput({timeFunction, timeFunctionTitle}){
             <br />
             <br />
             <Button color="secondary" variant="contained" onClick={async ()=>{
+                 const fullTimeSlot= `${startTimeHour}:${startTimeMinute.length > 1 ? startTimeMinute : `0${startTimeMinute}`} ${startTimeAmOrPM} - ${endTimeHour}:${endTimeMinute.length > 1 ? endTimeMinute : `0${endTimeMinute}`} ${endTimeAmOrPM}`.trim()
+
+                 const militaryTimesForTime = pickApartIndividualTimesAndMakeThemMilitary(fullTimeSlot)
+                 if(militaryTimesForTime[1] < militaryTimesForTime[0]){
+                    return setErrorsArray((previous)=>{
+                        let copyArray = [...previous]
+                        copyArray.push('invalid time')
+                        return copyArray
+                    })
+                 }
                 if(startTimeHour!=='' && startTimeMinute!== '' && endTimeHour!=='' && endTimeMinute!==''){
-                    const fullTimeSlot= `${startTimeHour}:${startTimeMinute.length > 1 ? startTimeMinute : `0${startTimeMinute}`} ${startTimeAmOrPM} - ${endTimeHour}:${endTimeMinute.length > 1 ? endTimeMinute : `0${endTimeMinute}`} ${endTimeAmOrPM}`.trim()
+                   
                     const startTime=`${startTimeHour}:${startTimeMinute.length > 1 ? startTimeMinute : `0${startTimeMinute}`} ${startTimeAmOrPM} - ${endTimeHour}`.trim()
                     const endTime= `${endTimeMinute.length > 1 ? endTimeMinute : `0${endTimeMinute}`} ${endTimeAmOrPM}`.trim()
                     timeFunction(startTime, endTime, fullTimeSlot)
                 }else{
-                    console.log('Please make sure none of your time inputs are blank')
+                    return setErrorsArray((previous)=>{
+                        let copyArray = [...previous]
+                        copyArray.push('Please make sure none of your time inputs are blank')
+                        return copyArray
+                    })
                 }
             }}>{timeFunctionTitle}</Button>
         </div>

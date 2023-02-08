@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Button } from "@mui/material";
 
 
-function IndivisualServiceComponent({service, setUpdateServices}){
+function IndivisualServiceComponent({service, setUpdateServices, setErrorsArray}){
     const[currentlyShowing, setCurrentlyShowing]= useState('')
     const [name, setName]=useState(service.name)
     const [time, setTime]=useState(service.time)
@@ -12,6 +12,35 @@ function IndivisualServiceComponent({service, setUpdateServices}){
             <>
             <form onSubmit={(e)=>{
                 e.preventDefault()
+                let error = false
+                if(name.trim() === ''){
+                    error= true
+                    setErrorsArray((previous)=>{
+                        let copyArray= [...previous]
+                        copyArray.push('The service name cannot be blank')
+                        return copyArray
+                    })
+                }
+                console.log(time)
+                if(`${time}`.trim() === ''){
+                    error= true
+                    setErrorsArray((previous)=>{
+                        let copyArray= [...previous]
+                        copyArray.push('The service time cannot be blank')
+                        return copyArray
+                    })
+                }
+                if(`${price}`.trim() === ''){
+                    error= true
+                    setErrorsArray((previous)=>{
+                        let copyArray= [...previous]
+                        copyArray.push('The service price cannot be blank')
+                        return copyArray
+                    })
+                }
+                if(error){
+                    return
+                }
                 fetch('/api/barbers/services/UpdateService', {
                     method: 'PATCH',
                     headers: {

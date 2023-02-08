@@ -17,7 +17,7 @@ model Barber {
   name String
   offDays String 
   password String
-  phoneNumber Int
+  phoneNumber String
   weeklyAvailibility String @default("none")
   recieveNewAppointmentReminders Boolean  @default(false)
   recieveCanceledAppointmentReminders Boolean  @default(false)

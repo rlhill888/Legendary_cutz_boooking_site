@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import { useRouter } from "next/router";
+import { Button } from "@mui/material";
+
 
 function signUp(){
     const [gmail, setGmail]= useState('')
@@ -17,7 +19,7 @@ function signUp(){
     }
 
     return(
-        <>
+        <div className="div">
         <h1>Sign Up</h1>
         <br />
         <form onSubmit={(e)=>{
@@ -67,7 +69,7 @@ function signUp(){
             <br />
             <h2>Phone Number</h2>
             <input value={phoneNumber} onChange={(e)=>changeFunction(e, setPhoneNumber) }></input>
-            <br />
+            {/* <br />
             <h2>Recieve Appointment Reminders</h2>
             <input type='checkbox' value={recieveAppintmentReminders} onChange={(e)=> setRecieveAppointmentReminders(previous => !previous) }></input>
             <h2>Recieve Canceled Appointment Reminders</h2>
@@ -76,16 +78,23 @@ function signUp(){
                 console.log(recieveCancelledAppintmentReminders)
                 setRecieveCancelledAppointmentReminders(previous => !previous)
             }
-                 }></input>
+                 }></input> */}
             <br />
             <br />
-            <button type='submit'>Create Account</button>
+            <Button color="secondary" variant="contained" type='submit'>Create Account</Button>
             
             
             
 
         </form>
-        </>
+        <style jsx>{`
+            .div{
+                text-align: center;
+            }
+            
+            
+            `}</style>
+        </div>
     )
 }
 

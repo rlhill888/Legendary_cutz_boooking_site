@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { auth } from "../../../lib/mutations";
 import axios from "axios";
 import Loading from '../../../src/components/Loading';
+import { Button } from "@mui/material";
+import TextField from '@mui/material/TextField';
 function Account(){
     const [editMode, setEditMode]= useState(false)
     const [barber, setBarber]= useState(null)
@@ -61,11 +63,13 @@ function Account(){
         {barber.recieveCanceledAppointmentReminders ? <h2>You are currently recieving sms messages if a customer cancels their appointment</h2> : <h2>You are not recieving sms messages if a customer cancels their appointment</h2>}
 
 
-        <button
+        <Button
+        variant="contained"
+        color='secondary'
         onClick={()=> setEditMode(true)}
         >
             Edit Account Information
-        </button>
+        </Button>
         </>
     }
     if(editMode === true){
@@ -96,30 +100,34 @@ function Account(){
         }}>
 
        
-        <h2>Name: {barber.name}</h2><input value={name} onChange={(e)=> setName(e.target.value)}></input>
-        <h2>Gmail: {barber.gmail}</h2><input value={gmail} onChange={(e)=> setGmail(e.target.value)}></input>
-        <h2>Phone Number: {barber.phoneNumber}</h2><input type={'number'} value={phoneNumber} onChange={(e)=>{
+        <h2>Name: {barber.name}</h2><TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary" value={name} onChange={(e)=> setName(e.target.value)}></TextField>
+        <h2>Gmail: {barber.gmail}</h2><TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary" value={gmail} onChange={(e)=> setGmail(e.target.value)}></TextField>
+        <h2>Phone Number: {barber.phoneNumber}</h2><TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary" type={'number'} value={phoneNumber} onChange={(e)=>{
             if(e.target.value>=0 && e.target.value < 10000000000){
                   setPhoneNumber(parseInt(e.target.value))
             }
               
-        }}></input>
-        <br />
+        }}></TextField>
+        {/* <br />
         <h2>Upload Appointments to your Google Calendar
            <input type='checkbox' checked={currentlyRecievingAppointmentReminders} onChange={()=> setCurrentlyRecevingAppointmentReminders(!currentlyRecievingAppointmentReminders)}></input> 
         </h2>
         
         <h2>Recieve SMS Notfications about Cancelled Appoitnments
            <input type='checkbox' checked={currentlyRecievingCancelReminders} onChange={()=> setCurrentlyRecievingCancelREminders(!currentlyRecievingCancelReminders)}></input> 
-        </h2>
-        <button type="submit">Update Account Settings</button>
+        </h2> */}
+        <br />
+        <br />
+        <Button variant="contained"
+        color='secondary' type="submit">Update Account</Button>
          </form>
          <br />
-        <button
+        <Button
+        color='secondary'
         onClick={()=> setEditMode(false)}
         >
         Back
-        </button>
+        </Button>
         </>
     }
     return(

@@ -144,6 +144,9 @@ console.log(recieptsArray)
             textAlign: 'left'
         }}
         >
+            <Button onClick={()=>{
+            setSchedulingStep(previous => previous - 1)
+        }} color="secondary">Back</Button>
             <div className="receiptDetails">
 
             

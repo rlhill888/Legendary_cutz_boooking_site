@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import useSWR from "swr";
 import axios from "axios";
 import GoogleAuthLoginComponent from "../../src/components/GoogleAuthLoginComponent";
+import Loading from '../../src/components/Loading';
+import { Button } from "@mui/material";
 
 
 
@@ -89,11 +91,18 @@ function Sucess(){
             overflowY: 'auto'
         }}
         >
-            {error ? (
+            {error ? 
+            error.message === 'down payment not paid' ? 
+            
+                <div> 
+                    <h1>Your Downpayment for your appointment was not paid</h1>
+
+                </div> 
+            :
                 <div>
                     <h1>There was an error</h1>
-                    </div>
-            ) : purchaseContents && customerNamesArray && reciept ? (
+                </div>
+             : purchaseContents && customerNamesArray && reciept ? (
                 <div>
                     <h1>Successful Payment</h1>
                     <br />
@@ -104,7 +113,7 @@ function Sucess(){
                                 <h3>Your Appoitnment Services:</h3>
                                 <ol style={{textAlign: 'left'}}>
                                     {reciept.Services.map(service=>{
-                                        return <li>{service}</li>
+                                        return <li key={`service ${service.id}`}>{service}</li>
                                     })}
                                 </ol>
                             </div>
@@ -123,7 +132,7 @@ function Sucess(){
                                 <div>
                                   <ol style={{textAlign: 'left'}}>
                                     {reciept.Services.map(service=>{
-                                        return <li>{service}</li>
+                                        return <li key={`service ${service.id}`}>{service}</li>
                                     })}
                                     </ol>  
                                 </div>
@@ -167,12 +176,8 @@ function Sucess(){
                             ${purchaseContents.totalPriceAfterDownPayment}
                          </h1>
                          <br />
-                         <h3>Would you like to sign up to recive sms reminders and updates about your appointment?</h3>
-                         Yes<input type='checkbox'></input>
-                         No<input type='checkbox'></input>
                          <br />
-                         <br />
-                         <button onClick={async ()=>{
+                         <Button color="secondary" onClick={async ()=>{
                             try{
                               const response = await axios({
                                 url: '/api/appointments/cancel_appointment',
@@ -187,13 +192,19 @@ function Sucess(){
                                 console.log(error)
                             }
                             
-                         }}>Cancel Appointment</button>
+                         }}>Cancel Appointment</Button>
                          <br />
                     
                     </div>
             ) : (
-                <div>
-                    <h1>Loading...</h1>
+                <div style={{
+                    position:'fixed',
+                    width: '100vw',
+                    height: '100vh',
+                    top: '0',
+                    left: '0'
+                }}>
+                    <Loading />
                 </div>
             )}
         </div>
