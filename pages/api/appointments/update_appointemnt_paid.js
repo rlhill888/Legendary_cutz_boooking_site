@@ -46,7 +46,7 @@ export default async (req, res)=>{
                     const militaryTimesForTimeSlot = pickAppartIndivisualTimesAndMakeThemMilitary(timeSlot)
                     if((militaryTimesForAppointmentTime[0] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[0] < militaryTimesForTimeSlot[1]) || (militaryTimesForAppointmentTime[1] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[1] < militaryTimesForTimeSlot[1])){
                         appointmentTimesWithinSlot = false
-                        return res.json({error: 'Someone else booked the appointment before the down payment was paid'}).status(422)
+                        return res.status(422).json({error: 'Someone else booked the appointment before the down payment was paid'})
                     }
                 }   
         
@@ -62,7 +62,7 @@ export default async (req, res)=>{
                     const militaryTimesForTimeSlot = pickAppartIndivisualTimesAndMakeThemMilitary(timeSlot)
                     if((militaryTimesForAppointmentTime[0] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[0] < militaryTimesForTimeSlot[1]) || (militaryTimesForAppointmentTime[1] > militaryTimesForTimeSlot[0] && militaryTimesForAppointmentTime[1] < militaryTimesForTimeSlot[1])){
                         appointmentTimesWithinSlot = false
-                        return res.json({error: 'Someone else booked the appointment before the down payment was paid'}).status(422)
+                        return res.status(422).json({error: 'Someone else booked the appointment before the down payment was paid'})
                     }
                 }   
                 }

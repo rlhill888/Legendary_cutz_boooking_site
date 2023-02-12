@@ -22,7 +22,11 @@ export default validateRoute(async (req, res, barber)=>{
                     include: {
                         days: {
                             include: {
-                                appointments: true
+                                appointments: {
+                                    where: {
+                                        downPaymentPaid: true
+                                    }
+                                }
                             }
                         },
     

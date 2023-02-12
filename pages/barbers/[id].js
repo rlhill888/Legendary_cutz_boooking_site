@@ -9,6 +9,7 @@ import Checkout from "../../src/components/Checkout";
 import Button from '@mui/material/Button';
 import Loading from '../../src/components/Loading'
 import axios from "axios";
+import { TextField } from "@mui/material";
 
 
 
@@ -32,6 +33,7 @@ function Page(){
     const [barberObj, setBarberObj]= useState(null)
     const [dayData, setDayData]= useState(null)
     const [nameArray, setNameArray]= useState(null)
+    const [phoneNumber, setPhoneNumber]= useState('')
     // going to get this info from a  fetch request
 
     useEffect(()=>{
@@ -95,7 +97,7 @@ function Page(){
 
     if(schedulingStep===1){
         return(
-            <SchedulingStep1  setSchedulingStep={setSchedulingStep} setServiceNamerray={setServiceNamerray}/>
+            <SchedulingStep1 phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}  setSchedulingStep={setSchedulingStep} setServiceNamerray={setServiceNamerray}/>
         )
     }
     console.log(serviceNameArray[currentPersonSelectingServices])
@@ -112,7 +114,7 @@ function Page(){
                 <div className="itemsDiv">
                 {barberObj.services.map(((service)=>{
                     return(
-                    <ServiceCard setservicesCheckedObj={setservicesCheckedObj} servicesCheckedObj={servicesCheckedObj} setBarberObj={setBarberObj}   service={service} selectedServicesList={selectedServicesList} setSelectedServicesList={setSelectedServicesList}/>
+                    <ServiceCard key={`service ${service.id}`} setservicesCheckedObj={setservicesCheckedObj} servicesCheckedObj={servicesCheckedObj} setBarberObj={setBarberObj}   service={service} selectedServicesList={selectedServicesList} setSelectedServicesList={setSelectedServicesList}/>
                     )
                     
                 }))}
@@ -179,7 +181,7 @@ function Page(){
         if(schedulingStep===5){
             return(
                 <>
-                <SchedulingStep5 nameArray={nameArray} dayData={dayData} dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray} barberId={barberObj.id}/>
+                <SchedulingStep5 nameArray={nameArray} dayData={dayData} dateOfAppointment={dateOfAppointment} timeObj={timeObj} setTotalAppointmentTimeInt={setTotalAppointmentTimeInt} setTotalAppointmentTime={setTotalAppointmentTime} setSchedulingStep={setSchedulingStep} completePurchaseObj={completePurchaseObj} recieptsArray={recieptsArray} barberId={barberObj.id} phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber}/>
                 </>
             )
         }

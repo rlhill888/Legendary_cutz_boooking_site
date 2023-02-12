@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "@mui/material";
+import takePhoneNumberInputAndAddDashes from "../../lib/takePhoneNumberInputAndAddDashes";
 
 
-function signUp(){
+function SignUp(){
     const [gmail, setGmail]= useState('')
     const [password, setPassword]= useState('')
     const [name, setName]= useState('')
@@ -68,7 +70,7 @@ function signUp(){
             <input value={confirmPassword} onChange={(e)=>changeFunction(e, setConfirmPassword) }></input>
             <br />
             <h2>Phone Number</h2>
-            <input value={phoneNumber} onChange={(e)=>changeFunction(e, setPhoneNumber) }></input>
+            <input value={phoneNumber} onChange={(e)=>takePhoneNumberInputAndAddDashes(e, setPhoneNumber) }></input>
             {/* <br />
             <h2>Recieve Appointment Reminders</h2>
             <input type='checkbox' value={recieveAppintmentReminders} onChange={(e)=> setRecieveAppointmentReminders(previous => !previous) }></input>
@@ -98,4 +100,4 @@ function signUp(){
     )
 }
 
-export default signUp
+export default SignUp

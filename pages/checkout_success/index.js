@@ -15,7 +15,10 @@ function Sucess(){
     const [error, setError]= useState(false)
     const [purchaseContents, setPurchaseContents]= useState({})
     const [customerNamesArray, setCustomersNamesArray]= useState(null)
+    const [contentOk, setContentOk]= useState(null)
     const [reciept, setReciept]= useState(null)
+
+    const router = useRouter()
 
     function mapNames(){
 
@@ -30,9 +33,41 @@ function Sucess(){
             })
     }
 
+    function generateJSXErrors(){
+        if(error === 'down payment not paid'){
+            return(
+                <div> 
+                    <h1>Your Downpayment for your appointment was not paid</h1>
+
+                </div> 
+            )
+        }
+        if(error === 'Someone else booked the appointment before the down payment was paid'){
+            return(
+                <div>
+                    <h2>Unfortunately another customer has booked an appointment that interferes with the time you selected for your appointment. Thier appointment was booked right before you finalized your payment.
+                        Your appointment has been cancelled, and you will be refunded.
+
+                       
+                    </h2> 
+                    <br />
+                    <Button onClick={()=>{
+                        router.push('/')
+                    }} variant="contained" color="secondary">Reschedule Appointment Again for another time</Button>
+
+                </div>
+            )
+        }else{
+            return(
+                <div>
+                    <h2>An error has occurred, please contact your barber about your appointment.</h2>
+                </div>
+            )
+        }
+    }
+
   
 
-    const router = useRouter()
     const session_id = router.query["session_id"]
 
     useEffect(()=>{
@@ -64,15 +99,18 @@ function Sucess(){
                                      Appointmentid: purchaseContents.id
                                  })
                                  console.log( response.data)
+                                 setContentOk(true)
                         }catch(error){
-                            console.log(error)
+                            console.log(error.response.data.error)
+                            return setError(error.response.data.error)
                         }         
                     }
+                    setContentOk(true)
 
                     }catch(error){
                         console.log(error)
                     }
-                    console.log(response.data)
+                    console.log(response.data.error)
                 }catch(error){
                     setError(error)
                     console.log(error)
@@ -92,17 +130,8 @@ function Sucess(){
         }}
         >
             {error ? 
-            error.message === 'down payment not paid' ? 
-            
-                <div> 
-                    <h1>Your Downpayment for your appointment was not paid</h1>
-
-                </div> 
-            :
-                <div>
-                    <h1>There was an error</h1>
-                </div>
-             : purchaseContents && customerNamesArray && reciept ? (
+            generateJSXErrors()
+             : purchaseContents && customerNamesArray && reciept && contentOk ?  (
                 <div>
                     <h1>Successful Payment</h1>
                     <br />

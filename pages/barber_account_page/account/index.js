@@ -6,6 +6,7 @@ import axios from "axios";
 import Loading from '../../../src/components/Loading';
 import { Button } from "@mui/material";
 import TextField from '@mui/material/TextField';
+import Admin from "../../../src/components/Admin";
 function Account(){
     const [editMode, setEditMode]= useState(false)
     const [barber, setBarber]= useState(null)
@@ -137,6 +138,8 @@ function Account(){
         <div>
 
             {barberMenuShowing}
+
+        {barber.Admin ? <Admin /> : <></>}
         </div></>
     )
 }

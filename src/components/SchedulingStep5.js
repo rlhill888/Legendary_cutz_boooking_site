@@ -5,7 +5,7 @@ import getStripe from "../../lib/get-stripe";
 import { Button } from "@mui/material";
 import Loading from "./Loading";
 
-function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData, nameArray, setSchedulingStep}){
+function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime, setTotalAppointmentTimeInt, recieptsArray, dateOfAppointment, barberId, dayData, nameArray, setSchedulingStep, phoneNumber, setPhoneNumber}){
     let testDate
 
     if(dateOfAppointment.toLowerCase().includes('thurs')){
@@ -79,7 +79,7 @@ function SchedulingStep5({timeObj, completePurchaseObj, setTotalAppointmentTime,
             recieptDetails: JSON.stringify(recieptsArray),
             barberId: barberId,
             appintmnetCustomerNames: JSON.stringify(nameArray),
-            phomeNumber: '215', 
+            phoneNumber: phoneNumber, 
             dayCalendarId: dayData.id,
             monthDate: figureOutMonthDate(month, year),
             year: parseInt(year)

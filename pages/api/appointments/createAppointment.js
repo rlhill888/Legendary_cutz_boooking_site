@@ -134,7 +134,7 @@ export default async function  CreateAppointment(req, res){
                     totalPriceAfterDownPayment: body.totalPriceAfterDownPayment,
                     dateOfAppointment: body.dateOfAppointment,
                     appintmnetCustomerNames: body.appintmnetCustomerNames,
-                    phomeNumber: body.phomeNumber,
+                    phomeNumber: body.phoneNumber,
                     
                     recieptDetails: body.recieptDetails,
                     dayCalendar: {
@@ -162,29 +162,6 @@ export default async function  CreateAppointment(req, res){
             res.status(401).json({statusCode: 500, message: error.message})
         return 
         }
-
-        ////////////////////
-        // timeSlotsTakenArray = timeSlotsTakenArray.sort((a, b)=>{
-        //     const firstTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(a)
-        //     const secondTimeMilitaryTimes = pickAppartIndivisualTimesAndMakeThemMilitary(b)
-        //     return firstTimeMilitaryTimes[0] - secondTimeMilitaryTimes[0]
-        // })
-        // try{
-        //     const updateDay = await prisma.dayCalendar.update({
-        //         where: {
-        //             id: dayCalendar.id
-        //         },
-        //         data: {
-        //             timeSlotsTaken: JSON.stringify(timeSlotsTakenArray) 
-        //         }
-        //     })
-
-        // }catch(error){
-        //     console.log(error)
-        //   return  res.json({error: error})
-        // }
-
-        //////////////////////
 
         }else{
             console.log('false')
