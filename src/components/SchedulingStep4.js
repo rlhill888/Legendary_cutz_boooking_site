@@ -3,6 +3,8 @@ import react, {useState, useEffect} from "react";
 import Calendar from "./Calendar";
 import SpecificTimeOfDaySelector from "./SpecificTimeOfDaySelector";
 import { Button } from "@mui/material";
+import pickAppartIndivisualTimesAndMakeThemMilitary from '../../lib/pickApartIndividuakTimesAndMakeThemMilitary';
+import convertMilitaryTimeToRegularTime from "../../lib/convertMilitaryTimeToRegularTime";
 
 function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj, setDateOfAppointment, dateOfAppointment, barberId, dayData, setDayData}){
 
@@ -51,91 +53,6 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                 console.log(dayData.availibility)
             }else{
                 let openTimeSlotArray= []
-
-                function pickAppartIndivisualTimesAndMakeThemMilitary(theTwoTimes){
-                    let temptime1= ''
-                    let temptime2= ''
-                    let hitSecondTime = false
-                    for(let character of theTwoTimes){
-                        if(character==='-'){
-                            hitSecondTime = true
-                        }
-                        if(hitSecondTime ===false){
-                            temptime1 = temptime1 + character
-                        }
-                        if(hitSecondTime ===true && character!=='-'){
-                            temptime2 = temptime2 + character
-                        }
-                        
-                    }
-                    let timeArray = []
-                    let time1 = temptime1.slice(0, -1)
-                    let time2 = temptime2.substring(1).slice(0,-1)
-
-                    const militaryTime1 = convertToMilitaryTime(time1)
-                    const militaryTime2 = convertToMilitaryTime(time2)
-
-                    return [parseInt(militaryTime1.trim()), parseInt(militaryTime2.trim())]
-                }
-                function convertToBasicTime(time){
-                    time = time.toString()
-                    let hour= ''
-                    let minute= ''
-                    let amOrPM
-                    
-                    if(time.length=== 3){
-                        let detectedHour = false
-                        for(let character of time){
-
-                             if(detectedHour===true){
-                                minute = minute + character
-                            }
-                            if(detectedHour===false){
-                                hour = hour + character
-                                detectedHour=true
-                            }
-                           
-                        }
-                    }else{
-                        let detectedHour = false
-                        let index = 0
-                        for(let character of time){
-                            if(index === 2){
-                                detectedHour= true
-                            }
-                            if(detectedHour===false){
-                                hour = hour + character
-                            }
-                            if(detectedHour===true){
-                                minute = minute + character
-                            }
-                            index++
-                        }
-                    }
-                    
-                    if(parseInt(hour)<12){
-                        if(hour === 0){
-                            hour = '12'
-                            amOrPM = 'am'
-                        }else{
-                            amOrPM = 'am'
-                        }
-                    }
-
-                    if(parseInt(hour)>=12){
-                        if(parseInt(hour)===12){
-                        amOrPM = 'pm'
-                        }else{
-                        amOrPM = 'pm'
-                        const hourInt = parseInt(hour) - 12 
-                        hour = hourInt.toString()
-                        }
-                        
-                        
-                    }
-
-                    return (`${hour}:${minute} ${amOrPM}`)
-                }
                 function calculateSumOfTwoTimes(time1, time2){
                     let hours
                     let minutes
@@ -273,7 +190,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         let timeSlotOpening = availibiityStart
                         let timeSlotClose = times[0]
                         newtimeSlotArray.push({
-                           timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                           timeSlot: [convertMilitaryTimeToRegularTime(timeSlotOpening), convertMilitaryTimeToRegularTime(timeSlotClose)],
                            timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
                         })
                         firstTimeDetected = true
@@ -287,7 +204,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         }else{
                             timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
                             newtimeSlotArray.push({
-                            timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                            timeSlot: [convertMilitaryTimeToRegularTime(timeSlotOpening), convertMilitaryTimeToRegularTime(timeSlotClose)],
                             timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
                         
                         })
@@ -304,7 +221,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         let timeSlotClose= availibilityEnd
                        
                         newtimeSlotArray.push({
-                            timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                            timeSlot: [convertMilitaryTimeToRegularTime(timeSlotOpening), convertMilitaryTimeToRegularTime(timeSlotClose)],
                             timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
                         
                         })
@@ -315,7 +232,7 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                         let timeSlotClose= militsryTimeData[indexOfMilitaryTimeArray+1][0]
                        
                         newtimeSlotArray.push({
-                            timeSlot: [convertToBasicTime(timeSlotOpening), convertToBasicTime(timeSlotClose)],
+                            timeSlot: [convertMilitaryTimeToRegularTime(timeSlotOpening), convertMilitaryTimeToRegularTime(timeSlotClose)],
                             timeAmount: calculateSumOfTwoTimes(timeSlotOpening, timeSlotClose)
                         
                         })

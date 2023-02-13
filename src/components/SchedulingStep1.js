@@ -52,7 +52,6 @@ function SchedulingStep1({setSchedulingStep, setServiceNamerray, phoneNumber, se
                 color="secondary"
                 variant="contained"
                 disabled={checkSingleUserNameInput()} onClick={()=>{
-                    
                     setServiceNamerray([singleUserName])
                     setSchedulingStep(2)
                     }}>next</Button>

@@ -93,8 +93,11 @@ function SpecificTimeSlot({times, activatedTimeSlot, specificTimeSlotId, setActi
         }
 
         let pm = false
+        if(finalLatestAppointmentHours === 12){
+            pm= true
+        }
 
-        if(finalLatestAppointmentHours > 11){
+        if(finalLatestAppointmentHours > 11 && finalLatestAppointmentHours !== 12){
             finalLatestAppointmentHours = finalLatestAppointmentHours - 12
             pm = true
         }

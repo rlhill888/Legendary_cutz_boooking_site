@@ -35,9 +35,9 @@ export default function Home() {
     <div className="mainDiv">
     <h1 className="header">SELECT A BARBER</h1>
     <div className="buttonsDiv">
-          {barbers.map((barber)=>{
+          {barbers.map((barber, index)=>{
       return(
-        <Button color="secondary" style={{width: '100%'}} variant="contained" onClick={()=>{
+        <Button  key={` barber ${barber.id}`}  color={index % 2 ? "primary" : "secondary"} style={{width: '100%', marginBottom: '40px'}} variant="contained" onClick={()=>{
           router.push(`/barbers/${barber.id}`)
         }} >{barber.name}</Button>
       )
