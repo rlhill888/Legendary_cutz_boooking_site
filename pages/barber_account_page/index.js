@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import BarberNavigationMenu from "../../src/components/BarberNavigationMenu";
 import axios from "axios";
 import BarberScheduleAppointmentCard from "../../src/components/BarberScheduleAppointmentCard";
-import Loading from '../../src/components/Loading'
+import Loading from '../../src/components/Loading';
+import Modal from "../../src/components/Modal";
 
 
 function Home(){
@@ -13,6 +14,9 @@ function Home(){
     const [barber, setBarber]= useState(null)
     const  [dayData, setDayData]= useState(null)
     const [totalMoney, setTotalMoney]= useState(null)
+    const [appointmentModalActive, setAppointmentModalActive]= useState(false)
+    const [appointmentModalJSX, setAppointmentModalJSX]= useState(null)
+    const [appointmentModalTitle, setAppointmentModalTitle]= useState(null)
     // const value = mapOutYear(2022)
 
     // console.log(value)
@@ -92,6 +96,7 @@ function Home(){
     return(
         <>
         <BarberNavigationMenu></BarberNavigationMenu>
+        <Modal title={appointmentModalTitle} modalActive={appointmentModalActive} setModalActive={setAppointmentModalActive} >{appointmentModalJSX}</Modal>
         <h1>{dayData.date}</h1>
         {dayData.availibility === 'none' ? <h1>You are scheduled as unavailibile today</h1> : <h1>Your Schedule for today is from {dayData.availibility} </h1>}
         {dayData.appointments.length > 0 ? 
@@ -101,7 +106,7 @@ function Home(){
         <h1>Your Appointments For Today</h1>
         <div>
         {dayData.appointments.map((appointment =>{
-                return ( <BarberScheduleAppointmentCard key={`${appointment.id}`} appointment={appointment}/>)
+                return ( <BarberScheduleAppointmentCard setAppointmentModalJSX={setAppointmentModalJSX} setAppointmentModalTitle={setAppointmentModalTitle} setAppointmentModalOpen={setAppointmentModalActive} key={`${appointment.id}`} appointment={appointment}/>)
             }))}
         </div>
         </div>

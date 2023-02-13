@@ -39,7 +39,7 @@ function BarberScheduleAppointmentCard({appointment, setAppointmentModalOpen, se
         return(
             <>
             <div>
-                <h3>Appointment for {findNameString()}: {appointment.appointmentStartTime} - {appointment.appointmentEndTime}</h3>
+                <h3>{findNameString()} {appointment.appointmentStartTime} - {appointment.appointmentEndTime}</h3>
                 <Button variant="contained" color="secondary" onClick={()=>{
                     setAppointmentModalOpen(true) 
                     setAppointmentModalTitle(`Appointment for ${findNameString()}: ${appointment.appointmentStartTime} - ${appointment.appointmentEndTime}`)
@@ -60,7 +60,7 @@ function BarberScheduleAppointmentCard({appointment, setAppointmentModalOpen, se
                                 <h3>Appoitnment Services:</h3>
                                 <ol>
                                     {reciept.Services.map(service=>{
-                                        return <li>{service}</li>
+                                        return <li key={`appointment service ${service.id}`}>{service}</li>
                                     })}
                                 </ol>
                             </div>
@@ -78,7 +78,7 @@ function BarberScheduleAppointmentCard({appointment, setAppointmentModalOpen, se
                                 <h3>Services:</h3>
                                 <ol>
                                     {reciept.Services.map(service=>{
-                                        return <li>{service}</li>
+                                        return <li key={`appointment service ${service.id}`}>{service}</li>
                                     })}
                                 </ol>
                                 <br />

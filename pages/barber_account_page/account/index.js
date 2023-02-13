@@ -7,6 +7,7 @@ import Loading from '../../../src/components/Loading';
 import { Button } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Admin from "../../../src/components/Admin";
+import takePhoneNumberInputAndAddDashes from "../../../lib/takePhoneNumberInputAndAddDashes";
 function Account(){
     const [editMode, setEditMode]= useState(false)
     const [barber, setBarber]= useState(null)
@@ -60,8 +61,8 @@ function Account(){
         <h2>Name: {barber.name}</h2>
         <h2>Gmail: {barber.gmail}</h2>
         <h2>Phone Number: {barber.phoneNumber}</h2>
-        {barber.recieveNewAppointmentReminders ? <h2>You are currently recieving appointment reminders</h2> : <h2>You are currently not recieving appointment reminders</h2>}
-        {barber.recieveCanceledAppointmentReminders ? <h2>You are currently recieving sms messages if a customer cancels their appointment</h2> : <h2>You are not recieving sms messages if a customer cancels their appointment</h2>}
+        {/* {barber.recieveNewAppointmentReminders ? <h2>You are currently recieving appointment reminders</h2> : <h2>You are currently not recieving appointment reminders</h2>}
+        {barber.recieveCanceledAppointmentReminders ? <h2>You are currently recieving sms messages if a customer cancels their appointment</h2> : <h2>You are not recieving sms messages if a customer cancels their appointment</h2>} */}
 
 
         <Button
@@ -87,8 +88,6 @@ function Account(){
                         name: name,
                         gmail: gmail, 
                         phoneNumber: phoneNumber,
-                        currentlyRecievingAppointmentReminders: currentlyRecievingAppointmentReminders,
-                        currentlyRecievingCancelReminders: currentlyRecievingCancelReminders
                     }
                 })
                 console.log(response.data)
@@ -103,10 +102,10 @@ function Account(){
        
         <h2>Name: {barber.name}</h2><TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary" value={name} onChange={(e)=> setName(e.target.value)}></TextField>
         <h2>Gmail: {barber.gmail}</h2><TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary" value={gmail} onChange={(e)=> setGmail(e.target.value)}></TextField>
-        <h2>Phone Number: {barber.phoneNumber}</h2><TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary" type={'number'} value={phoneNumber} onChange={(e)=>{
-            if(e.target.value>=0 && e.target.value < 10000000000){
-                  setPhoneNumber(parseInt(e.target.value))
-            }
+        <h2>Phone Number: {barber.phoneNumber}</h2>
+        
+        <TextField sx={{input: {color: 'white'}}} variant='filled' color="secondary"  value={phoneNumber} onChange={(e)=>{
+            takePhoneNumberInputAndAddDashes(e, setPhoneNumber)
               
         }}></TextField>
         {/* <br />

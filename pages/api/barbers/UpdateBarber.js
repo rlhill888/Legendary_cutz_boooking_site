@@ -14,15 +14,14 @@ export default validateRoute(async (req, res, barber)=>{
                     data: {
                        name: body.name,
                        gmail: body.gmail,
-                       phoneNumber: parseInt(body.phoneNumber),
-                       recieveNewAppointmentReminders: body.currentlyRecievingAppointmentReminders,
-                       recieveCanceledAppointmentReminders: body.currentlyRecievingCancelReminders
+                       phoneNumber: body.phoneNumber
                     }
                 })
 
                 return res.json(updateBarber)
         }catch(error){
-            return res.json({error: error})
+            console.log(error)
+            return res.status(422).json({error: error})
         }
     }
 
