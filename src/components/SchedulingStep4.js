@@ -9,14 +9,6 @@ import convertMilitaryTimeToRegularTime from "../../lib/convertMilitaryTimeToReg
 function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSchedulingStep, setTimeObj, setDateOfAppointment, dateOfAppointment, barberId, dayData, setDayData}){
 
 
-    console.log(JSON.stringify('10:00am - 1:00PM'))
-    // Going to be a variable set up in state. when day is clicked on calendar, a new open time slot array for that day will be pushed up into the variable up in state
-    // below is a temp time slot array
-    // const timeSlotArray = [
-    //     ['10:00am', '12:30pm'],
-    //     ['2:00pm', '5:30pm'],
-    //     ['6:45pm', '9:00pm']
-    // ]
     const [timeSlotArray, setTimeSlotArray]= useState(null)
     const [activatedTimeSlot, setActivatedTimeSlot]= useState(0)
   
@@ -25,7 +17,6 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
         if(dayData){
             if(dayData.timeSlotsTaken === '' || dayData.timeSlotsTaken === '[]'){
 
-                // setTimeSlotArray([dayData.availibility])
                 const availibiltyTime = dayData.availibility.toLowerCase()
                 let temptime1= ''
                 let temptime2= ''
@@ -56,10 +47,6 @@ function SchedulingStep4({totalAppointmentTime, totalAppointmentTimeInt, setSche
                 function calculateSumOfTwoTimes(time1, time2){
                     let hours
                     let minutes
-                    // let militaryTime1 = parseInt(convertToMilitaryTime(time1))
-                    // let militaryTime2 = parseInt(convertToMilitaryTime(time2))
-                    // let laterTime =  militaryTime1 >= militaryTime2 ? militaryTime1 : militaryTime2
-                    // let earlierTime = militaryTime1 <=  militaryTime2 ? militaryTime1 : militaryTime2
 
                     let laterTime =  time1 >= time2 ? time1 : time2
                     let earlierTime = time1 <=  time2 ? time1 : time2
